@@ -20,9 +20,7 @@ export function Header() {
   }, []);
 
   useEffect(() => {
-    // return () => {
     localStorage.setItem('searchTerm', searchInput);
-    // };
   }, [searchInput]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,19 +35,25 @@ export function Header() {
   return (
     <>
       <header className="header">
-        <form onSubmit={handleFormSubmit}>
-          <input
-            type="text"
-            placeholder="Search..."
-            value={searchInput}
-            onChange={handleInputChange}
-          />
-          <button type="submit">Search</button>
-        </form>
-        <Link to="/">Home Page</Link>
-        <Link to="/about">About US</Link>
-        <Link to="/404">Page 404</Link>
-        <h6>Current Page: {currentPath}</h6>
+        <nav className="navigation">
+          <div className="navigation-search">
+            <form onSubmit={handleFormSubmit}>
+              <input
+                type="text"
+                placeholder="Search..."
+                value={searchInput}
+                onChange={handleInputChange}
+              />
+              <button type="submit">Search</button>
+            </form>
+          </div>
+          <div className="navigation-links">
+            <Link to="/">Home Page</Link>
+            <Link to="/about">About US</Link>
+            <Link to="/404">Page 404</Link>
+          </div>
+        </nav>
+        <h6 className="current-page">Current Page: {currentPath}</h6>
       </header>
     </>
   );

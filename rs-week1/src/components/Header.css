@@ -1,5 +1,89 @@
+
 .header {
+  background-color: #343a40;
+  color: #fff;
+  padding: 0.5rem;
   display: flex;
-  justify-content: space-around;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
+}
+
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.navigation-search form {
+  display: flex;
+  align-items: center;
+}
+
+.navigation-search input[type="text"] {
+  width: 200px;
+  height: 20px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 20px;
+  padding: 5px 10px;
+  font-size: 16px;
+  color: #333;
+  background-color: #fff;
+}
+
+.navigation-search button[type="submit"] {
+  width: 80px;
+  height: 30px;
+  border: none;
+  border-radius: 20px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #007bff;
+  cursor: pointer;
+  transition: all 0.1s ease-in-out;
+}
+
+.navigation-search button[type="submit"]:hover {
+  background-color: #0069d9;
+}
+
+.navigation-search button[type="submit"]:active {
+  background-color: rgb(101, 236, 83);
+}
+
+.navigation-search {
+  flex-grow: 1;
+}
+
+.navigation-links {
+  display: flex;
+}
+
+.navigation-links>* {
+  /* margin-left: 0.5rem; */
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0.2rem;
+  margin-right: 10px;
+  color: #fff;
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.2s ease-in-out;
+}
+
+.navigation-links a:hover {
+  color: rgb(67, 182, 14);
+  border-bottom: 2px solid red;
+}
+
+.navigation-links a:active {
+  color: rgb(101, 236, 83);
+}
+
+
+.current-page {
+  font-size: 25px;
+  margin: 0.2rem;
 }

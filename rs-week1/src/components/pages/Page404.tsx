@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-export function NotFound404() {
-  return (
-    <>
-      <h3>Page not found 404</h3>
-    </>
-  );
+class NotFound404 extends Component {
+  render() {
+    return (
+      <>
+        <h3>Page not found 404</h3>
+      </>
+    );
+  }
 }
+
+export default NotFound404;

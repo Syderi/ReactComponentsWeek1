@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-export function AboutUS() {
-  return (
-    <>
-      <h3>About US page</h3>
-    </>
-  );
+class AboutUS extends Component {
+  render() {
+    return (
+      <>
+        <h3>About US page</h3>
+      </>
+    );
+  }
 }
+
+export default AboutUS;

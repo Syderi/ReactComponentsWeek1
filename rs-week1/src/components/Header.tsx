@@ -2,11 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import './Header.css';
 
-// interface HeaderProps {
-//   setSearchTerm: (searchTerm: string) => void;
-// }
-
-export function Header() {
+function Header() {
   const location = useLocation();
   const currentPath = location.pathname;
 
@@ -29,7 +25,6 @@ export function Header() {
 
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // setSearchInput(searchInput);
   };
 
   return (
@@ -58,3 +53,5 @@ export function Header() {
     </>
   );
 }
+
+export default Header;

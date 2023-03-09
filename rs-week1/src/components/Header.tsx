@@ -2,10 +2,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './Header.css';
 
-type IHeaderProps = Record<string, never>;
+// type IHeaderProps = Record<string, never>;
 
 interface IHeaderState {
   searchInput: string;
+}
+
+interface IHeaderProps {
+  onSearch: (searchTerm: string) => void;
 }
 
 export class Header extends React.Component<IHeaderProps, IHeaderState> {
@@ -27,6 +31,7 @@ export class Header extends React.Component<IHeaderProps, IHeaderState> {
     const { searchInput } = this.state;
     if (searchInput !== prevState.searchInput) {
       localStorage.setItem('searchTerm', searchInput);
+      this.props.onSearch(searchInput);
     }
   }
 

@@ -24,11 +24,6 @@ class HomePage extends Component<IHomePageProps, IState> {
     };
   }
 
-  // state: IState = {
-  //   products: [],
-  //   searchTerm: '',
-  // };
-
   async componentDidMount() {
     try {
       const response = await fetch('https://dummyjson.com/products?limit=12');
@@ -46,10 +41,6 @@ class HomePage extends Component<IHomePageProps, IState> {
       this.setState({ searchTerm: this.props.searchTerm });
     }
   }
-
-  // handleSearch = (searchTerm: string) => {
-  //   this.setState({ searchTerm });
-  // };
 
   render() {
     const { products, searchTerm, isLoading } = this.state;

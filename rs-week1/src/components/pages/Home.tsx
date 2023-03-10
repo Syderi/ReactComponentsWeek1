@@ -14,7 +14,7 @@ interface IHomePageProps {
   searchTerm: string;
 }
 
-class HomePage extends Component<IHomePageProps, IState> {
+class Home extends Component<IHomePageProps, IState> {
   constructor(props: IHomePageProps) {
     super(props);
     this.state = {
@@ -45,9 +45,6 @@ class HomePage extends Component<IHomePageProps, IState> {
   render() {
     const { products, searchTerm, isLoading } = this.state;
 
-    console.log('products', products);
-    console.log('searchTerm Home', searchTerm);
-
     const filteredProducts = products.filter((product) => {
       return product.title.toLowerCase().includes(searchTerm.toLowerCase());
     });
@@ -71,4 +68,4 @@ class HomePage extends Component<IHomePageProps, IState> {
   }
 }
 
-export default HomePage;
+export default Home;

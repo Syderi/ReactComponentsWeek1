@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import HomePage from './components/pages/Home';
+import Home from './components/pages/Home';
 import Header from './components/Header';
 import About from './components/pages/About';
 import Page404 from './components/pages/Page404';
@@ -28,8 +28,8 @@ class App extends Component<Record<string, never>, IAppState> {
       <>
         <Header onSearch={this.handleSearch} />
         <Routes>
-          <Route path="/" element={<HomePage searchTerm={searchTerm} />} />
-          <Route path="/home" element={<HomePage searchTerm={searchTerm} />} />
+          <Route path="/" element={<Home searchTerm={searchTerm} />} />
+          <Route path="/home" element={<Home searchTerm={searchTerm} />} />
           <Route path="/about" element={<About />} />
           <Route path="*" element={<Page404 />} />
         </Routes>

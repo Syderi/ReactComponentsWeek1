@@ -1,15 +1,15 @@
 import { describe, test, expect } from 'vitest';
 import { render } from '@testing-library/react';
 import React from 'react';
-import About from '../components/pages/About';
+import Page404 from '../components/pages/Page404';
 
-describe('<About />', () => {
-  test('About mounts properly', () => {
-    const wrapper = render(<About />);
+describe('<Page404 />', () => {
+  test('Page404 mounts properly', () => {
+    const wrapper = render(<Page404 />);
     expect(wrapper).toBeTruthy();
 
     // Get by h3
     const h3 = wrapper.container.querySelector('h3');
-    expect(h3?.textContent).toBe('About US page');
+    expect(h3?.textContent).toMatch(/404/i);
   });
 });

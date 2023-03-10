@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import HomePage from './components/pages/Home';
 import Header from './components/Header';
 import About from './components/pages/About';
-import NotFound404 from './components/pages/Page404';
+import Page404 from './components/pages/Page404';
 
 interface IAppState {
   searchTerm: string;
@@ -19,7 +19,6 @@ class App extends Component<Record<string, never>, IAppState> {
 
   handleSearch = (searchTerm: string) => {
     this.setState({ searchTerm });
-    // console.log('this.state.searchTerm', this.state.searchTerm);
   };
 
   render() {
@@ -32,7 +31,7 @@ class App extends Component<Record<string, never>, IAppState> {
           <Route path="/" element={<HomePage searchTerm={searchTerm} />} />
           <Route path="/home" element={<HomePage searchTerm={searchTerm} />} />
           <Route path="/about" element={<About />} />
-          <Route path="*" element={<NotFound404 />} />
+          <Route path="*" element={<Page404 />} />
         </Routes>
       </>
     );

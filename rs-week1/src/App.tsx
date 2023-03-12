@@ -23,7 +23,6 @@ class App extends Component<Record<string, never>, IAppState> {
 
   render() {
     const { searchTerm } = this.state;
-    console.log('searchTerm', searchTerm);
     return (
       <>
         <Header onSearch={this.handleSearch} />

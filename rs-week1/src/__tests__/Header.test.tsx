@@ -3,15 +3,15 @@ import React from 'react';
 import Header from '../components/Header';
 import { render, fireEvent } from '@testing-library/react';
 import { fn } from 'jest-mock';
-import { BrowserRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router';
 
 describe('<Header />', () => {
   test('handles search input change and form submission', () => {
     const onSearch = fn();
     const { getByPlaceholderText, getByText } = render(
-      <BrowserRouter>
+      <MemoryRouter>
         <Header onSearch={onSearch} />
-      </BrowserRouter>
+      </MemoryRouter>
     );
     const searchInput = getByPlaceholderText('Search...') as HTMLInputElement;
     const searchButton = getByText('Search');

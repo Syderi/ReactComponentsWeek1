@@ -20,7 +20,7 @@ class ProductCard extends Component<IProductProps> {
     const discountedPrice = price - (price * discountPercentage) / 100;
 
     return (
-      <div className="product-card" id={`product-card${id}`}>
+      <div data-testid={`product-card${id}`} className="product-card" id={`product-card${id}`}>
         <div className="product-card__image">
           <img src={thumbnail} alt={title} />
         </div>

@@ -65,7 +65,7 @@ export class Header extends React.Component<IHeaderProps, IHeaderState> {
             <div className="navigation-links">
               <NavLink to="/">Home Page</NavLink>
               <NavLink to="/about">About US</NavLink>
-              <NavLink to="/404">Page 404</NavLink>
+              {/* <NavLink to="/404">Page 404</NavLink> */}
             </div>
           </nav>
           {/* <h6 className="current-page">Current Page: {currentPath}</h6> */}

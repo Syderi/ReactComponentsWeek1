@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import './Header.css';
 
 interface IHeaderState {
@@ -63,9 +63,9 @@ export class Header extends React.Component<IHeaderProps, IHeaderState> {
               </form>
             </div>
             <div className="navigation-links">
-              <Link to="/">Home Page</Link>
-              <Link to="/about">About US</Link>
-              <Link to="/404">Page 404</Link>
+              <NavLink to="/">Home Page</NavLink>
+              <NavLink to="/about">About US</NavLink>
+              <NavLink to="/404">Page 404</NavLink>
             </div>
           </nav>
           {/* <h6 className="current-page">Current Page: {currentPath}</h6> */}

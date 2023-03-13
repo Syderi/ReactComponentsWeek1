@@ -7,6 +7,7 @@ import Page404 from './components/pages/Page404';
 
 interface IAppState {
   searchTerm: string;
+  namePage: string;
 }
 
 class App extends Component<Record<string, never>, IAppState> {
@@ -14,6 +15,7 @@ class App extends Component<Record<string, never>, IAppState> {
     super(props);
     this.state = {
       searchTerm: '',
+      namePage: '111',
     };
   }
 
@@ -21,15 +23,25 @@ class App extends Component<Record<string, never>, IAppState> {
     this.setState({ searchTerm });
   };
 
+  handleNamePage = (namePage: string) => {
+    this.setState({ namePage });
+  };
+
   render() {
-    const { searchTerm } = this.state;
+    const { searchTerm, namePage } = this.state;
     return (
       <>
-        <Header onSearch={this.handleSearch} />
+        <Header onSearch={this.handleSearch} namePageTerm={namePage} />
         <Routes>
-          <Route path="/" element={<Home searchTerm={searchTerm} />} />
-          <Route path="/home" element={<Home searchTerm={searchTerm} />} />
-          <Route path="/about" element={<About />} />
+          <Route
+            path="/"
+            element={<Home searchTerm={searchTerm} onChangeNamePage={this.handleNamePage} />}
+          />
+          <Route
+            path="/home"
+            element={<Home searchTerm={searchTerm} onChangeNamePage={this.handleNamePage} />}
+          />
+          <Route path="/about" element={<About onChangeNamePage={this.handleNamePage} />} />
           <Route path="*" element={<Page404 />} />
         </Routes>
       </>

@@ -3,12 +3,14 @@ import Home from '../components/pages/Home';
 import { describe, test, expect } from 'vitest';
 import { render, waitFor, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
+import { fn } from 'jest-mock';
 
 describe('<Home />', () => {
   test('Home page', async () => {
+    const onChangeNamePage = fn();
     const { findByText, queryByText } = render(
       <MemoryRouter>
-        <Home searchTerm="" />
+        <Home searchTerm="" onChangeNamePage={onChangeNamePage} />
       </MemoryRouter>
     );
 
@@ -19,9 +21,10 @@ describe('<Home />', () => {
   });
 
   test('renders the list of products when loaded', async () => {
+    const onChangeNamePage = fn();
     const { queryByText } = render(
       <MemoryRouter>
-        <Home searchTerm="" />
+        <Home searchTerm="" onChangeNamePage={onChangeNamePage} />
       </MemoryRouter>
     );
 

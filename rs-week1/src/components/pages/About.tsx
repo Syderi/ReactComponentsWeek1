@@ -1,6 +1,14 @@
 import React, { Component } from 'react';
 
-class About extends Component {
+interface IAboutPageProps {
+  onChangeNamePage: (namePage: string) => void;
+}
+
+class About extends Component<IAboutPageProps> {
+  async componentDidMount() {
+    this.props.onChangeNamePage('About US Page');
+  }
+
   render() {
     return (
       <>

@@ -2,10 +2,12 @@ import { describe, test, expect } from 'vitest';
 import { render } from '@testing-library/react';
 import React from 'react';
 import About from '../components/pages/About';
+import { fn } from 'jest-mock';
 
 describe('<About />', () => {
   test('About mounts properly', () => {
-    const wrapper = render(<About />);
+    const onChangeNamePage = fn();
+    const wrapper = render(<About onChangeNamePage={onChangeNamePage} />);
     expect(wrapper).toBeTruthy();
 
     // Get by h3

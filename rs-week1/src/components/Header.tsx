@@ -8,6 +8,7 @@ interface IHeaderState {
 
 interface IHeaderProps {
   onSearch: (searchTerm: string) => void;
+  namePageTerm: string;
 }
 
 export class Header extends React.Component<IHeaderProps, IHeaderState> {
@@ -44,6 +45,7 @@ export class Header extends React.Component<IHeaderProps, IHeaderState> {
 
   render() {
     const { searchInput } = this.state;
+    const { namePageTerm } = this.props;
     // const { location } = this.props;
     // const currentPath = location.pathname;
 
@@ -68,7 +70,7 @@ export class Header extends React.Component<IHeaderProps, IHeaderState> {
               {/* <NavLink to="/404">Page 404</NavLink> */}
             </div>
           </nav>
-          {/* <h6 className="current-page">Current Page: {currentPath}</h6> */}
+          <h6 className="current-page">Current Page: {namePageTerm}</h6>
         </header>
       </>
     );

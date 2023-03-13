@@ -10,7 +10,7 @@ describe('<Header />', () => {
     const onSearch = fn();
     const { getByPlaceholderText, getByText } = render(
       <MemoryRouter>
-        <Header onSearch={onSearch} />
+        <Header onSearch={onSearch} namePageTerm="" />
       </MemoryRouter>
     );
     const searchInput = getByPlaceholderText('Search...') as HTMLInputElement;

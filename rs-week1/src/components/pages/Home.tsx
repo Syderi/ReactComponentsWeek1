@@ -12,6 +12,7 @@ interface IState {
 
 interface IHomePageProps {
   searchTerm: string;
+  onChangeNamePage: (namePage: string) => void;
 }
 
 class Home extends Component<IHomePageProps, IState> {
@@ -25,6 +26,7 @@ class Home extends Component<IHomePageProps, IState> {
   }
 
   async componentDidMount() {
+    this.props.onChangeNamePage('Home Page');
     try {
       const response = await fetch('https://dummyjson.com/products?limit=12');
       const resProducts = await response.json();

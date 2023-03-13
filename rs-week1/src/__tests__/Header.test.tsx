@@ -14,6 +14,7 @@ describe('<Header />', () => {
       </MemoryRouter>
     );
     const searchInput = getByPlaceholderText('Search...') as HTMLInputElement;
+    expect(searchInput).toBeTruthy();
     const searchButton = getByText('Search');
 
     fireEvent.change(searchInput, { target: { value: 'test' } });

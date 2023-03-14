@@ -32,8 +32,8 @@ class ProductCard extends Component<IProductProps> {
           <p>Stock: {stock}</p>
           <p>Brand: {brand}</p>
           <p>Category: {category}</p>
-          <button>Add to cart</button>
         </div>
+        <button className="product-card__button">Add to cart</button>
       </div>
     );
   }

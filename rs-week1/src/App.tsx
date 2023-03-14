@@ -13,7 +13,7 @@ class App extends Component<Record<string, never>, IAppState> {
   constructor(props: Record<string, never>) {
     super(props);
     this.state = {
-      namePage: '111',
+      namePage: '',
     };
   }
 

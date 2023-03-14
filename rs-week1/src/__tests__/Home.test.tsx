@@ -6,18 +6,18 @@ import { MemoryRouter } from 'react-router';
 import { fn } from 'jest-mock';
 
 describe('<Home />', () => {
-  test('Home page', async () => {
+  test('Home page', () => {
     const onChangeNamePage = fn();
-    const { findByText, queryByText } = render(
+    const { queryByText } = render(
       <MemoryRouter>
         <Home searchTerm="" onChangeNamePage={onChangeNamePage} />
       </MemoryRouter>
     );
 
-    const loading = await findByText(/Loading/i);
+    const loading = queryByText(/Loading/i);
     expect(loading).not.toBeNull();
 
-    await waitFor(() => expect(queryByText(/Loading/i)).toBeNull());
+    waitFor(() => expect(queryByText(/Loading/i)).toBeNull());
   });
 
   test('renders the list of products when loaded', async () => {

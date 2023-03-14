@@ -1,6 +1,13 @@
 import React, { Component } from 'react';
 
-class Page404 extends Component {
+interface IPage404Props {
+  onChangeNamePage: (namePage: string) => void;
+}
+
+class Page404 extends Component<IPage404Props> {
+  componentDidMount() {
+    this.props.onChangeNamePage('Page 404');
+  }
   render() {
     return (
       <>

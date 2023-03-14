@@ -42,7 +42,7 @@ class App extends Component<Record<string, never>, IAppState> {
             element={<Home searchTerm={searchTerm} onChangeNamePage={this.handleNamePage} />}
           />
           <Route path="/about" element={<About onChangeNamePage={this.handleNamePage} />} />
-          <Route path="*" element={<Page404 />} />
+          <Route path="*" element={<Page404 onChangeNamePage={this.handleNamePage} />} />
         </Routes>
       </>
     );

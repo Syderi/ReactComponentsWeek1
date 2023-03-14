@@ -5,7 +5,7 @@ interface IAboutPageProps {
 }
 
 class About extends Component<IAboutPageProps> {
-  async componentDidMount() {
+  componentDidMount() {
     this.props.onChangeNamePage('About US Page');
   }
 

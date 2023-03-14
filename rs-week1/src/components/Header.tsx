@@ -12,6 +12,8 @@ interface IHeaderProps {
 }
 
 export class Header extends React.Component<IHeaderProps, IHeaderState> {
+  private beforeUnloadListener: ((event: BeforeUnloadEvent) => void) | null = null;
+
   constructor(props: IHeaderProps) {
     super(props);
     this.state = {
@@ -24,12 +26,24 @@ export class Header extends React.Component<IHeaderProps, IHeaderState> {
     if (searchTerm) {
       this.setState({ searchInput: searchTerm });
     }
+
+    // Добавляем обработчик события beforeunload
+    this.beforeUnloadListener = () => {
+      localStorage.setItem('searchTerm', this.state.searchInput);
+    };
+    window.addEventListener('beforeunload', this.beforeUnloadListener);
+  }
+
+  componentWillUnmount() {
+    // Удаляем обработчик события beforeunload
+    if (this.beforeUnloadListener) {
+      window.removeEventListener('beforeunload', this.beforeUnloadListener);
+    }
   }
 
   componentDidUpdate(_: IHeaderProps, prevState: IHeaderState) {
     const { searchInput } = this.state;
     if (searchInput !== prevState.searchInput) {
-      localStorage.setItem('searchTerm', searchInput);
       this.props.onSearch(searchInput);
     }
   }
@@ -46,8 +60,6 @@ export class Header extends React.Component<IHeaderProps, IHeaderState> {
   render() {
     const { searchInput } = this.state;
     const { namePageTerm } = this.props;
-    // const { location } = this.props;
-    // const currentPath = location.pathname;
 
     return (
       <>

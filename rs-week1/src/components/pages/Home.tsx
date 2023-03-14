@@ -18,7 +18,7 @@ class Home extends Component<IHomePageProps, IState> {
   constructor(props: IHomePageProps) {
     super(props);
     this.state = {
-      products: products,
+      products: [],
       searchInput: '',
     };
   }
@@ -34,6 +34,10 @@ class Home extends Component<IHomePageProps, IState> {
       localStorage.setItem('searchTerm', this.state.searchInput);
     };
     window.addEventListener('beforeunload', this.beforeUnloadListener);
+
+    this.setState({
+      products: products,
+    });
   }
 
   componentWillUnmount() {
@@ -42,8 +46,6 @@ class Home extends Component<IHomePageProps, IState> {
       window.removeEventListener('beforeunload', this.beforeUnloadListener);
     }
   }
-
-  componentDidUpdate() {}
 
   handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;

@@ -1,8 +1,24 @@
 import React, { Component } from 'react';
 import { IProductProps } from './types/interface';
 import './ProductCard.css';
+import defaultPic from '../assets/img/default.png';
 
-class ProductCard extends Component<IProductProps> {
+interface IProductCardState {
+  thumbnailError: boolean;
+}
+
+class ProductCard extends Component<IProductProps, IProductCardState> {
+  constructor(props: IProductProps) {
+    super(props);
+    this.state = {
+      thumbnailError: false,
+    };
+  }
+
+  handleThumbnailError = () => {
+    this.setState({ thumbnailError: true });
+  };
+
   render() {
     const {
       id,
@@ -18,11 +34,17 @@ class ProductCard extends Component<IProductProps> {
     } = this.props.product;
 
     const discountedPrice = price - (price * discountPercentage) / 100;
+    const thumbnailImg = thumbnail || defaultPic;
+    console.log(thumbnailImg);
 
     return (
       <div data-testid={`product-card${id}`} className="product-card" id={`product-card${id}`}>
         <div className="product-card__image">
-          <img src={thumbnail} alt={title} />
+          <img
+            src={this.state.thumbnailError ? defaultPic : thumbnail}
+            alt={title}
+            onError={this.handleThumbnailError}
+          />
         </div>
         <div className="product-card__info">
           <h2>{title}</h2>

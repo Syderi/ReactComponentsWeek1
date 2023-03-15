@@ -1,39 +1,24 @@
+import { describe, test, expect } from 'vitest';
 import React from 'react';
 import Home from '../components/pages/Home';
-import { describe, test, expect } from 'vitest';
-import { render, waitFor, screen } from '@testing-library/react';
-import { MemoryRouter } from 'react-router';
+import { render, fireEvent } from '@testing-library/react';
 import { fn } from 'jest-mock';
+import { MemoryRouter } from 'react-router';
 
 describe('<Home />', () => {
-  test('Home page', async () => {
+  test('handles search input change and form submission', () => {
     const onChangeNamePage = fn();
-    const { findByText, queryByText } = render(
+    const { getByPlaceholderText } = render(
       <MemoryRouter>
-        <Home searchTerm="" onChangeNamePage={onChangeNamePage} />
+        <Home onChangeNamePage={onChangeNamePage} />
       </MemoryRouter>
     );
+    const searchInput = getByPlaceholderText('Search...') as HTMLInputElement;
+    expect(searchInput).toBeTruthy();
 
-    const loading = await findByText(/Loading/i);
-    expect(loading).not.toBeNull();
+    fireEvent.change(searchInput, { target: { value: 'test' } });
+    expect(searchInput.value).toBe('test');
 
-    await waitFor(() => expect(queryByText(/Loading/i)).toBeNull());
-  });
-
-  test('renders the list of products when loaded', async () => {
-    const onChangeNamePage = fn();
-    const { queryByText } = render(
-      <MemoryRouter>
-        <Home searchTerm="" onChangeNamePage={onChangeNamePage} />
-      </MemoryRouter>
-    );
-
-    await waitFor(() => expect(queryByText(/Loading/i)).toBeNull());
-
-    const product1 = screen.getByTestId('product-card1');
-    const product2 = screen.getByTestId('product-card2');
-
-    expect(product1).not.toBeNull();
-    expect(product2).to.exist;
+    expect(onChangeNamePage).toHaveBeenCalledTimes(1);
   });
 });

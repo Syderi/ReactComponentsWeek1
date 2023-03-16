@@ -13,6 +13,7 @@ interface IFormPageState {
   price: number;
   description: string;
   imageUrl: string;
+  imageFile: File | null;
   category: string;
   products: IFormCard[];
 }
@@ -27,6 +28,7 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
       price: 1,
       description: '',
       imageUrl: defaultPic,
+      imageFile: null,
       category: '',
       products: [],
     };
@@ -55,7 +57,7 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
   };
 
   handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files[0]) {
+    if (event.target && event.target.files && event.target.files[0]) {
       const reader = new FileReader();
       reader.onload = (e) => {
         this.setState({ imageUrl: e.target?.result as string });
@@ -87,13 +89,14 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
       description: '',
       imageUrl: defaultPic,
       category: '',
+      imageFile: null,
       products: newProducts,
     });
     // console.log(this.state);
   };
 
   render() {
-    const { title, price, description, category, products } = this.state;
+    const { title, price, description, category, products, imageFile } = this.state;
     return (
       <div className="form-page">
         <h3>Form page</h3>
@@ -117,7 +120,13 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
           </div>
           <div className="form-input">
             <label htmlFor="image-input">Image:</label>
-            <input type="file" id="image-input" onChange={this.handleImageChange} />
+            <input
+              type="file"
+              accept="image/jpeg,image/png,image/gif"
+              id="image-input"
+              onChange={this.handleImageChange}
+            />
+            {imageFile && <span>{imageFile.name}</span>}
           </div>
           <div className="form-input">
             <label htmlFor="category-select">Category:</label>

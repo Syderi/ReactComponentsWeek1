@@ -1,16 +1,6 @@
+import { IFormCardProps } from 'components/types/interface';
 import React, { Component } from 'react';
 import './FormCard.css';
-
-interface IFormCard {
-  id: number;
-  title: string;
-  description: string;
-  imageUrl: string;
-}
-
-interface IFormCardProps {
-  product: IFormCard;
-}
 
 class FormCard extends Component<IFormCardProps> {
   constructor(props: IFormCardProps) {
@@ -18,7 +8,7 @@ class FormCard extends Component<IFormCardProps> {
   }
 
   render() {
-    const { id, title, description, imageUrl } = this.props.product;
+    const { id, title, description, price, category, imageUrl } = this.props.product;
 
     return (
       <div data-testid={`form-card${id}`} className="form-card" id={`product-card${id}`}>
@@ -27,6 +17,8 @@ class FormCard extends Component<IFormCardProps> {
         </div>
         <div className="form-card__info">
           <h2>{title}</h2>
+          <p>Category: {category}</p>
+          <p>Price: ${price}</p>
           <p>{description}</p>
         </div>
       </div>

@@ -1,25 +1,4 @@
-// import React, { Component } from 'react';
-
-// interface IFormPageProps {
-//   onChangeNamePage: (namePage: string) => void;
-// }
-
-// class FormPage extends Component<IFormPageProps> {
-//   componentDidMount() {
-//     this.props.onChangeNamePage('Form Page');
-//   }
-
-//   render() {
-//     return (
-//       <>
-//         <h3>Form page</h3>
-//       </>
-//     );
-//   }
-// }
-
-// export default FormPage;
-
+import { IFormCard } from 'components/types/interface';
 import React, { Component } from 'react';
 import FormCard from './FormCard';
 
@@ -28,143 +7,111 @@ interface IFormPageProps {
 }
 
 interface IFormPageState {
-  name: string;
-  file: File | null;
-  errors: {
-    name: string;
-    file: string;
-  };
-  cards: {
-    name: string;
-    imageUrl: string;
-  }[];
+  title: string;
+  price: number;
+  description: string;
+  imageUrl: string;
+  category: string;
+  products: IFormCard[];
 }
 
 class FormPage extends Component<IFormPageProps, IFormPageState> {
-  private fileInputRef: React.RefObject<HTMLInputElement>;
-
   constructor(props: IFormPageProps) {
     super(props);
 
     this.state = {
-      name: '',
-      file: null,
-      errors: {
-        name: '',
-        file: '',
-      },
-      cards: [],
+      title: '',
+      price: 1,
+      description: '',
+      imageUrl: '',
+      category: '',
+      products: [],
     };
-
-    this.fileInputRef = React.createRef();
   }
 
   componentDidMount() {
     this.props.onChangeNamePage('Form Page');
+    console.log(this.state);
   }
 
-  handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const name = event.target.value;
-    this.setState((prevState) => ({
-      ...prevState,
-      name,
-      errors: {
-        ...prevState.errors,
-        name: name ? '' : 'Name is required',
-      },
-    }));
+  handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ title: event.target.value });
   };
 
-  handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files ? event.target.files[0] : null;
-    this.setState((prevState) => ({
-      ...prevState,
-      file,
-      errors: {
-        ...prevState.errors,
-        file: file ? '' : 'Image is required',
-      },
-    }));
-  };
-
-  handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const { name, file, errors } = this.state;
 
-    if (!name || !file || errors.name || errors.file) {
-      return;
-    }
+    const { title, price, description, imageUrl, category, products } = this.state;
+    const id = Date.now();
 
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-      const imageUrl = reader.result as string;
-      this.setState((prevState) => ({
-        name: '',
-        file: null,
-        errors: {
-          name: '',
-          file: '',
-        },
-        cards: [
-          ...prevState.cards,
-          {
-            name,
-            imageUrl,
-          },
-        ],
-      }));
-      this.fileInputRef.current!.value = ''; // clear file input
+    const newProduct = {
+      id,
+      title,
+      price,
+      description,
+      imageUrl,
+      category,
     };
+
+    const newProducts = [...products, newProduct];
+
+    this.setState({
+      title: '',
+      price: 0,
+      description: '',
+      imageUrl: '',
+      category: '',
+      products: newProducts,
+    });
+    console.log(this.state);
   };
 
   render() {
-    const { name, file, errors, cards } = this.state;
-    const isSubmitDisabled = !name || !file || errors.name || errors.file;
-
+    const { title, price, description, imageUrl, category, products } = this.state;
     return (
       <>
         <h3>Form page</h3>
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={this.handleFormSubmit}>
           <div>
             <label>
-              Name:
-              <input type="text" value={name} onChange={this.handleNameChange} />
+              Title:
+              <input type="text" value={title} onChange={this.handleTitleChange} />
             </label>
-            {errors.name && <div style={{ color: 'red' }}>{errors.name}</div>}
+          </div>
+          <div>
+            <label>
+              Price:
+              <input type="number" />
+            </label>
+          </div>
+          <div>
+            <label>
+              Description:
+              <textarea defaultValue={'Привет! Тут просто немного текста внутри тега textarea'} />
+            </label>
           </div>
           <div>
             <label>
               Image:
-              <input type="file" ref={this.fileInputRef} onChange={this.handleFileChange} />
+              <input type="file" />
             </label>
-            {errors.file && <div style={{ color: 'red' }}>{errors.file}</div>}
           </div>
-          <button type="submit" disabled={!!isSubmitDisabled}>
-            Submit
-          </button>
+          <div>
+            <select>
+              <option value="smartphones">smartphones</option>
+              <option value="laptops">laptops</option>
+              <option value="fragrances">fragrances</option>
+            </select>
+          </div>
+          <button type="submit">Submit</button>
         </form>
-        {cards.length > 0 && (
-          <>
-            <p style={{ color: 'green' }}>Data has been saved!</p>
-            <ul>
-              {cards.map((card, index) => (
-                <li key={index}>
-                  <div>{card.name}</div>
-                  <img src={card.imageUrl} alt={card.name} style={{ maxWidth: '100%' }} />
-                </li>
-              ))}
-            </ul>
-          </>
+        {products.length ? (
+          products.map((product) => {
+            return <FormCard key={product.id} product={{ ...product }} />;
+          })
+        ) : (
+          <div>No products...</div>
         )}
-        <FormCard
-          product={{
-            id: Date.now(),
-            title: 'TITLE',
-            description: 'description',
-            imageUrl: 'https://i.dummyjson.com/data/products/2/thumbnail.jpg',
-          }}
-        />
       </>
     );
   }

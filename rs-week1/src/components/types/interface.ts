@@ -16,4 +16,17 @@ interface IProductProps {
   product: IProduct;
 }
 
-export { IProduct, IProductProps };
+interface IFormCard {
+  id?: number;
+  title: string;
+  description: string;
+  price: number;
+  category: string;
+  imageUrl: string;
+}
+
+interface IFormCardProps {
+  product: IFormCard;
+}
+
+export { IProduct, IProductProps, IFormCard, IFormCardProps };

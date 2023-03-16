@@ -36,6 +36,8 @@
   margin-bottom: 5px;
   font-size: 20px;
   font-weight: bold;
+  word-wrap: break-word;
+  hyphens: auto;
 }
 
 .form-card__info p {
@@ -43,6 +45,8 @@
   margin-bottom: 5px;
   font-size: 16px;
   line-height: 1.5;
+  word-wrap: break-word;
+  hyphens: auto;
 }
 
 

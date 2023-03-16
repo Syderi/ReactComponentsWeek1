@@ -9,7 +9,6 @@ interface IFormPageProps {
 }
 
 interface IFormPageState {
-  title: string;
   price: number;
   description: string;
   imageUrl: string;
@@ -19,30 +18,28 @@ interface IFormPageState {
 }
 
 class FormPage extends Component<IFormPageProps, IFormPageState> {
-  fileInputRef: React.RefObject<HTMLInputElement>;
+  defaultFile: File;
+  inputTitleRef: React.RefObject<HTMLInputElement>;
+  inputFileRef: React.RefObject<HTMLInputElement>;
   constructor(props: IFormPageProps) {
     super(props);
-
+    this.defaultFile = new File([defaultPic], 'default.png', { type: 'image/png' });
+    this.inputTitleRef = React.createRef();
+    this.inputFileRef = React.createRef();
     this.state = {
-      title: '',
       price: 1,
       description: '',
       imageUrl: defaultPic,
-      imageFile: null,
+      imageFile: this.defaultFile,
       category: '',
       products: [],
     };
-    this.fileInputRef = React.createRef();
   }
 
   componentDidMount() {
     this.props.onChangeNamePage('Form Page');
-    console.log(this.state);
+    // console.log(this.state);
   }
-
-  handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ title: event.target.value });
-  };
 
   handlePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ price: Number(event.target.value) });
@@ -56,25 +53,42 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
     this.setState({ category: event.target.value });
   };
 
-  handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target && event.target.files && event.target.files[0]) {
+  handleImageInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
       const reader = new FileReader();
-      reader.onload = (e) => {
-        this.setState({ imageUrl: e.target?.result as string });
+      reader.onload = () => {
+        if (this.inputFileRef.current !== null) {
+          const imageFile = this.inputFileRef.current.files && this.inputFileRef.current.files[0];
+          if (imageFile !== null) {
+            this.setState({
+              imageUrl: URL.createObjectURL(imageFile),
+              imageFile,
+            });
+          }
+        }
       };
       reader.readAsDataURL(event.target.files[0]);
     }
+    // setTimeout(() => {
+    //   console.log(this.state);
+    // }, 1000);
   };
 
   handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const { title, price, description, imageUrl, category, products } = this.state;
-    const id = Date.now();
+    const { price, description, imageUrl, category, products } = this.state;
+    // const id = Date.now();
+
+    let newTitle = '';
+    if (this.inputTitleRef.current) {
+      newTitle = this.inputTitleRef.current.value;
+      this.inputTitleRef.current.value = '';
+    }
 
     const newProduct = {
-      id,
-      title,
+      id: Date.now(),
+      title: newTitle,
       price,
       description,
       imageUrl,
@@ -84,26 +98,35 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
     const newProducts = [...products, newProduct];
 
     this.setState({
-      title: '',
-      price: 0,
+      price: 1,
       description: '',
       imageUrl: defaultPic,
+      imageFile: this.defaultFile,
       category: '',
-      imageFile: null,
       products: newProducts,
     });
-    // console.log(this.state);
+    // console.log('submit', this.state);
+
+    this.handleSetDefaultFile();
+  };
+
+  handleSetDefaultFile = () => {
+    if (this.inputFileRef.current) {
+      const dt = new DataTransfer();
+      dt.items.add(this.defaultFile);
+      this.inputFileRef.current.files = dt.files;
+    }
   };
 
   render() {
-    const { title, price, description, category, products, imageFile } = this.state;
+    const { price, description, category, products, imageFile } = this.state;
     return (
       <div className="form-page">
         <h3>Form page</h3>
         <form onSubmit={this.handleFormSubmit}>
           <div className="form-input">
             <label htmlFor="title-input">Title:</label>
-            <input type="text" id="title-input" value={title} onChange={this.handleTitleChange} />
+            <input type="text" id="title-input" ref={this.inputTitleRef} />
           </div>
           <div className="form-input">
             <label htmlFor="price-input">Price:</label>
@@ -124,7 +147,8 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
               type="file"
               accept="image/jpeg,image/png,image/gif"
               id="image-input"
-              onChange={this.handleImageChange}
+              onInput={this.handleImageInput}
+              ref={this.inputFileRef}
             />
             {imageFile && <span>{imageFile.name}</span>}
           </div>

@@ -6,7 +6,7 @@ interface IFormPageProps {
 
 class FormPage extends Component<IFormPageProps> {
   componentDidMount() {
-    this.props.onChangeNamePage('About US Page');
+    this.props.onChangeNamePage('Form Page');
   }
 
   render() {

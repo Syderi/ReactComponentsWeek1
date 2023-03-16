@@ -1,6 +1,8 @@
+import './FormPage.css';
 import { IFormCard } from 'components/types/interface';
 import React, { Component } from 'react';
 import FormCard from './FormCard';
+import defaultPic from '../../../assets/img/default.png';
 
 interface IFormPageProps {
   onChangeNamePage: (namePage: string) => void;
@@ -16,6 +18,7 @@ interface IFormPageState {
 }
 
 class FormPage extends Component<IFormPageProps, IFormPageState> {
+  fileInputRef: React.RefObject<HTMLInputElement>;
   constructor(props: IFormPageProps) {
     super(props);
 
@@ -23,10 +26,11 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
       title: '',
       price: 1,
       description: '',
-      imageUrl: '',
+      imageUrl: defaultPic,
       category: '',
       products: [],
     };
+    this.fileInputRef = React.createRef();
   }
 
   componentDidMount() {
@@ -36,6 +40,28 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
 
   handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ title: event.target.value });
+  };
+
+  handlePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ price: Number(event.target.value) });
+  };
+
+  handleDescriptionChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    this.setState({ description: event.target.value });
+  };
+
+  handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    this.setState({ category: event.target.value });
+  };
+
+  handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        this.setState({ imageUrl: e.target?.result as string });
+      };
+      reader.readAsDataURL(event.target.files[0]);
+    }
   };
 
   handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -59,45 +85,43 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
       title: '',
       price: 0,
       description: '',
-      imageUrl: '',
+      imageUrl: defaultPic,
       category: '',
       products: newProducts,
     });
-    console.log(this.state);
+    // console.log(this.state);
   };
 
   render() {
-    const { title, price, description, imageUrl, category, products } = this.state;
+    const { title, price, description, category, products } = this.state;
     return (
-      <>
+      <div className="form-page">
         <h3>Form page</h3>
         <form onSubmit={this.handleFormSubmit}>
-          <div>
-            <label>
-              Title:
-              <input type="text" value={title} onChange={this.handleTitleChange} />
-            </label>
+          <div className="form-input">
+            <label htmlFor="title-input">Title:</label>
+            <input type="text" id="title-input" value={title} onChange={this.handleTitleChange} />
           </div>
-          <div>
-            <label>
-              Price:
-              <input type="number" />
-            </label>
+          <div className="form-input">
+            <label htmlFor="price-input">Price:</label>
+            <input type="number" id="price-input" value={price} onChange={this.handlePriceChange} />
           </div>
-          <div>
-            <label>
-              Description:
-              <textarea defaultValue={'Привет! Тут просто немного текста внутри тега textarea'} />
-            </label>
+          <div className="form-input">
+            <label htmlFor="description-input">Description:</label>
+            <textarea
+              id="description-input"
+              value={description}
+              onChange={this.handleDescriptionChange}
+              placeholder="Описание товара"
+            />
           </div>
-          <div>
-            <label>
-              Image:
-              <input type="file" />
-            </label>
+          <div className="form-input">
+            <label htmlFor="image-input">Image:</label>
+            <input type="file" id="image-input" onChange={this.handleImageChange} />
           </div>
-          <div>
-            <select>
+          <div className="form-input">
+            <label htmlFor="category-select">Category:</label>
+            <select id="category-select" value={category} onChange={this.handleCategoryChange}>
               <option value="smartphones">smartphones</option>
               <option value="laptops">laptops</option>
               <option value="fragrances">fragrances</option>
@@ -112,7 +136,7 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
         ) : (
           <div>No products...</div>
         )}
-      </>
+      </div>
     );
   }
 }

@@ -1,0 +1,92 @@
+.form-page {
+  background-color: #f2f2f2;
+  padding: 20px;
+  margin-bottom: 10px;
+  height: 100vh;
+}
+
+.form-page form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: minmax(40px, auto);
+  grid-gap: 10px;
+  margin-bottom: 10px;
+}
+
+.form-input {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
+  margin-bottom: 10px;
+}
+
+.form-input div {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.form-input label {
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #333;
+}
+
+/* .form-page label {
+  margin-bottom: 5px;
+  font-size: 16px;
+  color: #333;
+} */
+
+.form-page input[type="text"],
+.form-page input[type="number"],
+.form-page select {
+  width: 90%;
+  height: 40px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 20px;
+  font-size: 16px;
+  color: #333;
+  background-color: #fff;
+  overflow-wrap: break-word;
+}
+
+.form-page textarea {
+  width: 90%;
+  height: 150px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 20px;
+  font-size: 16px;
+  color: #333;
+  background-color: #fff;
+  overflow-wrap: break-word;
+}
+
+.form-page select {
+  cursor: pointer;
+}
+
+.form-page button[type="submit"] {
+  width: 50%;
+  height: 40px;
+  border: none;
+  border-radius: 20px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #007bff;
+  cursor: pointer;
+  transition: all 0.1s ease-in-out;
+}
+
+.form-page button[type="submit"]:hover {
+  background-color: #0069d9;
+}
+
+.form-page button[type="submit"]:active {
+  background-color: rgb(101, 236, 83);
+}

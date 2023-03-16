@@ -2,7 +2,7 @@
   background-color: #f2f2f2;
   padding: 20px;
   margin-bottom: 10px;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 .form-page form {
@@ -33,12 +33,6 @@
   font-size: 16px;
   color: #333;
 }
-
-/* .form-page label {
-  margin-bottom: 5px;
-  font-size: 16px;
-  color: #333;
-} */
 
 .form-page input[type="text"],
 .form-page input[type="number"],
@@ -89,4 +83,33 @@
 
 .form-page button[type="submit"]:active {
   background-color: rgb(101, 236, 83);
+}
+
+.form-cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 10 auto;
+  max-width: 1500px;
+  padding: 0 1rem;
+  gap: 8px;
+}
+
+
+@media screen and (max-width: 1024px) {
+  .form-cards-container {
+    justify-content: space-around;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .form-cards-container {
+    justify-content: center;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .form-cards-container {
+    justify-content: center;
+  }
 }

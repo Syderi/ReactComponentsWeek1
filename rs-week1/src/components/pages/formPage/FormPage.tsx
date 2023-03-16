@@ -129,13 +129,15 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
           </div>
           <button type="submit">Submit</button>
         </form>
-        {products.length ? (
-          products.map((product) => {
-            return <FormCard key={product.id} product={{ ...product }} />;
-          })
-        ) : (
-          <div>No products...</div>
-        )}
+        <div className="form-cards-container">
+          {products.length ? (
+            products.map((product) => {
+              return <FormCard key={product.id} product={{ ...product }} />;
+            })
+          ) : (
+            <div>No products...</div>
+          )}
+        </div>
       </div>
     );
   }

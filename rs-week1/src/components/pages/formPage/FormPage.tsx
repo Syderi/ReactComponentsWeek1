@@ -44,20 +44,45 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
 
   componentDidMount() {
     this.props.onChangeNamePage('Form Page');
+    this.addFirstListenerInputs();
+  }
+
+  addFirstListenerInputs = () => {
     if (this.inputPriceRef.current) {
-      this.inputPriceRef.current.oninput = this.handleInputFirstSrart(this.inputPriceRef);
+      this.inputPriceRef.current.oninput = this.handleInputFirstStart(this.inputPriceRef);
     }
     if (this.inputTitleRef.current) {
-      this.inputTitleRef.current.oninput = this.handleInputFirstSrart(this.inputTitleRef);
+      this.inputTitleRef.current.oninput = this.handleInputFirstStart(this.inputTitleRef);
     }
     if (this.inputDescriptionRef.current) {
-      this.inputDescriptionRef.current.oninput = this.handleInputFirstSrart(
+      this.inputDescriptionRef.current.oninput = this.handleInputFirstStart(
         this.inputDescriptionRef
+      );
+    }
+  };
+
+  removeFirstListenerInputs() {
+    if (this.inputPriceRef.current) {
+      this.inputPriceRef.current.removeEventListener(
+        'input',
+        this.handleInputFirstStart(this.inputPriceRef)
+      );
+    }
+    if (this.inputTitleRef.current) {
+      this.inputTitleRef.current.removeEventListener(
+        'input',
+        this.handleInputFirstStart(this.inputTitleRef)
+      );
+    }
+    if (this.inputDescriptionRef.current) {
+      this.inputDescriptionRef.current.removeEventListener(
+        'input',
+        this.handleInputFirstStart(this.inputDescriptionRef)
       );
     }
   }
 
-  handleInputFirstSrart = (
+  handleInputFirstStart = (
     ref: React.RefObject<HTMLInputElement> | React.RefObject<HTMLTextAreaElement>
   ) => {
     return () => {
@@ -66,14 +91,6 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
       }
     };
   };
-
-  // handleInputFirstSrart = (
-  //   ref: React.RefObject<HTMLInputElement> | RefObject<HTMLTextAreaElement>
-  // ) => {
-  //   if (validateSubmitButtonStatusActive(ref.current as HTMLInputElement)) {
-  //     this.setState({ buttonSubmitStatusDisabled: false });
-  //   }
-  // };
 
   handleImageInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
@@ -96,6 +113,7 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
 
   handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    this.removeFirstListenerInputs();
 
     validateText(this.inputTitleRef);
     validateText(this.inputDescriptionRef);

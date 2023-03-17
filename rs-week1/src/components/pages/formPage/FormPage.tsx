@@ -15,6 +15,8 @@ interface IFormPageState {
   products: IFormCard[];
   buttonSubmitStatusDisabled: boolean;
   spanPriceValid: boolean;
+  spanTitleValid: boolean;
+  spanDescriptionValid: boolean;
 }
 
 class FormPage extends Component<IFormPageProps, IFormPageState> {
@@ -38,7 +40,9 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
       imageFile: this.defaultFile,
       products: [],
       buttonSubmitStatusDisabled: true,
-      spanPriceValid: true,
+      spanPriceValid: false,
+      spanTitleValid: true,
+      spanDescriptionValid: true,
     };
   }
 
@@ -59,6 +63,24 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
         this.inputDescriptionRef
       );
     }
+  };
+
+  addOnChangeListenerInputs = () => {
+    if (this.inputPriceRef.current) {
+      this.inputPriceRef.current.oninput = () => {
+        if (validatePrice(this.inputPriceRef)) {
+          this.setState({ spanPriceValid: false });
+        } else {
+          this.setState({ spanPriceValid: true });
+        }
+      };
+    }
+    // if (this.inputTitleRef.current) {
+    //   this.inputTitleRef.current.oninput = () => validateText(this.inputTitleRef);
+    // }
+    // if (this.inputDescriptionRef.current) {
+    //   this.inputDescriptionRef.current.oninput = () => validateText(this.inputDescriptionRef);
+    // }
   };
 
   removeFirstListenerInputs() {
@@ -114,6 +136,7 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
   handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     this.removeFirstListenerInputs();
+    this.addOnChangeListenerInputs();
 
     validateText(this.inputTitleRef);
     validateText(this.inputDescriptionRef);
@@ -176,13 +199,22 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
   };
 
   render() {
-    const { products, imageFile, buttonSubmitStatusDisabled, spanPriceValid } = this.state;
+    const {
+      products,
+      imageFile,
+      buttonSubmitStatusDisabled,
+      spanPriceValid,
+      spanTitleValid,
+      spanDescriptionValid,
+    } = this.state;
     return (
       <div className="form-page">
         <h3>Form page</h3>
         <form onSubmit={this.handleFormSubmit}>
           <div className="form-input">
-            <label htmlFor="title-input">Title:</label>
+            <label htmlFor="title-input">
+              Title: {spanTitleValid && <span className="form-input-span-error">Error</span>}
+            </label>
             <input
               type="text"
               id="title-input"
@@ -198,7 +230,10 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
             <input type="number" id="price-input" ref={this.inputPriceRef} />
           </div>
           <div className="form-input">
-            <label htmlFor="description-input">Description:</label>
+            <label htmlFor="description-input">
+              Description:{' '}
+              {spanDescriptionValid && <span className="form-input-span-error">Error</span>}
+            </label>
             <textarea
               ref={this.inputDescriptionRef}
               id="description-input"

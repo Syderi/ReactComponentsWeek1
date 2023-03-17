@@ -21,6 +21,7 @@
   margin-bottom: 10px;
 }
 
+
 .form-input div {
   display: flex;
   flex-direction: column;
@@ -34,13 +35,17 @@
   color: #333;
 }
 
+.form-input-span-error {
+  color: #ff0000;
+}
+
 .form-page input[type="text"],
 .form-page input[type="number"],
 .form-page select {
   width: 90%;
   height: 40px;
   padding: 5px 10px;
-  border: none;
+  border: 1px solid gray;
   border-radius: 20px;
   font-size: 16px;
   color: #333;
@@ -53,7 +58,7 @@
   width: 90%;
   height: 100px;
   padding: 5px 10px;
-  border: none;
+  border: 1px solid gray;
   border-radius: 20px;
   font-size: 16px;
   color: #333;
@@ -79,7 +84,7 @@
   width: 90%;
   height: 40px;
   padding: 5px 10px;
-  border: none;
+  border: 1px solid gray;
   border-radius: 20px;
   font-size: 16px;
   color: #333;
@@ -112,6 +117,12 @@
 
 .form-page button[type="submit"]:active {
   background-color: rgb(101, 236, 83);
+}
+
+.form-page button[type="submit"][disabled] {
+  opacity: 0.5;
+  cursor: default;
+  pointer-events: none;
 }
 
 .form-cards-container {

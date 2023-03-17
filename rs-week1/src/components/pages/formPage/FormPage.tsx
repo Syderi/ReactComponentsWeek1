@@ -13,6 +13,7 @@ interface IFormPageState {
   imageUrl: string;
   imageFile: File | null;
   products: IFormCard[];
+  errorMassege: boolean;
   buttonSubmitStatusDisabled: boolean;
   spanPriceValid: boolean;
   spanTitleValid: boolean;
@@ -39,6 +40,7 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
       imageUrl: defaultPic,
       imageFile: this.defaultFile,
       products: [],
+      errorMassege: false,
       buttonSubmitStatusDisabled: true,
       spanPriceValid: false,
       spanTitleValid: false,
@@ -79,6 +81,7 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
         this.inputDescriptionRef
       );
     }
+    this.setState({ errorMassege: false });
   };
 
   removeFirstListenerInputs() {
@@ -100,6 +103,7 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
         this.handleInputFirstStart(this.inputDescriptionRef)
       );
     }
+    this.setState({ errorMassege: true });
   }
 
   // addOnChangeListenerInputs = () => {
@@ -162,19 +166,6 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
     this.setState({ spanDescriptionValid: validateText(this.inputDescriptionRef) });
   };
 
-  // changeDisableButton = () => {
-  //   const { spanDescriptionValid, spanPriceValid, spanTitleValid } = this.state;
-  //   console.log('spanDescriptionValid', spanDescriptionValid);
-  //   console.log('spanPriceValid', spanPriceValid);
-  //   console.log('spanTitleValid', spanTitleValid);
-
-  //   if (spanDescriptionValid && spanPriceValid && spanTitleValid) {
-  //     this.setState({ buttonSubmitStatusDisabled: false });
-  //   } else {
-  //     this.setState({ buttonSubmitStatusDisabled: true });
-  //   }
-  // };
-
   handleInputFirstStart = (
     ref: React.RefObject<HTMLInputElement> | React.RefObject<HTMLTextAreaElement>
   ) => {
@@ -200,7 +191,6 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
         }
       };
       reader.readAsDataURL(event.target.files[0]);
-      // this.setState({ buttonSubmitStatusDisabled: false });
     }
   };
 
@@ -209,9 +199,6 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
     this.removeFirstListenerInputs();
     this.addOnChangeListenerInputs();
 
-    // this.setState({ spanPriceValid: validatePrice(this.inputPriceRef) });
-    // this.setState({ spanTitleValid: validateText(this.inputTitleRef) });
-    // this.setState({ spanDescriptionValid: validateText(this.inputDescriptionRef) });
     this.checkValidAllInputs();
 
     const { imageUrl, products, spanDescriptionValid, spanPriceValid, spanTitleValid } = this.state;
@@ -284,6 +271,7 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
     const {
       products,
       imageFile,
+      errorMassege,
       buttonSubmitStatusDisabled,
       spanPriceValid,
       spanTitleValid,
@@ -295,7 +283,10 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
         <form onSubmit={this.handleFormSubmit}>
           <div className="form-input">
             <label htmlFor="title-input">
-              Title: {!spanTitleValid && <span className="form-input-span-error">Error</span>}
+              Title:{' '}
+              {!spanTitleValid && errorMassege && (
+                <span className="form-input-span-error">Error</span>
+              )}
             </label>
             <input
               type="text"
@@ -307,14 +298,18 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
           <div className="form-input">
             <label htmlFor="price-input">
               Price:
-              {!spanPriceValid && <span className="form-input-span-error">Error</span>}
+              {!spanPriceValid && errorMassege && (
+                <span className="form-input-span-error">Error</span>
+              )}
             </label>
             <input type="number" id="price-input" ref={this.inputPriceRef} />
           </div>
           <div className="form-input">
             <label htmlFor="description-input">
               Description:{' '}
-              {!spanDescriptionValid && <span className="form-input-span-error">Error</span>}
+              {!spanDescriptionValid && errorMassege && (
+                <span className="form-input-span-error">Error</span>
+              )}
             </label>
             <textarea
               ref={this.inputDescriptionRef}

@@ -145,7 +145,7 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
   };
 
   checkValidAllInputs = () => {
-    const priceValid = validatePrice(this.inputPriceRef);
+    const priceValid = validatePrice(this.inputPriceRef, /^\d+$/);
     const titleValid = validateText(this.inputTitleRef);
     const descriptionValid = validateText(this.inputDescriptionRef);
     this.setState({ spanPriceValid: priceValid });
@@ -209,9 +209,9 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
       this.inputDescriptionRef.current.value = '';
     }
 
-    const newPrice = '';
+    let newPrice = '';
     if (this.inputPriceRef.current) {
-      newDescription = this.inputPriceRef.current.value;
+      newPrice = this.inputPriceRef.current.value;
       this.inputPriceRef.current.value = '';
     }
 
@@ -261,6 +261,14 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
     }
   };
 
+  // handleInputPrice = () => {
+  //   if (this.inputPriceRef.current) {
+  //     this.inputPriceRef.current.value = this.inputPriceRef.current.value.replace(/\D/g, '');
+  //   }
+  //   // const input = event.currentTarget;
+  //   // input.value = input.value.replace(/\D/g, '');
+  // };
+
   render() {
     const {
       products,
@@ -296,7 +304,14 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
                 <span className="form-input-span-error">Error</span>
               )}
             </label>
-            <input type="number" id="price-input" ref={this.inputPriceRef} />
+            <input
+              type="number"
+              inputMode="numeric"
+              id="price-input"
+              ref={this.inputPriceRef}
+              placeholder="set a price"
+              // onInput={this.handleInputPrice}
+            />
           </div>
           <div className="form-input">
             <label htmlFor="description-input">

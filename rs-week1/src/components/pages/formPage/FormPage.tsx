@@ -27,6 +27,7 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
   inputFileRef: React.RefObject<HTMLInputElement>;
   inputCategoryRef: React.RefObject<HTMLSelectElement>;
   inputDescriptionRef: RefObject<HTMLTextAreaElement>;
+  statusCardRef: RefObject<HTMLSpanElement>;
 
   constructor(props: IFormPageProps) {
     super(props);
@@ -36,6 +37,7 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
     this.inputFileRef = React.createRef();
     this.inputCategoryRef = React.createRef();
     this.inputDescriptionRef = React.createRef();
+    this.statusCardRef = React.createRef();
     this.state = {
       imageUrl: defaultPic,
       imageFile: this.defaultFile,
@@ -106,24 +108,6 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
     this.setState({ errorMassege: true });
   }
 
-  // addOnChangeListenerInputs = () => {
-  //   if (this.inputPriceRef.current) {
-  //     this.inputPriceRef.current.oninput = () => {
-  //       this.setState({ spanPriceValid: validatePrice(this.inputPriceRef) });
-  //     };
-  //   }
-  //   if (this.inputTitleRef.current) {
-  //     this.inputTitleRef.current.oninput = () => {
-  //       this.setState({ spanTitleValid: validateText(this.inputTitleRef) });
-  //     };
-  //   }
-  //   if (this.inputDescriptionRef.current) {
-  //     this.inputDescriptionRef.current.oninput = () => {
-  //       this.setState({ spanDescriptionValid: validateText(this.inputDescriptionRef) });
-  //     };
-  //   }
-  // };
-
   addOnChangeListenerInputs = () => {
     if (this.inputPriceRef.current) {
       this.inputPriceRef.current.oninput = () => {
@@ -161,9 +145,14 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
   };
 
   checkValidAllInputs = () => {
-    this.setState({ spanPriceValid: validatePrice(this.inputPriceRef) });
-    this.setState({ spanTitleValid: validateText(this.inputTitleRef) });
-    this.setState({ spanDescriptionValid: validateText(this.inputDescriptionRef) });
+    const priceValid = validatePrice(this.inputPriceRef);
+    const titleValid = validateText(this.inputTitleRef);
+    const descriptionValid = validateText(this.inputDescriptionRef);
+    this.setState({ spanPriceValid: priceValid });
+    this.setState({ spanTitleValid: titleValid });
+    this.setState({ spanDescriptionValid: descriptionValid });
+    if (priceValid && titleValid && descriptionValid) return true;
+    return false;
   };
 
   handleInputFirstStart = (
@@ -199,11 +188,11 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
     this.removeFirstListenerInputs();
     this.addOnChangeListenerInputs();
 
-    this.checkValidAllInputs();
+    const validForm = this.checkValidAllInputs();
 
-    const { imageUrl, products, spanDescriptionValid, spanPriceValid, spanTitleValid } = this.state;
+    const { imageUrl, products } = this.state;
 
-    if (!spanDescriptionValid && !spanPriceValid && !spanTitleValid) {
+    if (!validForm) {
       this.setState({ buttonSubmitStatusDisabled: true });
       return;
     }
@@ -248,7 +237,6 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
       imageFile: this.defaultFile,
       products: newProducts,
     });
-    // console.log('submit', this.state);
 
     this.handleSetDefaultFile();
     this.addFirstListenerInputs();
@@ -257,6 +245,12 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
     this.setState({ spanPriceValid: false });
     this.setState({ spanTitleValid: false });
     this.setState({ spanDescriptionValid: false });
+    if (this.statusCardRef.current) {
+      this.statusCardRef.current.textContent = 'Card added';
+      setTimeout(() => {
+        this.statusCardRef.current!.textContent = '';
+      }, 5000);
+    }
   };
 
   handleSetDefaultFile = () => {
@@ -336,9 +330,14 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
               <option value="fragrances">fragrances</option>
             </select>
           </div>
-          <button type="submit" disabled={buttonSubmitStatusDisabled}>
-            Submit
-          </button>
+          <div className="form-input">
+            <label htmlFor="category-select">
+              Status: <span ref={this.statusCardRef}></span>
+            </label>
+            <button type="submit" disabled={buttonSubmitStatusDisabled}>
+              Submit
+            </button>
+          </div>
         </form>
         <div className="form-cards-container">
           {products.length ? (

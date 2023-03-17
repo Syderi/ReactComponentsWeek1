@@ -6,38 +6,38 @@ function validateText(
 ) {
   if (ref && ref.current) {
     if (ref.current.value.match(regex) && ref.current.value.length >= 5) {
-      console.log('true');
+      // console.log('true');
       ref.current.style.borderColor = 'gray';
       return true;
     }
     ref.current.style.borderColor = 'red';
-    console.log('false');
-    return false;
   }
+  // console.log('false');
+  return false;
 }
 
 function validatePrice(ref: React.RefObject<HTMLInputElement> | null, regex = '') {
   if (ref && ref.current) {
     if (ref.current.value.match(regex) && +ref.current.value > 0) {
-      console.log('true');
+      // console.log('true');
       ref.current.style.borderColor = 'gray';
       return true;
     }
     ref.current.style.borderColor = 'red';
-    console.log('false');
-    return false;
   }
+  // console.log('false');
+  return false;
 }
 
-function validateSubmitButtonStatusActive(ref: HTMLInputElement) {
-  console.log(ref);
+function validateFirstSubmitButton(ref: HTMLInputElement) {
+  // console.log(ref);
   if (ref) {
-    console.log(ref.value.length);
+    // console.log(ref.value.length);
     if (ref.value.length > 0) {
       return true;
     }
-    return false;
   }
+  return false;
 }
 
-export { validateText, validatePrice, validateSubmitButtonStatusActive };
+export { validateText, validatePrice, validateFirstSubmitButton };

@@ -3,7 +3,7 @@ import { IFormCard } from 'components/types/interface';
 import React, { Component, RefObject } from 'react';
 import FormCard from './FormCard';
 import defaultPic from '../../../assets/img/default.png';
-import { validatePrice, validateSubmitButtonStatusActive, validateText } from './Validate';
+import { validatePrice, validateFirstSubmitButton, validateText } from './Validate';
 
 interface IFormPageProps {
   onChangeNamePage: (namePage: string) => void;
@@ -41,14 +41,30 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
       products: [],
       buttonSubmitStatusDisabled: true,
       spanPriceValid: false,
-      spanTitleValid: true,
-      spanDescriptionValid: true,
+      spanTitleValid: false,
+      spanDescriptionValid: false,
     };
   }
 
   componentDidMount() {
     this.props.onChangeNamePage('Form Page');
     this.addFirstListenerInputs();
+  }
+
+  componentDidUpdate(prevProps: IFormPageProps, prevState: IFormPageState) {
+    const { spanDescriptionValid, spanPriceValid, spanTitleValid } = this.state;
+
+    if (
+      spanDescriptionValid !== prevState.spanDescriptionValid ||
+      spanPriceValid !== prevState.spanPriceValid ||
+      spanTitleValid !== prevState.spanTitleValid
+    ) {
+      if (spanDescriptionValid && spanPriceValid && spanTitleValid) {
+        this.setState({ buttonSubmitStatusDisabled: false });
+      } else {
+        this.setState({ buttonSubmitStatusDisabled: true });
+      }
+    }
   }
 
   addFirstListenerInputs = () => {
@@ -63,24 +79,6 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
         this.inputDescriptionRef
       );
     }
-  };
-
-  addOnChangeListenerInputs = () => {
-    if (this.inputPriceRef.current) {
-      this.inputPriceRef.current.oninput = () => {
-        if (validatePrice(this.inputPriceRef)) {
-          this.setState({ spanPriceValid: false });
-        } else {
-          this.setState({ spanPriceValid: true });
-        }
-      };
-    }
-    // if (this.inputTitleRef.current) {
-    //   this.inputTitleRef.current.oninput = () => validateText(this.inputTitleRef);
-    // }
-    // if (this.inputDescriptionRef.current) {
-    //   this.inputDescriptionRef.current.oninput = () => validateText(this.inputDescriptionRef);
-    // }
   };
 
   removeFirstListenerInputs() {
@@ -104,11 +102,84 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
     }
   }
 
+  // addOnChangeListenerInputs = () => {
+  //   if (this.inputPriceRef.current) {
+  //     this.inputPriceRef.current.oninput = () => {
+  //       this.setState({ spanPriceValid: validatePrice(this.inputPriceRef) });
+  //     };
+  //   }
+  //   if (this.inputTitleRef.current) {
+  //     this.inputTitleRef.current.oninput = () => {
+  //       this.setState({ spanTitleValid: validateText(this.inputTitleRef) });
+  //     };
+  //   }
+  //   if (this.inputDescriptionRef.current) {
+  //     this.inputDescriptionRef.current.oninput = () => {
+  //       this.setState({ spanDescriptionValid: validateText(this.inputDescriptionRef) });
+  //     };
+  //   }
+  // };
+
+  addOnChangeListenerInputs = () => {
+    if (this.inputPriceRef.current) {
+      this.inputPriceRef.current.oninput = () => {
+        this.checkValidAllInputs();
+      };
+    }
+    if (this.inputTitleRef.current) {
+      this.inputTitleRef.current.oninput = () => {
+        this.checkValidAllInputs();
+      };
+    }
+    if (this.inputDescriptionRef.current) {
+      this.inputDescriptionRef.current.oninput = () => {
+        this.checkValidAllInputs();
+      };
+    }
+  };
+
+  removeOnChangeListenerInputs = () => {
+    if (this.inputPriceRef.current) {
+      this.inputPriceRef.current.removeEventListener('input', () => {
+        this.checkValidAllInputs();
+      });
+    }
+    if (this.inputTitleRef.current) {
+      this.inputTitleRef.current.removeEventListener('input', () => {
+        this.checkValidAllInputs();
+      });
+    }
+    if (this.inputDescriptionRef.current) {
+      this.inputDescriptionRef.current.removeEventListener('input', () => {
+        this.checkValidAllInputs();
+      });
+    }
+  };
+
+  checkValidAllInputs = () => {
+    this.setState({ spanPriceValid: validatePrice(this.inputPriceRef) });
+    this.setState({ spanTitleValid: validateText(this.inputTitleRef) });
+    this.setState({ spanDescriptionValid: validateText(this.inputDescriptionRef) });
+  };
+
+  // changeDisableButton = () => {
+  //   const { spanDescriptionValid, spanPriceValid, spanTitleValid } = this.state;
+  //   console.log('spanDescriptionValid', spanDescriptionValid);
+  //   console.log('spanPriceValid', spanPriceValid);
+  //   console.log('spanTitleValid', spanTitleValid);
+
+  //   if (spanDescriptionValid && spanPriceValid && spanTitleValid) {
+  //     this.setState({ buttonSubmitStatusDisabled: false });
+  //   } else {
+  //     this.setState({ buttonSubmitStatusDisabled: true });
+  //   }
+  // };
+
   handleInputFirstStart = (
     ref: React.RefObject<HTMLInputElement> | React.RefObject<HTMLTextAreaElement>
   ) => {
     return () => {
-      if (validateSubmitButtonStatusActive(ref.current as HTMLInputElement)) {
+      if (validateFirstSubmitButton(ref.current as HTMLInputElement)) {
         this.setState({ buttonSubmitStatusDisabled: false });
       }
     };
@@ -138,11 +209,17 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
     this.removeFirstListenerInputs();
     this.addOnChangeListenerInputs();
 
-    validateText(this.inputTitleRef);
-    validateText(this.inputDescriptionRef);
-    validatePrice(this.inputPriceRef);
+    // this.setState({ spanPriceValid: validatePrice(this.inputPriceRef) });
+    // this.setState({ spanTitleValid: validateText(this.inputTitleRef) });
+    // this.setState({ spanDescriptionValid: validateText(this.inputDescriptionRef) });
+    this.checkValidAllInputs();
 
-    const { imageUrl, products } = this.state;
+    const { imageUrl, products, spanDescriptionValid, spanPriceValid, spanTitleValid } = this.state;
+
+    if (!spanDescriptionValid && !spanPriceValid && !spanTitleValid) {
+      this.setState({ buttonSubmitStatusDisabled: true });
+      return;
+    }
 
     let newTitle = '';
     if (this.inputTitleRef.current) {
@@ -187,7 +264,12 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
     // console.log('submit', this.state);
 
     this.handleSetDefaultFile();
+    this.addFirstListenerInputs();
+    this.removeOnChangeListenerInputs();
     this.setState({ buttonSubmitStatusDisabled: true });
+    this.setState({ spanPriceValid: false });
+    this.setState({ spanTitleValid: false });
+    this.setState({ spanDescriptionValid: false });
   };
 
   handleSetDefaultFile = () => {
@@ -213,7 +295,7 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
         <form onSubmit={this.handleFormSubmit}>
           <div className="form-input">
             <label htmlFor="title-input">
-              Title: {spanTitleValid && <span className="form-input-span-error">Error</span>}
+              Title: {!spanTitleValid && <span className="form-input-span-error">Error</span>}
             </label>
             <input
               type="text"
@@ -225,14 +307,14 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
           <div className="form-input">
             <label htmlFor="price-input">
               Price:
-              {spanPriceValid && <span className="form-input-span-error">Error</span>}
+              {!spanPriceValid && <span className="form-input-span-error">Error</span>}
             </label>
             <input type="number" id="price-input" ref={this.inputPriceRef} />
           </div>
           <div className="form-input">
             <label htmlFor="description-input">
               Description:{' '}
-              {spanDescriptionValid && <span className="form-input-span-error">Error</span>}
+              {!spanDescriptionValid && <span className="form-input-span-error">Error</span>}
             </label>
             <textarea
               ref={this.inputDescriptionRef}

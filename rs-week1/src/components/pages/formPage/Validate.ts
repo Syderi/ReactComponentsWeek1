@@ -44,13 +44,4 @@ function validateDate(ref: React.RefObject<HTMLInputElement> | null) {
   return false;
 }
 
-function validateFirstSubmitButton(ref: HTMLInputElement) {
-  if (ref) {
-    if (ref.value.length > 0) {
-      return true;
-    }
-  }
-  return false;
-}
-
-export { validateText, validatePrice, validateDate, validateFirstSubmitButton };
+export { validateText, validatePrice, validateDate };

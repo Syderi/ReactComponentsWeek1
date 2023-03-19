@@ -3,7 +3,7 @@ import { IFormCard } from 'components/types/interface';
 import React, { Component, RefObject } from 'react';
 import FormCard from './FormCard';
 import defaultPic from '../../../assets/img/default.png';
-import { validatePrice, validateFirstSubmitButton, validateText, validateDate } from './Validate';
+import { validatePrice, validateText, validateDate } from './Validate';
 
 interface IFormPageProps {
   onChangeNamePage: (namePage: string) => void;
@@ -14,7 +14,6 @@ interface IFormPageState {
   imageFile: File | null;
   products: IFormCard[];
   errorMassege: boolean;
-  buttonSubmitStatusDisabled: boolean;
   spanPriceValid: boolean;
   spanTitleValid: boolean;
   spanDescriptionValid: boolean;
@@ -40,7 +39,6 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
       imageFile: this.defaultFile,
       products: [],
       errorMassege: false,
-      buttonSubmitStatusDisabled: true,
       spanPriceValid: false,
       spanTitleValid: false,
       spanDescriptionValid: false,
@@ -50,125 +48,38 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
 
   componentDidMount() {
     this.props.onChangeNamePage('Form Page');
-    this.addFirstListenerInputs();
   }
-
-  componentDidUpdate(prevProps: IFormPageProps, prevState: IFormPageState) {
-    const { spanDescriptionValid, spanPriceValid, spanTitleValid } = this.state;
-
-    if (
-      spanDescriptionValid !== prevState.spanDescriptionValid ||
-      spanPriceValid !== prevState.spanPriceValid ||
-      spanTitleValid !== prevState.spanTitleValid
-    ) {
-      if (spanDescriptionValid && spanPriceValid && spanTitleValid) {
-        this.setState({ buttonSubmitStatusDisabled: false });
-      } else {
-        this.setState({ buttonSubmitStatusDisabled: true });
-      }
-    }
-  }
-
-  addFirstListenerInputs = () => {
-    if (this.inputPriceRef.current) {
-      this.inputPriceRef.current.oninput = this.handleInputFirstStart(this.inputPriceRef);
-    }
-    if (this.inputTitleRef.current) {
-      this.inputTitleRef.current.oninput = this.handleInputFirstStart(this.inputTitleRef);
-    }
-    if (this.inputDescriptionRef.current) {
-      this.inputDescriptionRef.current.oninput = this.handleInputFirstStart(
-        this.inputDescriptionRef
-      );
-    }
-    if (this.inputDateRef.current) {
-      this.inputDateRef.current.oninput = this.handleInputFirstStart(this.inputDateRef);
-    }
-    this.setState({ errorMassege: false });
-  };
-
-  removeFirstListenerInputs() {
-    if (this.inputPriceRef.current) {
-      this.inputPriceRef.current.removeEventListener(
-        'input',
-        this.handleInputFirstStart(this.inputPriceRef)
-      );
-    }
-    if (this.inputTitleRef.current) {
-      this.inputTitleRef.current.removeEventListener(
-        'input',
-        this.handleInputFirstStart(this.inputTitleRef)
-      );
-    }
-    if (this.inputDescriptionRef.current) {
-      this.inputDescriptionRef.current.removeEventListener(
-        'input',
-        this.handleInputFirstStart(this.inputDescriptionRef)
-      );
-    }
-    if (this.inputDateRef.current) {
-      this.inputDateRef.current.removeEventListener(
-        'input',
-        this.handleInputFirstStart(this.inputDateRef)
-      );
-    }
-    this.setState({ errorMassege: true });
-  }
-
-  handleInputFirstStart = (
-    ref: React.RefObject<HTMLInputElement> | React.RefObject<HTMLTextAreaElement>
-  ) => {
-    return () => {
-      if (validateFirstSubmitButton(ref.current as HTMLInputElement)) {
-        this.setState({ buttonSubmitStatusDisabled: false });
-      }
-    };
-  };
 
   addOnChangeListenerInputs = () => {
-    if (this.inputPriceRef.current) {
-      this.inputPriceRef.current.oninput = () => {
-        this.checkValidAllInputs();
-      };
-    }
-    if (this.inputTitleRef.current) {
-      this.inputTitleRef.current.oninput = () => {
-        this.checkValidAllInputs();
-      };
-    }
-    if (this.inputDescriptionRef.current) {
-      this.inputDescriptionRef.current.oninput = () => {
-        this.checkValidAllInputs();
-      };
-    }
-    if (this.inputDateRef.current) {
-      this.inputDateRef.current.oninput = () => {
-        this.checkValidAllInputs();
-      };
-    }
+    const inputRefs = [
+      this.inputPriceRef,
+      this.inputTitleRef,
+      this.inputDescriptionRef,
+      this.inputDateRef,
+    ];
+
+    inputRefs.forEach((ref) => {
+      if (ref.current) {
+        ref.current.oninput = () => {
+          this.checkValidAllInputs();
+        };
+      }
+    });
   };
 
   removeOnChangeListenerInputs = () => {
-    if (this.inputPriceRef.current) {
-      this.inputPriceRef.current.removeEventListener('input', () => {
-        this.checkValidAllInputs();
-      });
-    }
-    if (this.inputTitleRef.current) {
-      this.inputTitleRef.current.removeEventListener('input', () => {
-        this.checkValidAllInputs();
-      });
-    }
-    if (this.inputDescriptionRef.current) {
-      this.inputDescriptionRef.current.removeEventListener('input', () => {
-        this.checkValidAllInputs();
-      });
-    }
-    if (this.inputDateRef.current) {
-      this.inputDateRef.current.removeEventListener('input', () => {
-        this.checkValidAllInputs();
-      });
-    }
+    const inputRefs = [
+      this.inputPriceRef,
+      this.inputTitleRef,
+      this.inputDescriptionRef,
+      this.inputDateRef,
+    ];
+
+    inputRefs.forEach((ref) => {
+      if (ref.current) {
+        ref.current.oninput = null;
+      }
+    });
   };
 
   checkValidAllInputs = () => {
@@ -204,15 +115,13 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
 
   handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    this.removeFirstListenerInputs();
     this.addOnChangeListenerInputs();
-
     const validForm = this.checkValidAllInputs();
 
     const { imageUrl, products } = this.state;
 
     if (!validForm) {
-      this.setState({ buttonSubmitStatusDisabled: true });
+      this.setState({ errorMassege: true });
       return;
     }
 
@@ -270,15 +179,15 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
       imageUrl: defaultPic,
       imageFile: this.defaultFile,
       products: newProducts,
+      errorMassege: false,
+      spanPriceValid: false,
+      spanTitleValid: false,
+      spanDescriptionValid: false,
     });
 
     this.handleSetDefaultFile();
-    this.addFirstListenerInputs();
     this.removeOnChangeListenerInputs();
-    this.setState({ buttonSubmitStatusDisabled: true });
-    this.setState({ spanPriceValid: false });
-    this.setState({ spanTitleValid: false });
-    this.setState({ spanDescriptionValid: false });
+
     if (this.statusCardRef.current) {
       this.statusCardRef.current.textContent = 'Card added';
       setTimeout(() => {
@@ -300,7 +209,6 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
       products,
       imageFile,
       errorMassege,
-      buttonSubmitStatusDisabled,
       spanPriceValid,
       spanTitleValid,
       spanDescriptionValid,
@@ -337,7 +245,6 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
               id="price-input"
               ref={this.inputPriceRef}
               placeholder="set a price"
-              // onInput={this.handleInputPrice}
             />
           </div>
           <div className="form-input">
@@ -371,12 +278,7 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
                 <span className="form-input-span-error">Error</span>
               )}
             </label>
-            <input
-              type="date"
-              id="date-input"
-              // onInput={this.handleImageInput}
-              ref={this.inputDateRef}
-            />
+            <input type="date" id="date-input" ref={this.inputDateRef} />
           </div>
           <div className="form-input">
             <label>
@@ -399,12 +301,7 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
                 New product
               </label>
               <label>
-                <input
-                  type="radio"
-                  name="productStatus"
-                  value="used"
-                  // ref={this.inputProductStatusRef}
-                />
+                <input type="radio" name="productStatus" value="used" />
                 Used product
               </label>
             </div>
@@ -421,9 +318,7 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
             <label htmlFor="category-select">
               Status: <span ref={this.statusCardRef}></span>
             </label>
-            <button type="submit" disabled={buttonSubmitStatusDisabled}>
-              Submit
-            </button>
+            <button type="submit">Submit</button>
           </div>
         </form>
         <div className="form-cards-container">

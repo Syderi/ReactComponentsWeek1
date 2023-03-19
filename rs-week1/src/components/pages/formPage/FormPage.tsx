@@ -3,7 +3,7 @@ import { IFormCard } from 'components/types/interface';
 import React, { Component, RefObject } from 'react';
 import FormCard from './FormCard';
 import defaultPic from '../../../assets/img/default.png';
-import { validatePrice, validateFirstSubmitButton, validateText } from './Validate';
+import { validatePrice, validateFirstSubmitButton, validateText, validateDate } from './Validate';
 
 interface IFormPageProps {
   onChangeNamePage: (namePage: string) => void;
@@ -18,26 +18,23 @@ interface IFormPageState {
   spanPriceValid: boolean;
   spanTitleValid: boolean;
   spanDescriptionValid: boolean;
+  spanDateValid: boolean;
 }
 
 class FormPage extends Component<IFormPageProps, IFormPageState> {
   defaultFile: File;
-  inputTitleRef: React.RefObject<HTMLInputElement>;
-  inputPriceRef: React.RefObject<HTMLInputElement>;
-  inputFileRef: React.RefObject<HTMLInputElement>;
-  inputCategoryRef: React.RefObject<HTMLSelectElement>;
-  inputDescriptionRef: RefObject<HTMLTextAreaElement>;
-  statusCardRef: RefObject<HTMLSpanElement>;
+  inputTitleRef: React.RefObject<HTMLInputElement> = React.createRef();
+  inputPriceRef: React.RefObject<HTMLInputElement> = React.createRef();
+  inputFileRef: React.RefObject<HTMLInputElement> = React.createRef();
+  inputCategoryRef: React.RefObject<HTMLSelectElement> = React.createRef();
+  inputDescriptionRef: RefObject<HTMLTextAreaElement> = React.createRef();
+  inputDateRef: RefObject<HTMLInputElement> = React.createRef();
+  inputProductStatusRef: RefObject<HTMLInputElement> = React.createRef();
+  statusCardRef: RefObject<HTMLSpanElement> = React.createRef();
 
   constructor(props: IFormPageProps) {
     super(props);
     this.defaultFile = new File([defaultPic], 'default.png', { type: 'image/png' });
-    this.inputTitleRef = React.createRef();
-    this.inputPriceRef = React.createRef();
-    this.inputFileRef = React.createRef();
-    this.inputCategoryRef = React.createRef();
-    this.inputDescriptionRef = React.createRef();
-    this.statusCardRef = React.createRef();
     this.state = {
       imageUrl: defaultPic,
       imageFile: this.defaultFile,
@@ -47,6 +44,7 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
       spanPriceValid: false,
       spanTitleValid: false,
       spanDescriptionValid: false,
+      spanDateValid: false,
     };
   }
 
@@ -83,6 +81,9 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
         this.inputDescriptionRef
       );
     }
+    if (this.inputDateRef.current) {
+      this.inputDateRef.current.oninput = this.handleInputFirstStart(this.inputDateRef);
+    }
     this.setState({ errorMassege: false });
   };
 
@@ -105,8 +106,24 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
         this.handleInputFirstStart(this.inputDescriptionRef)
       );
     }
+    if (this.inputDateRef.current) {
+      this.inputDateRef.current.removeEventListener(
+        'input',
+        this.handleInputFirstStart(this.inputDateRef)
+      );
+    }
     this.setState({ errorMassege: true });
   }
+
+  handleInputFirstStart = (
+    ref: React.RefObject<HTMLInputElement> | React.RefObject<HTMLTextAreaElement>
+  ) => {
+    return () => {
+      if (validateFirstSubmitButton(ref.current as HTMLInputElement)) {
+        this.setState({ buttonSubmitStatusDisabled: false });
+      }
+    };
+  };
 
   addOnChangeListenerInputs = () => {
     if (this.inputPriceRef.current) {
@@ -121,6 +138,11 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
     }
     if (this.inputDescriptionRef.current) {
       this.inputDescriptionRef.current.oninput = () => {
+        this.checkValidAllInputs();
+      };
+    }
+    if (this.inputDateRef.current) {
+      this.inputDateRef.current.oninput = () => {
         this.checkValidAllInputs();
       };
     }
@@ -142,27 +164,24 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
         this.checkValidAllInputs();
       });
     }
+    if (this.inputDateRef.current) {
+      this.inputDateRef.current.removeEventListener('input', () => {
+        this.checkValidAllInputs();
+      });
+    }
   };
 
   checkValidAllInputs = () => {
     const priceValid = validatePrice(this.inputPriceRef, /^\d+$/);
     const titleValid = validateText(this.inputTitleRef);
     const descriptionValid = validateText(this.inputDescriptionRef);
+    const dateValid = validateDate(this.inputDateRef);
     this.setState({ spanPriceValid: priceValid });
     this.setState({ spanTitleValid: titleValid });
     this.setState({ spanDescriptionValid: descriptionValid });
-    if (priceValid && titleValid && descriptionValid) return true;
+    this.setState({ spanDateValid: dateValid });
+    if (priceValid && titleValid && descriptionValid && dateValid) return true;
     return false;
-  };
-
-  handleInputFirstStart = (
-    ref: React.RefObject<HTMLInputElement> | React.RefObject<HTMLTextAreaElement>
-  ) => {
-    return () => {
-      if (validateFirstSubmitButton(ref.current as HTMLInputElement)) {
-        this.setState({ buttonSubmitStatusDisabled: false });
-      }
-    };
   };
 
   handleImageInput = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -215,6 +234,19 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
       this.inputPriceRef.current.value = '';
     }
 
+    let newDate = '';
+    if (this.inputDateRef.current) {
+      newDate = this.inputDateRef.current.value;
+      this.inputDateRef.current.value = '';
+    }
+
+    let newProductStatus = 'new';
+    if (this.inputProductStatusRef.current) {
+      const checkedProductStatus = this.inputProductStatusRef.current.checked;
+      this.inputProductStatusRef.current.checked = true;
+      newProductStatus = checkedProductStatus ? 'new' : 'used';
+    }
+
     let newCategory = '';
     if (this.inputCategoryRef.current) {
       newCategory = this.inputCategoryRef.current.value;
@@ -225,6 +257,8 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
       id: Date.now(),
       title: newTitle,
       price: Number(newPrice),
+      date: newDate,
+      productStatus: newProductStatus,
       description: newDescription,
       imageUrl,
       category: newCategory,
@@ -261,14 +295,6 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
     }
   };
 
-  // handleInputPrice = () => {
-  //   if (this.inputPriceRef.current) {
-  //     this.inputPriceRef.current.value = this.inputPriceRef.current.value.replace(/\D/g, '');
-  //   }
-  //   // const input = event.currentTarget;
-  //   // input.value = input.value.replace(/\D/g, '');
-  // };
-
   render() {
     const {
       products,
@@ -278,6 +304,7 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
       spanPriceValid,
       spanTitleValid,
       spanDescriptionValid,
+      spanDateValid,
     } = this.state;
     return (
       <div className="form-page">
@@ -336,6 +363,51 @@ class FormPage extends Component<IFormPageProps, IFormPageState> {
               ref={this.inputFileRef}
             />
             {imageFile && <span>{imageFile.name}</span>}
+          </div>
+          <div className="form-input">
+            <label htmlFor="date-input">
+              Date of manufacture:{' '}
+              {!spanDateValid && errorMassege && (
+                <span className="form-input-span-error">Error</span>
+              )}
+            </label>
+            <input
+              type="date"
+              id="date-input"
+              // onInput={this.handleImageInput}
+              ref={this.inputDateRef}
+            />
+          </div>
+          <div className="form-input">
+            <label>
+              <input type="checkbox" required /> I agree to the posting rules.
+            </label>
+          </div>
+          <div className="form-input">
+            <div className="radio-label">
+              <label>Choose product status:</label>
+            </div>
+            <div className="radio-buttons">
+              <label>
+                <input
+                  type="radio"
+                  name="productStatus"
+                  value="new"
+                  defaultChecked
+                  ref={this.inputProductStatusRef}
+                />
+                New product
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="productStatus"
+                  value="used"
+                  // ref={this.inputProductStatusRef}
+                />
+                Used product
+              </label>
+            </div>
           </div>
           <div className="form-input">
             <label htmlFor="category-select">Category:</label>

@@ -27,6 +27,23 @@ function validatePrice(ref: React.RefObject<HTMLInputElement> | null, regex: Reg
   return false;
 }
 
+function validateDate(ref: React.RefObject<HTMLInputElement> | null) {
+  if (ref && ref.current) {
+    const inputDate = new Date(ref.current.value);
+    const currentDate = new Date();
+
+    if (isNaN(inputDate.getTime()) || inputDate > currentDate) {
+      ref.current.style.borderColor = 'red';
+      return false;
+    }
+
+    ref.current.style.borderColor = 'gray';
+    return true;
+  }
+
+  return false;
+}
+
 function validateFirstSubmitButton(ref: HTMLInputElement) {
   if (ref) {
     if (ref.value.length > 0) {
@@ -36,4 +53,4 @@ function validateFirstSubmitButton(ref: HTMLInputElement) {
   return false;
 }
 
-export { validateText, validatePrice, validateFirstSubmitButton };
+export { validateText, validatePrice, validateDate, validateFirstSubmitButton };

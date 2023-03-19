@@ -8,7 +8,8 @@ class FormCard extends Component<IFormCardProps> {
   }
 
   render() {
-    const { id, title, description, price, category, imageUrl } = this.props.product;
+    const { id, title, description, price, date, productStatus, category, imageUrl } =
+      this.props.product;
 
     return (
       <div data-testid={`form-card${id}`} className="form-card" id={`product-card${id}`}>
@@ -19,6 +20,8 @@ class FormCard extends Component<IFormCardProps> {
           <h2>{title}</h2>
           <p>Category: {category}</p>
           <p>Price: ${price}</p>
+          <p>Date of issue: {date}</p>
+          <p>Product status: {productStatus}</p>
           <p>{description}</p>
         </div>
       </div>

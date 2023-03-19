@@ -21,6 +21,8 @@ interface IFormCard {
   title: string;
   description: string;
   price: number;
+  date: string;
+  productStatus: string;
   category: string;
   imageUrl: string;
 }

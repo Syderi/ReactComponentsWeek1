@@ -18,7 +18,7 @@ function validatePrice(ref: React.RefObject<HTMLInputElement> | null, regex: Reg
   if (ref && ref.current) {
     ref.current.value = ref.current.value.replace(/\D/g, '');
 
-    if (ref.current.value.match(regex) && +ref.current.value > 0) {
+    if (ref.current.value.match(regex) && Number(ref.current.value) > 0) {
       ref.current.style.borderColor = 'gray';
       return true;
     }

@@ -89,11 +89,8 @@ class FormInput extends Component<IFormInputProps, IFormInputState> {
   };
 
   handleImageInput = () => {
-    // if (event.target.files) {
-    // const reader = new FileReader();
-    // reader.onload = () => {
     if (this.inputFileRef.current && this.inputFileRef) {
-      const imageFile = this.inputFileRef.current?.files?.[0];
+      const imageFile = this.inputFileRef.current.files?.[0];
       if (imageFile) {
         this.setState({
           imageUrl: URL.createObjectURL(imageFile),
@@ -101,14 +98,9 @@ class FormInput extends Component<IFormInputProps, IFormInputState> {
         });
       }
     }
-    // };
-    // reader.readAsDataURL(event.target.files[0]);
-    // }
   };
 
   handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    // console.log('111111111', this.inputFileRef.current?.value);
-    // if (this.inputFileRef.current) this.inputFileRef.current.value = defaultPic;
     event.preventDefault();
     this.addOnChangeListenerInputs();
     const validForm = this.checkValidAllInputs();
@@ -191,12 +183,7 @@ class FormInput extends Component<IFormInputProps, IFormInputState> {
   };
 
   handleSetDefaultFile = () => {
-    // if (this.inputFileRef.current) {
-    // const dt = new DataTransfer();
-    // dt.items.add(this.defaultFile);
-    // this.inputFileRef.current.files = dt.files;
     if (this.inputFileRef.current) this.inputFileRef.current.value = '';
-    // }
   };
 
   render() {

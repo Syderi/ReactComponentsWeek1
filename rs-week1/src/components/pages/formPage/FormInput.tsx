@@ -214,7 +214,12 @@ class FormInput extends Component<IFormInputProps, IFormInputState> {
               <span className="form-input-span-error">Error</span>
             )}
           </label>
-          <input type="text" id="title-input" ref={this.inputTitleRef} placeholder="name product" />
+          <input
+            type="text"
+            id="title-input"
+            ref={this.inputTitleRef}
+            placeholder="name product: Phone..."
+          />
         </div>
         <div className="form-input">
           <label htmlFor="price-input">
@@ -241,7 +246,7 @@ class FormInput extends Component<IFormInputProps, IFormInputState> {
           <textarea
             ref={this.inputDescriptionRef}
             id="description-input"
-            placeholder="description product"
+            placeholder="description product: Phone is very..."
           />
         </div>
         <div className="form-input">

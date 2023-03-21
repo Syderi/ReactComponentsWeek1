@@ -3,14 +3,14 @@ import { validateText, validatePrice, validateDate } from '../components/pages/f
 
 describe('validateText', () => {
   test('validateText function updates input border color', () => {
-    const ref = { current: { value: 'hello', style: { borderColor: 'red' } } };
+    const ref = { current: { value: 'Hello', style: { borderColor: 'red' } } };
     const regex = '';
     expect(validateText(ref as RefObject<HTMLInputElement>, regex)).toBe(true);
     expect(ref.current.style.borderColor).toBe('gray');
   });
 
   test('validateText function returns false for invalid input', () => {
-    const ref = { current: { value: 'hi', style: { borderColor: 'red' } } };
+    const ref = { current: { value: 'hi frends', style: { borderColor: 'red' } } };
     const regex = '';
     expect(validateText(ref as RefObject<HTMLInputElement>, regex)).toBe(false);
     expect(ref.current.style.borderColor).toBe('red');

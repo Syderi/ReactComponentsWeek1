@@ -5,7 +5,12 @@ function validateText(
   regex = ''
 ) {
   if (ref && ref.current) {
-    if (ref.current.value.match(regex) && ref.current.value.length >= 5) {
+    const firstLetterRegex = /^([A-ZА-Я])/;
+    if (
+      ref.current.value.match(regex) &&
+      ref.current.value.length >= 5 &&
+      firstLetterRegex.test(ref.current.value)
+    ) {
       ref.current.style.borderColor = 'gray';
       return true;
     }

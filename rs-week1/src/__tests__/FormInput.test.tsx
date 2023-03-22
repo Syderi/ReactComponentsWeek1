@@ -32,7 +32,7 @@ describe('FormInput', () => {
 
     fireEvent.click(getByTestId('new-input'), { target: { checked: true } });
 
-    fireEvent.change(getByLabelText(/Category/i), { target: { value: 'smartphones' } });
+    fireEvent.change(getByTestId('category-select-input'), { target: { value: 'laptops' } });
 
     fireEvent.submit(getByText(/Submit/i));
 
@@ -47,7 +47,7 @@ describe('FormInput', () => {
       productStatus: 'new',
       description: 'Description of the new product',
       imageUrl: expect.any(String),
-      category: 'smartphones',
+      category: 'laptops',
     });
   });
 });

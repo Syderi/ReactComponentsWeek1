@@ -131,11 +131,11 @@ class FormInput extends Component<IFormInputProps, IFormInputState> {
 
     // console.log('product', newProductStatus);
 
-    let newCategory = '';
-    if (this.inputCategoryRef.current) {
-      newCategory = this.inputCategoryRef.current.value;
-      this.inputCategoryRef.current.value = 'smartphones';
-    }
+    const newCategory = this.inputCategoryRef.current?.value ?? '';
+    // if (this.inputCategoryRef.current) {
+    // newCategory = this.inputCategoryRef.current.value;
+    // this.inputCategoryRef.current.value = 'smartphones';
+    // }
 
     const newProduct = {
       id: Date.now(),
@@ -292,8 +292,15 @@ class FormInput extends Component<IFormInputProps, IFormInputState> {
         </div>
         <div className="form-input">
           <label htmlFor="category-select">Category:</label>
-          <select id="category-select" ref={this.inputCategoryRef}>
-            <option disabled></option>
+          <select
+            id="category-select"
+            ref={this.inputCategoryRef}
+            defaultValue=""
+            data-testid="category-select-input"
+          >
+            <option disabled value="">
+              select type
+            </option>
             <option value="smartphones">smartphones</option>
             <option value="laptops">laptops</option>
             <option value="fragrances">fragrances</option>

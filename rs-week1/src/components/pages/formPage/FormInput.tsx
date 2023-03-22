@@ -26,6 +26,7 @@ interface IFormInputState {
 }
 
 class FormInput extends Component<IFormInputProps, IFormInputState> {
+  formRef: React.RefObject<HTMLFormElement> = React.createRef();
   inputTitleRef: React.RefObject<HTMLInputElement> = React.createRef();
   inputPriceRef: React.RefObject<HTMLInputElement> = React.createRef();
   inputFileRef: React.RefObject<HTMLInputElement> = React.createRef();
@@ -52,6 +53,10 @@ class FormInput extends Component<IFormInputProps, IFormInputState> {
     };
   }
 
+  componentDidMount(): void {
+    // this.inputRulesRef.current?.click();
+  }
+
   checkValidAllInputs = () => {
     const priceValid = validatePrice(this.inputPriceRef, /^\d+$/);
     const titleValid = validateText(this.inputTitleRef);
@@ -63,6 +68,7 @@ class FormInput extends Component<IFormInputProps, IFormInputState> {
       this.inputProductStatusRefUsed
     );
     const rulesValid = this.inputRulesRef.current?.checked ?? false;
+    console.log('rulesValid', rulesValid ? 'да' : 'нет');
     this.setState({ spanPriceValid: priceValid });
     this.setState({ spanTitleValid: titleValid });
     this.setState({ spanDescriptionValid: descriptionValid });
@@ -76,8 +82,9 @@ class FormInput extends Component<IFormInputProps, IFormInputState> {
       descriptionValid &&
       dateValid &&
       imageFileValid &&
-      productStatusValid &&
-      rulesValid
+      productStatusValid
+      //  &&
+      // rulesValid
     )
       return true;
     return false;
@@ -109,8 +116,9 @@ class FormInput extends Component<IFormInputProps, IFormInputState> {
     const newDescription = this.inputDescriptionRef.current?.value ?? '';
     const newPrice = this.inputPriceRef.current?.value ?? '';
     const newDate = this.inputDateRef.current?.value ?? '';
+    console.log('Data', newDate);
 
-    let newProductStatus = '';
+    let newProductStatus = 'new';
 
     const newSelect = this.inputProductStatusRefNew.current?.checked;
     const usedSelect = this.inputProductStatusRefUsed.current?.checked;
@@ -120,6 +128,8 @@ class FormInput extends Component<IFormInputProps, IFormInputState> {
     } else if (!newSelect && usedSelect && this.inputProductStatusRefUsed.current) {
       newProductStatus = this.inputProductStatusRefUsed.current?.value;
     }
+
+    // console.log('product', newProductStatus);
 
     let newCategory = '';
     if (this.inputCategoryRef.current) {
@@ -145,7 +155,7 @@ class FormInput extends Component<IFormInputProps, IFormInputState> {
       imageFile: null,
     });
 
-    this.handleSetDefaultFile();
+    this.setDefaultForm();
 
     if (this.statusCardRef.current) {
       this.statusCardRef.current.textContent = 'Card added';
@@ -157,17 +167,18 @@ class FormInput extends Component<IFormInputProps, IFormInputState> {
     }
   };
 
-  handleSetDefaultFile = () => {
-    if (this.inputFileRef.current) this.inputFileRef.current.value = '';
-    if (this.inputProductStatusRefNew.current)
-      this.inputProductStatusRefNew.current.checked = false;
-    if (this.inputProductStatusRefUsed.current)
-      this.inputProductStatusRefUsed.current.checked = false;
-    if (this.inputTitleRef.current) this.inputTitleRef.current.value = '';
-    if (this.inputDescriptionRef.current) this.inputDescriptionRef.current.value = '';
-    if (this.inputPriceRef.current) this.inputPriceRef.current.value = '';
-    if (this.inputDateRef.current) this.inputDateRef.current.value = '';
-    if (this.inputRulesRef.current) this.inputRulesRef.current.checked = false;
+  setDefaultForm = () => {
+    if (this.formRef) this.formRef.current?.reset();
+    // if (this.inputFileRef.current) this.inputFileRef.current.value = '';
+    // if (this.inputProductStatusRefNew.current)
+    //   this.inputProductStatusRefNew.current.checked = false;
+    // if (this.inputProductStatusRefUsed.current)
+    //   this.inputProductStatusRefUsed.current.checked = false;
+    // if (this.inputTitleRef.current) this.inputTitleRef.current.value = '';
+    // if (this.inputDescriptionRef.current) this.inputDescriptionRef.current.value = '';
+    // if (this.inputPriceRef.current) this.inputPriceRef.current.value = '';
+    // if (this.inputDateRef.current) this.inputDateRef.current.value = '';
+    // if (this.inputRulesRef.current) this.inputRulesRef.current.checked = false;
   };
 
   render() {
@@ -182,7 +193,7 @@ class FormInput extends Component<IFormInputProps, IFormInputState> {
       spanRulesValid,
     } = this.state;
     return (
-      <form onSubmit={this.handleFormSubmit}>
+      <form onSubmit={this.handleFormSubmit} ref={this.formRef}>
         <div className="form-input">
           <label htmlFor="title-input">
             Title: {!spanTitleValid && <span className="form-input-span-error">Error</span>}
@@ -239,8 +250,14 @@ class FormInput extends Component<IFormInputProps, IFormInputState> {
           <input type="date" id="date-input" ref={this.inputDateRef} />
         </div>
         <div className="form-input">
-          <label htmlFor="date-input">
-            <input type="checkbox" ref={this.inputRulesRef} /> I agree to the posting rules.{' '}
+          <label htmlFor="rule-input">
+            <input
+              type="checkbox"
+              id="rule-input"
+              data-testid="rule-input"
+              ref={this.inputRulesRef}
+            />
+            I agree to the posting rules.
             {!spanRulesValid && <span className="form-input-span-error">Error</span>}
           </label>
         </div>
@@ -257,6 +274,7 @@ class FormInput extends Component<IFormInputProps, IFormInputState> {
                 type="radio"
                 name="productStatus"
                 value="new"
+                data-testid="new-input"
                 ref={this.inputProductStatusRefNew}
               />
               New product
@@ -275,6 +293,7 @@ class FormInput extends Component<IFormInputProps, IFormInputState> {
         <div className="form-input">
           <label htmlFor="category-select">Category:</label>
           <select id="category-select" ref={this.inputCategoryRef}>
+            <option disabled></option>
             <option value="smartphones">smartphones</option>
             <option value="laptops">laptops</option>
             <option value="fragrances">fragrances</option>

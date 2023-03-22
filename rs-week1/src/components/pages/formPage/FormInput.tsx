@@ -1,8 +1,13 @@
 import './FormPage.css';
 import { IFormCard } from 'components/types/interface';
 import React, { Component, RefObject } from 'react';
-import defaultPic from '../../../assets/img/default.png';
-import { validatePrice, validateText, validateDate } from './Validate';
+import {
+  validatePrice,
+  validateText,
+  validateDate,
+  validateImageFile,
+  validateProductStatus,
+} from './Validate';
 
 interface IFormInputProps {
   onChangeProduct: (newProduct: IFormCard) => void;
@@ -11,80 +16,70 @@ interface IFormInputProps {
 interface IFormInputState {
   imageUrl: string;
   imageFile: File | null;
-  errorMassege: boolean;
+  spanFileValid: boolean;
   spanPriceValid: boolean;
   spanTitleValid: boolean;
   spanDescriptionValid: boolean;
   spanDateValid: boolean;
+  spanProductStatusValid: boolean;
+  spanRulesValid: boolean;
 }
 
 class FormInput extends Component<IFormInputProps, IFormInputState> {
-  defaultFile: File;
   inputTitleRef: React.RefObject<HTMLInputElement> = React.createRef();
   inputPriceRef: React.RefObject<HTMLInputElement> = React.createRef();
   inputFileRef: React.RefObject<HTMLInputElement> = React.createRef();
   inputCategoryRef: React.RefObject<HTMLSelectElement> = React.createRef();
   inputDescriptionRef: RefObject<HTMLTextAreaElement> = React.createRef();
   inputDateRef: RefObject<HTMLInputElement> = React.createRef();
-  inputProductStatusRef: RefObject<HTMLInputElement> = React.createRef();
+  inputProductStatusRefNew: RefObject<HTMLInputElement> = React.createRef();
+  inputProductStatusRefUsed: RefObject<HTMLInputElement> = React.createRef();
+  inputRulesRef: RefObject<HTMLInputElement> = React.createRef();
   statusCardRef: RefObject<HTMLSpanElement> = React.createRef();
 
   constructor(props: IFormInputProps) {
     super(props);
-    this.defaultFile = new File([defaultPic], 'default.png', { type: 'image/png' });
     this.state = {
-      imageUrl: defaultPic,
-      imageFile: this.defaultFile,
-      errorMassege: false,
-      spanPriceValid: false,
-      spanTitleValid: false,
-      spanDescriptionValid: false,
-      spanDateValid: false,
+      imageUrl: '',
+      imageFile: null,
+      spanFileValid: true,
+      spanPriceValid: true,
+      spanTitleValid: true,
+      spanDescriptionValid: true,
+      spanDateValid: true,
+      spanProductStatusValid: true,
+      spanRulesValid: true,
     };
   }
-
-  addOnChangeListenerInputs = () => {
-    const inputRefs = [
-      this.inputPriceRef,
-      this.inputTitleRef,
-      this.inputDescriptionRef,
-      this.inputDateRef,
-    ];
-
-    inputRefs.forEach((ref) => {
-      if (ref.current) {
-        ref.current.oninput = () => {
-          this.checkValidAllInputs();
-        };
-      }
-    });
-  };
-
-  removeOnChangeListenerInputs = () => {
-    const inputRefs = [
-      this.inputPriceRef,
-      this.inputTitleRef,
-      this.inputDescriptionRef,
-      this.inputDateRef,
-    ];
-
-    inputRefs.forEach((ref) => {
-      if (ref.current) {
-        ref.current.oninput = null;
-      }
-    });
-  };
 
   checkValidAllInputs = () => {
     const priceValid = validatePrice(this.inputPriceRef, /^\d+$/);
     const titleValid = validateText(this.inputTitleRef);
     const descriptionValid = validateText(this.inputDescriptionRef);
     const dateValid = validateDate(this.inputDateRef);
+    const imageFileValid = validateImageFile(this.inputFileRef);
+    const productStatusValid = validateProductStatus(
+      this.inputProductStatusRefNew,
+      this.inputProductStatusRefUsed
+    );
+    const rulesValid = this.inputRulesRef.current?.checked ?? false;
     this.setState({ spanPriceValid: priceValid });
     this.setState({ spanTitleValid: titleValid });
     this.setState({ spanDescriptionValid: descriptionValid });
     this.setState({ spanDateValid: dateValid });
-    if (priceValid && titleValid && descriptionValid && dateValid) return true;
+    this.setState({ spanFileValid: imageFileValid });
+    this.setState({ spanProductStatusValid: productStatusValid });
+    this.setState({ spanRulesValid: rulesValid });
+    if (
+      priceValid &&
+      titleValid &&
+      descriptionValid &&
+      dateValid &&
+      imageFileValid &&
+      productStatusValid &&
+      rulesValid
+    )
+      return true;
     return false;
   };
 
@@ -102,45 +97,28 @@ class FormInput extends Component<IFormInputProps, IFormInputState> {
 
   handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    this.addOnChangeListenerInputs();
     const validForm = this.checkValidAllInputs();
 
     const { imageUrl } = this.state;
 
     if (!validForm) {
-      this.setState({ errorMassege: true });
       return;
     }
 
-    let newTitle = '';
-    if (this.inputTitleRef.current) {
-      newTitle = this.inputTitleRef.current.value;
-      this.inputTitleRef.current.value = '';
-    }
+    const newTitle = this.inputTitleRef.current?.value ?? '';
+    const newDescription = this.inputDescriptionRef.current?.value ?? '';
+    const newPrice = this.inputPriceRef.current?.value ?? '';
+    const newDate = this.inputDateRef.current?.value ?? '';
 
-    let newDescription = '';
-    if (this.inputDescriptionRef.current) {
-      newDescription = this.inputDescriptionRef.current.value;
-      this.inputDescriptionRef.current.value = '';
-    }
+    let newProductStatus = '';
 
-    let newPrice = '';
-    if (this.inputPriceRef.current) {
-      newPrice = this.inputPriceRef.current.value;
-      this.inputPriceRef.current.value = '';
-    }
+    const newSelect = this.inputProductStatusRefNew.current?.checked;
+    const usedSelect = this.inputProductStatusRefUsed.current?.checked;
 
-    let newDate = '';
-    if (this.inputDateRef.current) {
-      newDate = this.inputDateRef.current.value;
-      this.inputDateRef.current.value = '';
-    }
-
-    let newProductStatus = 'new';
-    if (this.inputProductStatusRef.current) {
-      const checkedProductStatus = this.inputProductStatusRef.current.checked;
-      this.inputProductStatusRef.current.checked = true;
-      newProductStatus = checkedProductStatus ? 'new' : 'used';
+    if (newSelect && !usedSelect && this.inputProductStatusRefNew.current) {
+      newProductStatus = this.inputProductStatusRefNew.current?.value;
+    } else if (!newSelect && usedSelect && this.inputProductStatusRefUsed.current) {
+      newProductStatus = this.inputProductStatusRefUsed.current?.value;
     }
 
     let newCategory = '';
@@ -163,46 +141,51 @@ class FormInput extends Component<IFormInputProps, IFormInputState> {
     this.props.onChangeProduct(newProduct);
 
     this.setState({
-      imageUrl: defaultPic,
-      imageFile: this.defaultFile,
-      errorMassege: false,
-      spanPriceValid: false,
-      spanTitleValid: false,
-      spanDescriptionValid: false,
+      imageUrl: '',
+      imageFile: null,
     });
 
     this.handleSetDefaultFile();
-    this.removeOnChangeListenerInputs();
 
     if (this.statusCardRef.current) {
       this.statusCardRef.current.textContent = 'Card added';
+      this.statusCardRef.current.style.color = 'green';
       setTimeout(() => {
         this.statusCardRef.current!.textContent = '';
+        this.statusCardRef.current!.style.color = '';
       }, 5000);
     }
   };
 
   handleSetDefaultFile = () => {
     if (this.inputFileRef.current) this.inputFileRef.current.value = '';
+    if (this.inputProductStatusRefNew.current)
+      this.inputProductStatusRefNew.current.checked = false;
+    if (this.inputProductStatusRefUsed.current)
+      this.inputProductStatusRefUsed.current.checked = false;
+    if (this.inputTitleRef.current) this.inputTitleRef.current.value = '';
+    if (this.inputDescriptionRef.current) this.inputDescriptionRef.current.value = '';
+    if (this.inputPriceRef.current) this.inputPriceRef.current.value = '';
+    if (this.inputDateRef.current) this.inputDateRef.current.value = '';
+    if (this.inputRulesRef.current) this.inputRulesRef.current.checked = false;
   };
 
   render() {
     const {
       imageFile,
-      errorMassege,
+      spanFileValid,
       spanPriceValid,
       spanTitleValid,
       spanDescriptionValid,
       spanDateValid,
+      spanProductStatusValid,
+      spanRulesValid,
     } = this.state;
     return (
       <form onSubmit={this.handleFormSubmit}>
         <div className="form-input">
           <label htmlFor="title-input">
-            Title:{' '}
-            {!spanTitleValid && errorMassege && (
-              <span className="form-input-span-error">Error</span>
-            )}
+            Title: {!spanTitleValid && <span className="form-input-span-error">Error</span>}
           </label>
           <input
             type="text"
@@ -214,9 +197,7 @@ class FormInput extends Component<IFormInputProps, IFormInputState> {
         <div className="form-input">
           <label htmlFor="price-input">
             Price:
-            {!spanPriceValid && errorMassege && (
-              <span className="form-input-span-error">Error</span>
-            )}
+            {!spanPriceValid && <span className="form-input-span-error">Error</span>}
           </label>
           <input
             type="number"
@@ -229,9 +210,7 @@ class FormInput extends Component<IFormInputProps, IFormInputState> {
         <div className="form-input">
           <label htmlFor="description-input">
             Description:{' '}
-            {!spanDescriptionValid && errorMassege && (
-              <span className="form-input-span-error">Error</span>
-            )}
+            {!spanDescriptionValid && <span className="form-input-span-error">Error</span>}
           </label>
           <textarea
             ref={this.inputDescriptionRef}
@@ -240,7 +219,9 @@ class FormInput extends Component<IFormInputProps, IFormInputState> {
           />
         </div>
         <div className="form-input">
-          <label htmlFor="image-input">Image:</label>
+          <label htmlFor="image-input">
+            Image: {!spanFileValid && <span className="form-input-span-error">Error</span>}
+          </label>
           <input
             type="file"
             accept="image/jpeg,image/png,image/gif"
@@ -252,19 +233,23 @@ class FormInput extends Component<IFormInputProps, IFormInputState> {
         </div>
         <div className="form-input">
           <label htmlFor="date-input">
-            Date of manufacture:{' '}
-            {!spanDateValid && errorMassege && <span className="form-input-span-error">Error</span>}
+            Date of manufacture:
+            {!spanDateValid && <span className="form-input-span-error">Error</span>}
           </label>
           <input type="date" id="date-input" ref={this.inputDateRef} />
         </div>
         <div className="form-input">
-          <label>
-            <input type="checkbox" required /> I agree to the posting rules.
+          <label htmlFor="date-input">
+            <input type="checkbox" ref={this.inputRulesRef} /> I agree to the posting rules.{' '}
+            {!spanRulesValid && <span className="form-input-span-error">Error</span>}
           </label>
         </div>
         <div className="form-input">
           <div className="radio-label">
-            <label>Choose product status:</label>
+            <label>
+              Choose product status:
+              {!spanProductStatusValid && <span className="form-input-span-error">Error</span>}
+            </label>
           </div>
           <div className="radio-buttons">
             <label>
@@ -272,13 +257,17 @@ class FormInput extends Component<IFormInputProps, IFormInputState> {
                 type="radio"
                 name="productStatus"
                 value="new"
-                defaultChecked
-                ref={this.inputProductStatusRef}
+                ref={this.inputProductStatusRefNew}
               />
               New product
             </label>
             <label>
-              <input type="radio" name="productStatus" value="used" />
+              <input
+                type="radio"
+                name="productStatus"
+                value="used"
+                ref={this.inputProductStatusRefUsed}
+              />
               Used product
             </label>
           </div>

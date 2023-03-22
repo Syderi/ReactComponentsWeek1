@@ -49,4 +49,22 @@ function validateDate(ref: React.RefObject<HTMLInputElement> | null) {
   return false;
 }
 
-export { validateText, validatePrice, validateDate };
+function validateImageFile(ref: React.RefObject<HTMLInputElement>) {
+  if (ref && ref.current) {
+    const name = ref?.current?.value ?? '';
+    if (name.length !== 0) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function validateProductStatus(
+  refNew: React.RefObject<HTMLInputElement>,
+  refOld: React.RefObject<HTMLInputElement>
+) {
+  if (refNew.current?.checked || refOld.current?.checked) return true;
+  return false;
+}
+
+export { validateText, validatePrice, validateDate, validateImageFile, validateProductStatus };

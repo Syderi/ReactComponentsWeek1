@@ -1,5 +1,5 @@
 import './FormPage.css';
-import { IFormCard } from 'components/types/interface';
+import { IFormInputProps, IFormInputState } from 'components/types/interface';
 import React, { Component, RefObject } from 'react';
 import {
   validatePrice,
@@ -8,22 +8,7 @@ import {
   validateImageFile,
   validateProductStatus,
 } from './Validate';
-
-interface IFormInputProps {
-  onChangeProduct: (newProduct: IFormCard) => void;
-}
-
-interface IFormInputState {
-  imageUrl: string;
-  imageFile: File | null;
-  spanFileValid: boolean;
-  spanPriceValid: boolean;
-  spanTitleValid: boolean;
-  spanDescriptionValid: boolean;
-  spanDateValid: boolean;
-  spanProductStatusValid: boolean;
-  spanRulesValid: boolean;
-}
+import { Ecategory } from '../../types/enum';
 
 class FormInput extends Component<IFormInputProps, IFormInputState> {
   formRef: React.RefObject<HTMLFormElement> = React.createRef();
@@ -46,15 +31,12 @@ class FormInput extends Component<IFormInputProps, IFormInputState> {
       spanFileValid: true,
       spanPriceValid: true,
       spanTitleValid: true,
+      spancategoryValid: true,
       spanDescriptionValid: true,
       spanDateValid: true,
       spanProductStatusValid: true,
       spanRulesValid: true,
     };
-  }
-
-  componentDidMount(): void {
-    // this.inputRulesRef.current?.click();
   }
 
   checkValidAllInputs = () => {
@@ -63,17 +45,20 @@ class FormInput extends Component<IFormInputProps, IFormInputState> {
     const descriptionValid = validateText(this.inputDescriptionRef);
     const dateValid = validateDate(this.inputDateRef);
     const imageFileValid = validateImageFile(this.inputFileRef);
+    const categoryValid = !!Object.values(Ecategory).find(
+      (cat) => cat === this.inputCategoryRef.current?.value
+    );
     const productStatusValid = validateProductStatus(
       this.inputProductStatusRefNew,
       this.inputProductStatusRefUsed
     );
     const rulesValid = this.inputRulesRef.current?.checked ?? false;
-    console.log('rulesValid', rulesValid ? 'да' : 'нет');
     this.setState({ spanPriceValid: priceValid });
     this.setState({ spanTitleValid: titleValid });
     this.setState({ spanDescriptionValid: descriptionValid });
     this.setState({ spanDateValid: dateValid });
     this.setState({ spanFileValid: imageFileValid });
+    this.setState({ spancategoryValid: categoryValid });
     this.setState({ spanProductStatusValid: productStatusValid });
     this.setState({ spanRulesValid: rulesValid });
     if (
@@ -82,9 +67,9 @@ class FormInput extends Component<IFormInputProps, IFormInputState> {
       descriptionValid &&
       dateValid &&
       imageFileValid &&
-      productStatusValid
-      //  &&
-      // rulesValid
+      categoryValid &&
+      productStatusValid &&
+      rulesValid
     )
       return true;
     return false;
@@ -116,7 +101,6 @@ class FormInput extends Component<IFormInputProps, IFormInputState> {
     const newDescription = this.inputDescriptionRef.current?.value ?? '';
     const newPrice = this.inputPriceRef.current?.value ?? '';
     const newDate = this.inputDateRef.current?.value ?? '';
-    console.log('Data', newDate);
 
     let newProductStatus = 'new';
 
@@ -129,13 +113,7 @@ class FormInput extends Component<IFormInputProps, IFormInputState> {
       newProductStatus = this.inputProductStatusRefUsed.current?.value;
     }
 
-    // console.log('product', newProductStatus);
-
     const newCategory = this.inputCategoryRef.current?.value ?? '';
-    // if (this.inputCategoryRef.current) {
-    // newCategory = this.inputCategoryRef.current.value;
-    // this.inputCategoryRef.current.value = 'smartphones';
-    // }
 
     const newProduct = {
       id: Date.now(),
@@ -149,11 +127,6 @@ class FormInput extends Component<IFormInputProps, IFormInputState> {
     };
 
     this.props.onChangeProduct(newProduct);
-
-    this.setState({
-      imageUrl: '',
-      imageFile: null,
-    });
 
     this.setDefaultForm();
 
@@ -169,16 +142,10 @@ class FormInput extends Component<IFormInputProps, IFormInputState> {
 
   setDefaultForm = () => {
     if (this.formRef) this.formRef.current?.reset();
-    // if (this.inputFileRef.current) this.inputFileRef.current.value = '';
-    // if (this.inputProductStatusRefNew.current)
-    //   this.inputProductStatusRefNew.current.checked = false;
-    // if (this.inputProductStatusRefUsed.current)
-    //   this.inputProductStatusRefUsed.current.checked = false;
-    // if (this.inputTitleRef.current) this.inputTitleRef.current.value = '';
-    // if (this.inputDescriptionRef.current) this.inputDescriptionRef.current.value = '';
-    // if (this.inputPriceRef.current) this.inputPriceRef.current.value = '';
-    // if (this.inputDateRef.current) this.inputDateRef.current.value = '';
-    // if (this.inputRulesRef.current) this.inputRulesRef.current.checked = false;
+    this.setState({
+      imageUrl: '',
+      imageFile: null,
+    });
   };
 
   render() {
@@ -187,6 +154,7 @@ class FormInput extends Component<IFormInputProps, IFormInputState> {
       spanFileValid,
       spanPriceValid,
       spanTitleValid,
+      spancategoryValid,
       spanDescriptionValid,
       spanDateValid,
       spanProductStatusValid,
@@ -291,7 +259,9 @@ class FormInput extends Component<IFormInputProps, IFormInputState> {
           </div>
         </div>
         <div className="form-input">
-          <label htmlFor="category-select">Category:</label>
+          <label htmlFor="category-select">
+            Category: {!spancategoryValid && <span className="form-input-span-error">Error</span>}
+          </label>
           <select
             id="category-select"
             ref={this.inputCategoryRef}
@@ -301,9 +271,9 @@ class FormInput extends Component<IFormInputProps, IFormInputState> {
             <option disabled value="">
               select type
             </option>
-            <option value="smartphones">smartphones</option>
-            <option value="laptops">laptops</option>
-            <option value="fragrances">fragrances</option>
+            <option value={Ecategory.smartphones}>{Ecategory.smartphones}</option>
+            <option value={Ecategory.laptops}>{Ecategory.laptops}</option>
+            <option value={Ecategory.fragrances}>{Ecategory.fragrances}</option>
           </select>
         </div>
         <div className="form-input">

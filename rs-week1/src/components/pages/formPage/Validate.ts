@@ -41,7 +41,6 @@ function validateDate(ref: React.RefObject<HTMLInputElement> | null) {
       ref.current.style.borderColor = 'red';
       return false;
     }
-
     ref.current.style.borderColor = 'gray';
     return true;
   }

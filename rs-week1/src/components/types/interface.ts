@@ -31,4 +31,21 @@ interface IFormCardProps {
   product: IFormCard;
 }
 
-export { IProduct, IProductProps, IFormCard, IFormCardProps };
+interface IFormInputProps {
+  onChangeProduct: (newProduct: IFormCard) => void;
+}
+
+interface IFormInputState {
+  imageUrl: string;
+  imageFile: File | null;
+  spanFileValid: boolean;
+  spanPriceValid: boolean;
+  spanTitleValid: boolean;
+  spancategoryValid: boolean;
+  spanDescriptionValid: boolean;
+  spanDateValid: boolean;
+  spanProductStatusValid: boolean;
+  spanRulesValid: boolean;
+}
+
+export { IProduct, IProductProps, IFormCard, IFormCardProps, IFormInputProps, IFormInputState };

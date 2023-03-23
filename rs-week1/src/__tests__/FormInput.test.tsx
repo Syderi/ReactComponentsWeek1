@@ -24,21 +24,11 @@ describe('FormInput', () => {
     });
 
     fireEvent.change(getByLabelText(/Date/i), { target: { value: '2022-03-19' } });
-
-    // const checkbox = getByTestId('rule-input');
-    // fireEvent.click(checkbox);
-
     fireEvent.click(getByTestId('rule-input'), { target: { checked: true } });
-
     fireEvent.click(getByTestId('new-input'), { target: { checked: true } });
-
     fireEvent.change(getByTestId('category-select-input'), { target: { value: 'laptops' } });
-
     fireEvent.submit(getByText(/Submit/i));
 
-    // expect(onChangeProduct).toHaveBeenCalled();
-
-    // Check that onChangeProduct was called with the correct data
     expect(onChangeProduct).toHaveBeenCalledWith({
       id: expect.any(Number),
       title: 'New Product',

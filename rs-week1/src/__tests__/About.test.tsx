@@ -10,7 +10,6 @@ describe('<About />', () => {
     const wrapper = render(<About onChangeNamePage={onChangeNamePage} />);
     expect(wrapper).toBeTruthy();
 
-    // Get by h3
     const h3 = wrapper.container.querySelector('h3');
     expect(h3?.textContent).toMatch(/about/i);
   });

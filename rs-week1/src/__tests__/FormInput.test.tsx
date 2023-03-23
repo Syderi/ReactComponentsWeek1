@@ -4,7 +4,7 @@ import FormInput from '../components/pages/formPage/FormInput';
 import { fn } from 'jest-mock';
 
 describe('FormInput', () => {
-  it('should call onChangeProduct with correct data when form is submitted', () => {
+  test('should call onChangeProduct with correct data when form is submitted', () => {
     const onChangeProduct = fn();
     const { getByLabelText, getByText, getByTestId } = render(
       <FormInput onChangeProduct={onChangeProduct} />
@@ -39,5 +39,20 @@ describe('FormInput', () => {
       imageUrl: expect.any(String),
       category: 'laptops',
     });
+  });
+
+  test('should not call onChangeProduct in submitted', () => {
+    const onChangeProduct = fn();
+    const { getByLabelText, getByText, getByTestId } = render(
+      <FormInput onChangeProduct={onChangeProduct} />
+    );
+
+    fireEvent.change(getByLabelText(/Date/i), { target: { value: '3099-03-19' } });
+    fireEvent.click(getByTestId('rule-input'), { target: { checked: true } });
+    fireEvent.click(getByTestId('new-input'), { target: { checked: false } });
+    fireEvent.change(getByTestId('category-select-input'), { target: { value: 'laptops' } });
+    fireEvent.submit(getByText(/Submit/i));
+
+    expect(onChangeProduct).not.toHaveBeenCalled();
   });
 });

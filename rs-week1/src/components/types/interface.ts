@@ -46,6 +46,7 @@ interface IFormInputState {
   spanDateValid: boolean;
   spanProductStatusValid: boolean;
   spanRulesValid: boolean;
+  statusValid: boolean;
 }
 
 export { IProduct, IProductProps, IFormCard, IFormCardProps, IFormInputProps, IFormInputState };

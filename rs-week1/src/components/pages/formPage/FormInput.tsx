@@ -9,19 +9,21 @@ import {
   validateProductStatus,
 } from './Validate';
 import { Ecategory } from '../../types/enum';
+import InputCategory from './InputComponents/InputCategory';
+import InputProductStatus from './InputComponents/InputProductStatus';
+import InputImage from './InputComponents/InputImage';
 
 class FormInput extends Component<IFormInputProps, IFormInputState> {
-  formRef: React.RefObject<HTMLFormElement> = React.createRef();
-  inputTitleRef: React.RefObject<HTMLInputElement> = React.createRef();
-  inputPriceRef: React.RefObject<HTMLInputElement> = React.createRef();
-  inputFileRef: React.RefObject<HTMLInputElement> = React.createRef();
-  inputCategoryRef: React.RefObject<HTMLSelectElement> = React.createRef();
+  formRef: RefObject<HTMLFormElement> = React.createRef();
+  inputTitleRef: RefObject<HTMLInputElement> = React.createRef();
+  inputPriceRef: RefObject<HTMLInputElement> = React.createRef();
+  inputFileRef: RefObject<HTMLInputElement> = React.createRef();
+  inputCategoryRef: RefObject<HTMLSelectElement> = React.createRef();
   inputDescriptionRef: RefObject<HTMLTextAreaElement> = React.createRef();
   inputDateRef: RefObject<HTMLInputElement> = React.createRef();
   inputProductStatusRefNew: RefObject<HTMLInputElement> = React.createRef();
   inputProductStatusRefUsed: RefObject<HTMLInputElement> = React.createRef();
   inputRulesRef: RefObject<HTMLInputElement> = React.createRef();
-  statusCardRef: RefObject<HTMLSpanElement> = React.createRef();
 
   constructor(props: IFormInputProps) {
     super(props);
@@ -36,6 +38,7 @@ class FormInput extends Component<IFormInputProps, IFormInputState> {
       spanDateValid: true,
       spanProductStatusValid: true,
       spanRulesValid: true,
+      statusValid: false,
     };
   }
 
@@ -70,28 +73,46 @@ class FormInput extends Component<IFormInputProps, IFormInputState> {
       categoryValid &&
       productStatusValid &&
       rulesValid
-    )
+    ) {
+      this.setState({ statusValid: true });
       return true;
+    }
     return false;
   };
 
   handleImageInput = () => {
+    let url = '';
     if (this.inputFileRef.current && this.inputFileRef) {
       const imageFile = this.inputFileRef.current.files?.[0];
       if (imageFile) {
-        this.setState({
-          imageUrl: URL.createObjectURL(imageFile),
-          imageFile,
-        });
+        // this.setState({
+        //   imageUrl: URL.createObjectURL(imageFile),
+        //   imageFile,
+        // });
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const result = e.target?.result;
+          if (typeof result === 'string') {
+            url = result;
+            this.setState({
+              imageUrl: result,
+              imageFile,
+            });
+          }
+        };
+        reader.readAsDataURL(imageFile);
       }
     }
+    return url;
   };
 
   handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const validForm = this.checkValidAllInputs();
+    // this.handleImageInput();
 
-    const { imageUrl } = this.state;
+    const imageUrl = this.handleImageInput();
+
+    const validForm = this.checkValidAllInputs();
 
     if (!validForm) {
       return;
@@ -114,6 +135,15 @@ class FormInput extends Component<IFormInputProps, IFormInputState> {
 
     const newCategory = this.inputCategoryRef.current?.value ?? '';
 
+    // let newImageUrl = '';
+    // if (this.inputFileRef.current && this.inputFileRef) {
+    //   const imageFile = this.inputFileRef.current.files?.[0];
+    //   if (imageFile) {
+    //     // const imageBlob = new Blob([imageFile]);
+    //     newImageUrl = URL.createObjectURL(imageFile);
+    //   }
+    // }
+
     const newProduct = {
       id: Date.now(),
       title: newTitle,
@@ -129,14 +159,9 @@ class FormInput extends Component<IFormInputProps, IFormInputState> {
 
     this.setDefaultForm();
 
-    if (this.statusCardRef.current) {
-      this.statusCardRef.current.textContent = 'Card added';
-      this.statusCardRef.current.style.color = 'green';
-      setTimeout(() => {
-        this.statusCardRef.current!.textContent = '';
-        this.statusCardRef.current!.style.color = '';
-      }, 5000);
-    }
+    setTimeout(() => {
+      this.setState({ statusValid: false });
+    }, 5000);
   };
 
   setDefaultForm = () => {
@@ -158,6 +183,7 @@ class FormInput extends Component<IFormInputProps, IFormInputState> {
       spanDateValid,
       spanProductStatusValid,
       spanRulesValid,
+      statusValid,
     } = this.state;
     return (
       <form onSubmit={this.handleFormSubmit} ref={this.formRef}>
@@ -196,19 +222,7 @@ class FormInput extends Component<IFormInputProps, IFormInputState> {
             placeholder="description product: Phone is very..."
           />
         </div>
-        <div className="form-input">
-          <label htmlFor="image-input">
-            Image: {!spanFileValid && <span className="form-input-span-error">Error</span>}
-          </label>
-          <input
-            type="file"
-            accept="image/jpeg,image/png,image/gif"
-            id="image-input"
-            onInput={this.handleImageInput}
-            ref={this.inputFileRef}
-          />
-          {imageFile && <span>{imageFile.name}</span>}
-        </div>
+        <InputImage valid={spanFileValid} forwardRef={this.inputFileRef} imageFile={imageFile} />
         <div className="form-input">
           <label htmlFor="date-input">
             Date of manufacture:
@@ -228,56 +242,15 @@ class FormInput extends Component<IFormInputProps, IFormInputState> {
             {!spanRulesValid && <span className="form-input-span-error">Error</span>}
           </label>
         </div>
-        <div className="form-input">
-          <div className="radio-label">
-            <label>
-              Choose product status:
-              {!spanProductStatusValid && <span className="form-input-span-error">Error</span>}
-            </label>
-          </div>
-          <div className="radio-buttons">
-            <label>
-              <input
-                type="radio"
-                name="productStatus"
-                value="new"
-                data-testid="new-input"
-                ref={this.inputProductStatusRefNew}
-              />
-              New product
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="productStatus"
-                value="used"
-                ref={this.inputProductStatusRefUsed}
-              />
-              Used product
-            </label>
-          </div>
-        </div>
+        <InputProductStatus
+          valid={spanProductStatusValid}
+          forwardRefNew={this.inputProductStatusRefNew}
+          forwardRefUsed={this.inputProductStatusRefUsed}
+        />
+        <InputCategory valid={spancategoryValid} forwardRef={this.inputCategoryRef} />
         <div className="form-input">
           <label htmlFor="category-select">
-            Category: {!spancategoryValid && <span className="form-input-span-error">Error</span>}
-          </label>
-          <select
-            id="category-select"
-            ref={this.inputCategoryRef}
-            defaultValue=""
-            data-testid="category-select-input"
-          >
-            <option disabled value="">
-              select type
-            </option>
-            <option value={Ecategory.smartphones}>{Ecategory.smartphones}</option>
-            <option value={Ecategory.laptops}>{Ecategory.laptops}</option>
-            <option value={Ecategory.fragrances}>{Ecategory.fragrances}</option>
-          </select>
-        </div>
-        <div className="form-input">
-          <label htmlFor="category-select">
-            Status: <span ref={this.statusCardRef}></span>
+            Status: {statusValid && <span style={{ color: 'green' }}>Card added</span>}
           </label>
           <button type="submit">Submit CARD</button>
         </div>

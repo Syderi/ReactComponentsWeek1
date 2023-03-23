@@ -101,11 +101,10 @@ class FormInput extends Component<IFormInputProps, IFormInputState> {
     const newDescription = this.inputDescriptionRef.current?.value ?? '';
     const newPrice = this.inputPriceRef.current?.value ?? '';
     const newDate = this.inputDateRef.current?.value ?? '';
-
-    let newProductStatus = 'new';
-
     const newSelect = this.inputProductStatusRefNew.current?.checked;
     const usedSelect = this.inputProductStatusRefUsed.current?.checked;
+
+    let newProductStatus = '';
 
     if (newSelect && !usedSelect && this.inputProductStatusRefNew.current) {
       newProductStatus = this.inputProductStatusRefNew.current?.value;

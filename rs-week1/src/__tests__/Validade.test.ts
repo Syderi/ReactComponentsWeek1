@@ -1,5 +1,10 @@
 import { RefObject } from 'react';
-import { validateText, validatePrice, validateDate } from '../components/pages/formPage/Validate';
+import {
+  validateText,
+  validatePrice,
+  validateDate,
+  validateProductStatus,
+} from '../components/pages/formPage/Validate';
 
 describe('validateText', () => {
   test('validateText function updates input border color', () => {
@@ -42,5 +47,30 @@ describe('validateDate', () => {
     const ref = { current: { value: 'invalid-date', style: { borderColor: '' } } };
     expect(validateDate(ref as RefObject<HTMLInputElement>)).toBe(false);
     expect(ref.current.style.borderColor).toBe('red');
+  });
+});
+
+describe('validateProductStatus', () => {
+  test('validateProductStatus returns false if neither refNew nor refOld is checked', () => {
+    const refNew = { current: { checked: false } };
+    const refOld = { current: { checked: false } };
+
+    const result = validateProductStatus(
+      refNew as RefObject<HTMLInputElement>,
+      refOld as RefObject<HTMLInputElement>
+    );
+
+    expect(result).toBe(false);
+  });
+
+  test('validateProductStatus returns true if either refNew or refOld is checked', () => {
+    const refNew = { current: { checked: true } };
+    const refOld = { current: { checked: false } };
+    const result = validateProductStatus(
+      refNew as RefObject<HTMLInputElement>,
+      refOld as RefObject<HTMLInputElement>
+    );
+
+    expect(result).toBe(true);
   });
 });

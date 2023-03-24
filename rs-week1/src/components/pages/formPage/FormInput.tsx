@@ -80,7 +80,7 @@ class FormInput extends Component<IFormInputProps, IFormInputState> {
     return false;
   };
 
-  handleImageInput = () => {
+  getImageInput = () => {
     let url = '';
     if (this.inputFileRef.current && this.inputFileRef) {
       const imageFile = this.inputFileRef.current.files?.[0];
@@ -97,15 +97,10 @@ class FormInput extends Component<IFormInputProps, IFormInputState> {
 
   handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // this.handleImageInput();
-
-    const imageUrl = this.handleImageInput();
-
+    const imageUrl = this.getImageInput();
     const validForm = this.checkValidAllInputs();
 
-    if (!validForm) {
-      return;
-    }
+    if (!validForm) return;
 
     const newTitle = this.inputTitleRef.current?.value ?? '';
     const newDescription = this.inputDescriptionRef.current?.value ?? '';
@@ -123,15 +118,6 @@ class FormInput extends Component<IFormInputProps, IFormInputState> {
     }
 
     const newCategory = this.inputCategoryRef.current?.value ?? '';
-
-    // let newImageUrl = '';
-    // if (this.inputFileRef.current && this.inputFileRef) {
-    //   const imageFile = this.inputFileRef.current.files?.[0];
-    //   if (imageFile) {
-    //     // const imageBlob = new Blob([imageFile]);
-    //     newImageUrl = URL.createObjectURL(imageFile);
-    //   }
-    // }
 
     const newProduct = {
       id: Date.now(),
@@ -202,7 +188,7 @@ class FormInput extends Component<IFormInputProps, IFormInputState> {
         </div>
         <div className="form-input">
           <label htmlFor="description-input">
-            Description:{' '}
+            Description:
             {!spanDescriptionValid && <span className="form-input-span-error">Error</span>}
           </label>
           <textarea

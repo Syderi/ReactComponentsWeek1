@@ -1,13 +1,15 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import FormInput from '../components/pages/formPage/FormInput';
 import { fn } from 'jest-mock';
 import { vi } from 'vitest';
 
 describe('FormInput', () => {
-  test('should call onChangeProduct with correct data when form is submitted', () => {
+  test('should call onChangeProduct with correct data when form is submitted', async () => {
     const onChangeProduct = fn();
-    window.URL.createObjectURL = vi.fn();
+    window.URL.createObjectURL = vi.fn((file) => (file instanceof File && file.name) || '');
+    const user = userEvent.setup();
     const { getByLabelText, getByText, getByTestId } = render(
       <FormInput onChangeProduct={onChangeProduct} />
     );
@@ -18,21 +20,17 @@ describe('FormInput', () => {
       target: { value: 'Description of the new product' },
     });
     const file = new File(['LOL'], 'fakeImage', { type: 'image/png' });
-    // const url = window.URL.createObjectURL(file);
-    // const inputImage = getByLabelText(/Image/i);
-    // const fileList = { 0: file, length: 1, item: () => file };
-    // fireEvent.change(inputImage, { target: { files: fileList } });
-    Object.defineProperty(getByLabelText(/Image/i), 'files', {
-      value: [file],
-    });
+    const inputImage = getByLabelText(/Image/i) as HTMLInputElement;
 
-    // fireEvent.load(getByLabelText(/Image/i), file);
+    await user.upload(inputImage, file);
 
     fireEvent.change(getByLabelText(/Date/i), { target: { value: '2022-03-19' } });
     fireEvent.click(getByTestId('rule-input'), { target: { checked: true } });
     fireEvent.click(getByTestId('new-input'), { target: { checked: true } });
     fireEvent.change(getByTestId('category-select-input'), { target: { value: 'laptops' } });
     fireEvent.submit(getByText(/Submit/i));
+
+    expect(inputImage.files).toHaveLength(1);
 
     expect(onChangeProduct).toHaveBeenCalledWith({
       id: expect.any(Number),

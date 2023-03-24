@@ -8,5 +8,6 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'happy-dom',
+    setupFiles: './src/__tests__/setup_test.ts',
   },
 });

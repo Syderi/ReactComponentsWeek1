@@ -29,7 +29,6 @@ class Home extends Component<IHomePageProps, IState> {
     if (searchTerm) {
       this.setState({ searchInput: searchTerm });
     }
-    // Добавляем обработчик события beforeunload
     this.beforeUnloadListener = () => {
       localStorage.setItem('searchTerm', this.state.searchInput);
     };
@@ -74,7 +73,9 @@ class Home extends Component<IHomePageProps, IState> {
               value={searchInput}
               onChange={this.handleInputChange}
             />
-            <button type="submit">Search</button>
+            <button data-testid="search-button" type="submit">
+              Search
+            </button>
           </form>
         </div>
         <h3>Home page</h3>

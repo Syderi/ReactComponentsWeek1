@@ -1,20 +1,18 @@
 import { describe, test, expect } from 'vitest';
 import React from 'react';
 import Home from '../components/pages/Home';
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, screen } from '@testing-library/react';
 import { fn } from 'jest-mock';
-import { MemoryRouter } from 'react-router';
 
 describe('<Home />', () => {
   test('handles search input change and form submission', () => {
     const onChangeNamePage = fn();
-    const { getByPlaceholderText } = render(
-      <MemoryRouter>
-        <Home onChangeNamePage={onChangeNamePage} />
-      </MemoryRouter>
-    );
+    const { getByPlaceholderText } = render(<Home onChangeNamePage={onChangeNamePage} />);
     const searchInput = getByPlaceholderText('Search...') as HTMLInputElement;
-    expect(searchInput).toBeTruthy();
+    expect(searchInput).toBeInTheDocument();
+
+    const searchButton = screen.getByTestId('search-button');
+    expect(searchButton).toBeInTheDocument();
 
     fireEvent.change(searchInput, { target: { value: 'test' } });
     expect(searchInput.value).toBe('test');

@@ -21,6 +21,7 @@ export class Header extends React.Component<IHeaderProps> {
             <div className="navigation-links">
               <NavLink to="/">Home Page</NavLink>
               <NavLink to="/about">About US</NavLink>
+              <NavLink to="/form">Form Page</NavLink>
             </div>
             <h6 className="current-page">Current Page: {namePageTerm}</h6>
           </nav>

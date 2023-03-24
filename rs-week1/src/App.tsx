@@ -4,6 +4,7 @@ import Home from './components/pages/Home';
 import Header from './components/Header';
 import About from './components/pages/About';
 import Page404 from './components/pages/Page404';
+import FormPage from './components/pages/formPage/FormPage';
 
 interface IAppState {
   namePage: string;
@@ -29,6 +30,7 @@ class App extends Component<Record<string, never>, IAppState> {
         <Routes>
           <Route path="/" element={<Home onChangeNamePage={this.handleNamePage} />} />
           <Route path="/about" element={<About onChangeNamePage={this.handleNamePage} />} />
+          <Route path="/form" element={<FormPage onChangeNamePage={this.handleNamePage} />} />
           <Route path="*" element={<Page404 onChangeNamePage={this.handleNamePage} />} />
         </Routes>
       </>

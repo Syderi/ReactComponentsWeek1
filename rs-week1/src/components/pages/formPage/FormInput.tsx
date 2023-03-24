@@ -164,7 +164,12 @@ class FormInput extends Component<IFormInputProps, IFormInputState> {
       <form onSubmit={this.handleFormSubmit} ref={this.formRef}>
         <div className="form-input">
           <label htmlFor="title-input">
-            Title: {!spanTitleValid && <span className="form-input-span-error">Error</span>}
+            Title:{' '}
+            {!spanTitleValid && (
+              <span className="form-input-span-error">
+                Error: not First letter is capital, 5 characters
+              </span>
+            )}
           </label>
           <input
             type="text"
@@ -189,7 +194,11 @@ class FormInput extends Component<IFormInputProps, IFormInputState> {
         <div className="form-input">
           <label htmlFor="description-input">
             Description:
-            {!spanDescriptionValid && <span className="form-input-span-error">Error</span>}
+            {!spanDescriptionValid && (
+              <span className="form-input-span-error">
+                Error: First letter is capital, 5 characters
+              </span>
+            )}
           </label>
           <textarea
             ref={this.inputDescriptionRef}
@@ -201,7 +210,11 @@ class FormInput extends Component<IFormInputProps, IFormInputState> {
         <div className="form-input">
           <label htmlFor="date-input">
             Date of manufacture:
-            {!spanDateValid && <span className="form-input-span-error">Error</span>}
+            {!spanDateValid && (
+              <span className="form-input-span-error">
+                Error: No date or product from the future
+              </span>
+            )}
           </label>
           <input type="date" id="date-input" ref={this.inputDateRef} />
         </div>

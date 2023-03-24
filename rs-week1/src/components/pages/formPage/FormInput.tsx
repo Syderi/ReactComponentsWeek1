@@ -85,22 +85,11 @@ class FormInput extends Component<IFormInputProps, IFormInputState> {
     if (this.inputFileRef.current && this.inputFileRef) {
       const imageFile = this.inputFileRef.current.files?.[0];
       if (imageFile) {
-        // this.setState({
-        //   imageUrl: URL.createObjectURL(imageFile),
-        //   imageFile,
-        // });
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          const result = e.target?.result;
-          if (typeof result === 'string') {
-            url = result;
-            this.setState({
-              imageUrl: result,
-              imageFile,
-            });
-          }
-        };
-        reader.readAsDataURL(imageFile);
+        url = URL.createObjectURL(imageFile);
+        this.setState({
+          imageUrl: url,
+          imageFile,
+        });
       }
     }
     return url;

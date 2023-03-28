@@ -1,20 +1,19 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 
 interface IPage404Props {
   onChangeNamePage: (namePage: string) => void;
 }
 
-class Page404 extends Component<IPage404Props> {
-  componentDidMount() {
-    this.props.onChangeNamePage('Page 404');
-  }
-  render() {
-    return (
-      <>
-        <h3>Page not found 404</h3>
-      </>
-    );
-  }
+function Page404({ onChangeNamePage }: IPage404Props) {
+  useEffect(() => {
+    onChangeNamePage('Page 404');
+  }, [onChangeNamePage]);
+
+  return (
+    <>
+      <h3>Page not found 404</h3>
+    </>
+  );
 }
 
 export default Page404;

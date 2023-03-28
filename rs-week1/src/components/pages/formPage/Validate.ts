@@ -1,20 +1,30 @@
 import { RefObject } from 'react';
 
-function validateText(
-  ref: React.RefObject<HTMLInputElement> | RefObject<HTMLTextAreaElement> | null,
-  regex = ''
-) {
-  if (ref && ref.current) {
-    const firstLetterRegex = /^([A-ZА-Я])/;
-    if (
-      ref.current.value.match(regex) &&
-      ref.current.value.length >= 5 &&
-      firstLetterRegex.test(ref.current.value)
-    ) {
-      return true;
-    }
+// function validateText(
+//   ref: React.RefObject<HTMLInputElement> | RefObject<HTMLTextAreaElement> | null,
+//   regex = ''
+// ) {
+//   if (ref && ref.current) {
+//     const firstLetterRegex = /^([A-ZА-Я])/;
+//     if (
+//       ref.current.value.match(regex) &&
+//       ref.current.value.length >= 5 &&
+//       firstLetterRegex.test(ref.current.value)
+//     ) {
+//       return true;
+//     }
+//   }
+//   return false;
+// }
+
+function validateText(value: string) {
+  console.log(value.length);
+  if (!value.trim() || value === '') {
+    return "Error1: title can't be empty";
   }
-  return false;
+  if (!/^[A-ZА-Я][A-ZА-Яa-zа-я]{4,}.*$/.test(value)) {
+    return 'Error2: not First letter is capital, 5 characters';
+  }
 }
 
 function validatePrice(ref: React.RefObject<HTMLInputElement> | null, regex: RegExp) {

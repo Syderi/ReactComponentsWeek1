@@ -1,36 +1,34 @@
 import { Ecategory } from '../../../types/enum';
-import React, { RefObject } from 'react';
-import { Component } from 'react';
+import React from 'react';
+import { FieldError, UseFormRegisterReturn } from 'react-hook-form';
 
 interface IinputCategoryProps {
-  valid: boolean;
-  forwardRef: RefObject<HTMLSelectElement>;
+  register: UseFormRegisterReturn<'category'>;
+  error: FieldError | undefined;
 }
 
-class InputCategory extends Component<IinputCategoryProps> {
-  render() {
-    const { valid, forwardRef } = this.props;
-    return (
-      <div className="form-input">
-        <label htmlFor="category-select">
-          Category: {!valid && <span className="form-input-span-error">Error</span>}
-        </label>
-        <select
-          id="category-select"
-          ref={forwardRef}
-          defaultValue=""
-          data-testid="category-select-input"
-        >
-          <option disabled value="">
-            select type
-          </option>
-          <option value={Ecategory.smartphones}>{Ecategory.smartphones}</option>
-          <option value={Ecategory.laptops}>{Ecategory.laptops}</option>
-          <option value={Ecategory.fragrances}>{Ecategory.fragrances}</option>
-        </select>
-      </div>
-    );
-  }
+function InputCategory({ register, error }: IinputCategoryProps) {
+  return (
+    <div className="form-input">
+      <label htmlFor="category-select">
+        Category:{' '}
+        {error && <span className="form-input-span-error">Error: You must choose category</span>}
+      </label>
+      <select
+        id="category-select"
+        defaultValue=""
+        data-testid="category-select-input"
+        {...register}
+      >
+        <option disabled value="">
+          select type
+        </option>
+        <option value={Ecategory.smartphones}>{Ecategory.smartphones}</option>
+        <option value={Ecategory.laptops}>{Ecategory.laptops}</option>
+        <option value={Ecategory.fragrances}>{Ecategory.fragrances}</option>
+      </select>
+    </div>
+  );
 }
 
 export default InputCategory;

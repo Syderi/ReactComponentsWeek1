@@ -89,7 +89,7 @@ function FormInput({ onChangeProduct }: IFormInputProps) {
       productStatus: data.productStatus,
       description: data.description,
       imageUrl: data.title,
-      category: data.title,
+      category: data.category,
     });
     reset();
     // event.preventDefault();
@@ -250,7 +250,7 @@ function FormInput({ onChangeProduct }: IFormInputProps) {
         error={errors.productStatus}
         register={register('productStatus', { required: true })}
       />
-      {/* <InputCategory valid={spancategoryValid} forwardRef={this.inputCategoryRef} /> */}
+      <InputCategory error={errors.category} register={register('category', { required: true })} />
       <div className="form-input">
         <label htmlFor="category-select">
           {/* Status: {statusValid && <span style={{ color: 'green' }}>Card added</span>} */}

@@ -17,15 +17,15 @@ import { RefObject } from 'react';
 //   return false;
 // }
 
-function validateText(value: string) {
-  console.log(value.length);
-  if (!value.trim() || value === '') {
-    return "Error1: title can't be empty";
-  }
-  if (!/^[A-ZА-Я][A-ZА-Яa-zа-я]{4,}.*$/.test(value)) {
-    return 'Error2: not First letter is capital, 5 characters';
-  }
-}
+// function validateText(value: string) {
+//   console.log(value.length);
+//   if (!value.trim() || value === '') {
+//     return "Error1: title can't be empty";
+//   }
+//   if (!/^[A-ZА-Я][A-ZА-Яa-zа-я]{4,}.*$/.test(value)) {
+//     return 'Error2: not First letter is capital, 5 characters';
+//   }
+// }
 
 function validatePrice(ref: React.RefObject<HTMLInputElement> | null, regex: RegExp) {
   if (ref && ref.current) {
@@ -36,18 +36,27 @@ function validatePrice(ref: React.RefObject<HTMLInputElement> | null, regex: Reg
   return false;
 }
 
-function validateDate(ref: React.RefObject<HTMLInputElement> | null) {
-  if (ref && ref.current) {
-    const inputDate = new Date(ref.current.value);
-    const currentDate = new Date();
+// function validateDate(ref: React.RefObject<HTMLInputElement> | null) {
+//   if (ref && ref.current) {
+//     const inputDate = new Date(ref.current.value);
+//     const currentDate = new Date();
 
-    if (isNaN(inputDate.getTime()) || inputDate > currentDate) {
-      return false;
-    }
-    return true;
+//     if (isNaN(inputDate.getTime()) || inputDate > currentDate) {
+//       return false;
+//     }
+//     return true;
+//   }
+
+//   return false;
+// }
+function validateDate(value: string) {
+  const inputDate = new Date(value);
+  const currentDate = new Date();
+  if (isNaN(Date.parse(value))) {
+    return false;
   }
 
-  return false;
+  return inputDate < currentDate;
 }
 
 function validateImageFile(ref: React.RefObject<HTMLInputElement>) {
@@ -68,4 +77,4 @@ function validateProductStatus(
   return false;
 }
 
-export { validateText, validatePrice, validateDate, validateImageFile, validateProductStatus };
+export { validatePrice, validateDate, validateImageFile, validateProductStatus };

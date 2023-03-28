@@ -10,8 +10,8 @@ interface IHomePageProps {
 
 function Home({ onChangeNamePage }: IHomePageProps) {
   const [productsList, setProductsList] = useState<IProduct[]>([]);
-  const [searchInput, setSearchInput] = useState('');
-  const searchRef = useRef<string>();
+  const [searchInput, setSearchInput] = useState(localStorage.getItem('searchTerm') ?? '');
+  const searchRef = useRef<string>(searchInput);
 
   useEffect(() => {
     return () => {
@@ -22,8 +22,8 @@ function Home({ onChangeNamePage }: IHomePageProps) {
   useEffect(() => {
     onChangeNamePage('Home Page');
     setProductsList(products);
-    const searchTerm = localStorage.getItem('searchTerm') ?? '';
-    setSearchInput(searchTerm);
+    // const searchTerm = localStorage.getItem('searchTerm') ?? '';
+    // setSearchInput(searchTerm);
   }, [onChangeNamePage]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {

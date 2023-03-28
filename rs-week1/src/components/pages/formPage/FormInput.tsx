@@ -1,13 +1,7 @@
 import './FormPage.css';
 import { IFormInputProps, IFormInputState } from 'components/types/interface';
 import React, { Component, RefObject } from 'react';
-import {
-  validatePrice,
-  validateText,
-  validateDate,
-  validateImageFile,
-  validateProductStatus,
-} from './Validate';
+import { validatePrice, validateDate, validateImageFile, validateProductStatus } from './Validate';
 import { Ecategory } from '../../types/enum';
 import InputCategory from './InputComponents/InputCategory';
 import InputProductStatus from './InputComponents/InputProductStatus';
@@ -19,6 +13,7 @@ interface FormData {
   price: number;
   description: string;
   date: string;
+  rules: boolean;
   productStatus: string;
   imageFile: FileList;
   category: string;
@@ -28,6 +23,7 @@ function FormInput({ onChangeProduct }: IFormInputProps) {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<FormData>({ mode: 'onSubmit', reValidateMode: 'onSubmit' });
   //  const checkValidAllInputs = () => {
@@ -85,6 +81,17 @@ function FormInput({ onChangeProduct }: IFormInputProps) {
 
   const onSubmit = (data: FormData) => {
     console.log('data', data);
+    onChangeProduct({
+      id: Date.now(),
+      title: data.title,
+      price: Number(data.price),
+      date: data.date,
+      productStatus: data.productStatus,
+      description: data.description,
+      imageUrl: data.title,
+      category: data.title,
+    });
+    reset();
     // event.preventDefault();
     // const imageUrl = this.getImageInput();
     // const validForm = this.checkValidAllInputs();
@@ -157,7 +164,7 @@ function FormInput({ onChangeProduct }: IFormInputProps) {
         </label>
         <input
           {...register('title', {
-            required: true,
+            required: 'Error: not value',
             pattern: {
               value: /^[A-ZА-Я][A-ZА-Яa-zа-я]{4,}.*$/,
               message: 'Error: not First letter is capital, 5 characters',
@@ -168,62 +175,82 @@ function FormInput({ onChangeProduct }: IFormInputProps) {
           placeholder="name product: Phone..."
         />
       </div>
-      {/* <div className="form-input">
+      <div className="form-input">
         <label htmlFor="price-input">
           Price:
-          {!spanPriceValid && <span className="form-input-span-error">Error</span>}
+          {errors.price && <span className="form-input-span-error">{errors.price.message}</span>}
         </label>
         <input
+          {...register('price', {
+            required: 'Error: not value',
+            pattern: {
+              value: /^[1-9]\d*$/,
+              message: 'Error: not correct Price',
+            },
+          })}
           type="number"
           inputMode="numeric"
           id="price-input"
-          ref={this.inputPriceRef}
           placeholder="set a price"
         />
       </div>
       <div className="form-input">
         <label htmlFor="description-input">
           Description:
-          {!spanDescriptionValid && (
-            <span className="form-input-span-error">
-              Error: First letter is capital, 5 characters
-            </span>
+          {errors.description && (
+            <span className="form-input-span-error">{errors.description.message}</span>
           )}
         </label>
         <textarea
-          ref={this.inputDescriptionRef}
+          {...register('description', {
+            required: 'Error: not value',
+            pattern: {
+              value: /^[A-ZА-Я][A-ZА-Яa-zа-я]{4,}.*$/,
+              message: 'Error: not First letter is capital, 5 characters',
+            },
+          })}
           id="description-input"
           placeholder="description product: Phone is very..."
         />
       </div>
-      <InputImage valid={spanFileValid} forwardRef={this.inputFileRef} imageFile={imageFile} />
+      {/* <InputImage valid={spanFileValid} forwardRef={this.inputFileRef} imageFile={imageFile} /> */}
       <div className="form-input">
         <label htmlFor="date-input">
           Date of manufacture:
-          {!spanDateValid && (
-            <span className="form-input-span-error">Error: No date or product from the future</span>
-          )}
+          {errors.date && <span className="form-input-span-error">{errors.date.message}</span>}
         </label>
-        <input type="date" id="date-input" ref={this.inputDateRef} />
+        <input
+          {...register('date', {
+            required: 'Error: not date',
+            validate: {
+              validate: (value) => validateDate(value) || 'Error: product from the future',
+            },
+          })}
+          type="date"
+          id="date-input"
+        />
       </div>
       <div className="form-input">
         <label htmlFor="rule-input">
           <input
+            {...register('rules', {
+              required: true,
+            })}
             type="checkbox"
             id="rule-input"
             data-testid="rule-input"
-            ref={this.inputRulesRef}
           />
           I agree to the posting rules.
-          {!spanRulesValid && <span className="form-input-span-error">Error</span>}
+          {errors.rules && (
+            <span className="form-input-span-error">Error: You must agree to the rules</span>
+          )}
         </label>
       </div>
       <InputProductStatus
-        valid={spanProductStatusValid}
-        forwardRefNew={this.inputProductStatusRefNew}
-        forwardRefUsed={this.inputProductStatusRefUsed}
+        error={errors.productStatus}
+        register={register('productStatus', { required: true })}
       />
-      <InputCategory valid={spancategoryValid} forwardRef={this.inputCategoryRef} /> */}
+      {/* <InputCategory valid={spancategoryValid} forwardRef={this.inputCategoryRef} /> */}
       <div className="form-input">
         <label htmlFor="category-select">
           {/* Status: {statusValid && <span style={{ color: 'green' }}>Card added</span>} */}
@@ -235,3 +262,8 @@ function FormInput({ onChangeProduct }: IFormInputProps) {
 }
 
 export default FormInput;
+
+// validate: {
+//   acceptedFormat: (files: FileList | null) =>
+//     (files && ['image/jpg', 'image/png'].includes(files[0].type)) || 'error',
+// },

@@ -1,4 +1,4 @@
-import { RefObject } from 'react';
+// import { RefObject } from 'react';
 
 // function validateText(
 //   ref: React.RefObject<HTMLInputElement> | RefObject<HTMLTextAreaElement> | null,

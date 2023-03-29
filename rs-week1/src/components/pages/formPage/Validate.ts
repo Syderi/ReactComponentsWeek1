@@ -69,12 +69,12 @@ function validateImageFile(ref: React.RefObject<HTMLInputElement>) {
   return false;
 }
 
-function validateProductStatus(
-  refNew: React.RefObject<HTMLInputElement>,
-  refOld: React.RefObject<HTMLInputElement>
-) {
-  if (refNew.current?.checked || refOld.current?.checked) return true;
-  return false;
-}
+// function validateProductStatus(
+//   refNew: React.RefObject<HTMLInputElement>,
+//   refOld: React.RefObject<HTMLInputElement>
+// ) {
+//   if (refNew.current?.checked || refOld.current?.checked) return true;
+//   return false;
+// }
 
-export { validatePrice, validateDate, validateImageFile, validateProductStatus };
+export { validatePrice, validateDate, validateImageFile };

@@ -22,8 +22,6 @@ function Home({ onChangeNamePage }: IHomePageProps) {
   useEffect(() => {
     onChangeNamePage('Home Page');
     setProductsList(products);
-    // const searchTerm = localStorage.getItem('searchTerm') ?? '';
-    // setSearchInput(searchTerm);
   }, [onChangeNamePage]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {

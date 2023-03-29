@@ -21,9 +21,6 @@ function FormInput({ onChangeProduct }: IFormInputProps) {
   const fileName = watch('imageFile')?.[0]?.name || 'no name of image';
 
   const onSubmit = (data: FormData) => {
-    // console.log(data);
-    // console.log(URL.createObjectURL(data.imageFile[0]));
-    // console.log(typeof URL.createObjectURL(data.imageFile[0]));
     setStatusValid(true);
     onChangeProduct({
       id: Date.now(),

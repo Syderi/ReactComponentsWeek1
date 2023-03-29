@@ -16,5 +16,5 @@
     "resolveJsonModule": true,
     "outDir": "./dist"
   },
-  "include": ["./src/**/*", "styled.d.ts"]
+  "include": ["./src/**/*", "styled.d.ts", "./jest-setup.ts"]
 }

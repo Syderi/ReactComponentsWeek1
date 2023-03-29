@@ -1,25 +1,24 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, cleanup } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import FormInput from '../components/pages/formPage/FormInput';
-// import { fn } from 'jest-mock';
 import { vi } from 'vitest';
+
+afterEach(() => {
+  cleanup();
+  vi.resetAllMocks();
+});
 
 describe('FormInput', () => {
   test('should call onChangeProduct with correct data when form is submitted', async () => {
-    const onChangeProduct = vi.fn();
-    window.URL.createObjectURL = vi.fn((file) => (file instanceof File && file.name) || '');
+    const onChangeProductMock = vi.fn();
+    window.URL.createObjectURL = vi.fn((file: File) => file.name);
     const user = userEvent.setup();
     const { getByLabelText, getByText, getByTestId } = render(
-      <FormInput onChangeProduct={onChangeProduct} />
+      <FormInput onChangeProduct={onChangeProductMock} />
     );
 
     const file = new File(['LOL'], 'fakeImage', { type: 'image/png' });
-
-    // fireEvent.click(getByTestId('rule-input'), { target: { checked: true } });
-    // fireEvent.click(getByTestId('new-input'), { target: { checked: true } });
-    // fireEvent.change(getByTestId('category-select-input'), { target: { value: 'laptops' } });
-    // fireEvent.submit(getByText(/Submit/i));
 
     const titleInput = getByLabelText(/Title/i) as HTMLLabelElement;
     expect(titleInput).toBeInTheDocument();
@@ -60,24 +59,25 @@ describe('FormInput', () => {
 
     expect(imageInput.files).toHaveLength(1);
 
-    expect(onChangeProduct).toHaveBeenCalled();
+    expect(onChangeProductMock).toHaveBeenCalled();
+    expect(onChangeProductMock).toBeCalledTimes(1);
 
-    // expect(onChangeProduct).toHaveBeenCalledWith({
-    //   id: expect.any(Number),
-    //   title: 'Newproduct',
-    //   price: Number(100),
-    //   date: '2021-03-19',
-    //   productStatus: 'new',
-    //   description: 'Description of the new product',
-    //   imageUrl: expect.any(String),
-    //   category: 'laptops',
-    // });
+    expect(onChangeProductMock).toHaveBeenCalledWith({
+      id: expect.any(Number),
+      title: 'Newproduct',
+      price: Number(100),
+      date: '2021-03-19',
+      productStatus: 'new',
+      description: 'Description of the new product',
+      imageUrl: expect.any(String),
+      category: 'laptops',
+    });
   });
 
   test('should not call onChangeProduct in submitted', () => {
-    const onChangeProduct = vi.fn();
+    const onChangeProductMock = vi.fn();
     const { getByLabelText, getByText, getByTestId } = render(
-      <FormInput onChangeProduct={onChangeProduct} />
+      <FormInput onChangeProduct={onChangeProductMock} />
     );
 
     fireEvent.change(getByLabelText(/Date/i), { target: { value: '3099-03-19' } });
@@ -86,6 +86,6 @@ describe('FormInput', () => {
     fireEvent.change(getByTestId('category-select-input'), { target: { value: 'laptops' } });
     fireEvent.submit(getByText(/Submit/i));
 
-    expect(onChangeProduct).not.toHaveBeenCalled();
+    expect(onChangeProductMock).not.toHaveBeenCalled();
   });
 });

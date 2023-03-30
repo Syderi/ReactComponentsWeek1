@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Home from './components/pages/Home';
 import Header from './components/Header';
@@ -9,9 +9,9 @@ import FormPage from './components/pages/formPage/FormPage';
 function App() {
   const [namePage, setNamePage] = useState<string>('');
 
-  const handleNamePage = (namePage: string) => {
+  const handleNamePage = useCallback((namePage: string) => {
     setNamePage(namePage);
-  };
+  }, []);
 
   return (
     <>

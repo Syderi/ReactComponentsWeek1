@@ -14,19 +14,19 @@ function Home({ onChangeNamePage }: IHomePageProps) {
   const searchRef = useRef<string>(searchInput);
 
   useEffect(() => {
+    onChangeNamePage('Home Page');
+    setProductsList(products);
     return () => {
       localStorage.setItem('searchTerm', searchRef.current || '');
     };
-  }, []);
+  }, [onChangeNamePage]);
 
   useEffect(() => {
-    onChangeNamePage('Home Page');
-    setProductsList(products);
-  }, [onChangeNamePage]);
+    searchRef.current = searchInput;
+  }, [searchInput]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInput(event.target.value);
-    searchRef.current = event.target.value;
   };
 
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {

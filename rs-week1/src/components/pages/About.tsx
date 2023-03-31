@@ -1,21 +1,19 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 
 interface IAboutPageProps {
   onChangeNamePage: (namePage: string) => void;
 }
 
-class About extends Component<IAboutPageProps> {
-  componentDidMount() {
-    this.props.onChangeNamePage('About US Page');
-  }
+function About({ onChangeNamePage }: IAboutPageProps) {
+  useEffect(() => {
+    onChangeNamePage('About US Page');
+  }, [onChangeNamePage]);
 
-  render() {
-    return (
-      <>
-        <h3>About US page</h3>
-      </>
-    );
-  }
+  return (
+    <>
+      <h3>About Us page</h3>
+    </>
+  );
 }
 
 export default About;

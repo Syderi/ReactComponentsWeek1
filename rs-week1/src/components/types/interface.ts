@@ -49,4 +49,23 @@ interface IFormInputState {
   statusValid: boolean;
 }
 
-export { IProduct, IProductProps, IFormCard, IFormCardProps, IFormInputProps, IFormInputState };
+interface FormData {
+  title: string;
+  price: number;
+  description: string;
+  date: string;
+  rules: boolean;
+  productStatus: string;
+  imageFile: FileList;
+  category: string;
+}
+
+export {
+  IProduct,
+  IProductProps,
+  IFormCard,
+  IFormCardProps,
+  IFormInputProps,
+  IFormInputState,
+  FormData,
+};

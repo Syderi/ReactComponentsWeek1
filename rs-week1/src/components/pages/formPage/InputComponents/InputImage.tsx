@@ -1,30 +1,23 @@
-import React, { RefObject } from 'react';
-import { Component } from 'react';
+import React from 'react';
+import { FieldError, UseFormRegisterReturn } from 'react-hook-form';
 
 interface IinputImageProps {
-  valid: boolean;
-  forwardRef: RefObject<HTMLInputElement>;
-  imageFile: File | null;
+  register: UseFormRegisterReturn<'imageFile'>;
+  error: FieldError | undefined;
+  fileName: string;
 }
 
-class InputImage extends Component<IinputImageProps> {
-  render() {
-    const { valid, forwardRef, imageFile } = this.props;
-    return (
-      <div className="form-input">
-        <label htmlFor="image-input">
-          Image: {!valid && <span className="form-input-span-error">Error</span>}
-        </label>
-        <input
-          type="file"
-          accept="image/jpeg,image/png,image/gif"
-          id="image-input"
-          ref={forwardRef}
-        />
-        {imageFile && <span>{imageFile.name}</span>}
-      </div>
-    );
-  }
+function InputImage({ register, error, fileName }: IinputImageProps) {
+  return (
+    <div className="form-input">
+      <label htmlFor="image-input">
+        Image:{' '}
+        {error && <span className="form-input-span-error">Error: You must choose image</span>}
+      </label>
+      <input type="file" accept="image/jpeg,image/png,image/gif" id="image-input" {...register} />
+      {<span>{fileName}</span>}
+    </div>
+  );
 }
 
 export default InputImage;

@@ -21,7 +21,6 @@ function Home({ onChangeNamePage }: IHomePageProps) {
     try {
       const res = await fetch(`https://dummyjson.com/products/search?q=${search}`);
       const data = await res.json();
-      console.log('data', data);
       setProductsList(data.products);
       setIsLoading(false);
     } catch (error) {
@@ -29,8 +28,20 @@ function Home({ onChangeNamePage }: IHomePageProps) {
     }
   }, []);
 
+  const fetchProductDetails = useCallback(async (productId: number): Promise<void> => {
+    try {
+      fetch(`https://dummyjson.com/products/${productId}`)
+        .then((res) => res.json())
+        .then((dataProduct) => {
+          setModalProduct(dataProduct);
+          setIsModalOpen(true);
+        });
+    } catch (error) {
+      setIsModalOpen(false);
+    }
+  }, []);
+
   useEffect(() => {
-    console.log('searchRef.current', searchRef.current);
     fetchProducts(searchRef.current);
   }, [fetchProducts]);
 
@@ -55,16 +66,7 @@ function Home({ onChangeNamePage }: IHomePageProps) {
   };
 
   const handleShowModal = (productId: number) => {
-    try {
-      fetch(`https://dummyjson.com/products/${productId}`)
-        .then((res) => res.json())
-        .then((dataProduct) => {
-          setModalProduct(dataProduct);
-          setIsModalOpen(true);
-        });
-    } catch (error) {
-      setIsModalOpen(false);
-    }
+    fetchProductDetails(productId);
   };
 
   const closeModal = () => {

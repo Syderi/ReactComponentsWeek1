@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import './Home.css';
 import { IProduct } from 'components/types/interface';
 import ProductCard from './ProductCard/ProductCard';
@@ -16,20 +16,23 @@ function Home({ onChangeNamePage }: IHomePageProps) {
   const [searchInput, setSearchInput] = useState(localStorage.getItem('searchTerm') ?? '');
   const searchRef = useRef<string>(searchInput);
 
-  useEffect(() => {
+  const fetchProducts = useCallback(async (search: string): Promise<void> => {
     setIsLoading(true);
-
     try {
-      fetch('https://dummyjson.com/products')
-        .then((res) => res.json())
-        .then((res) => {
-          setProductsList(res.products);
-          setIsLoading(false);
-        });
+      const res = await fetch(`https://dummyjson.com/products/search?q=${search}`);
+      const data = await res.json();
+      console.log('data', data);
+      setProductsList(data.products);
+      setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
     }
   }, []);
+
+  useEffect(() => {
+    console.log('searchRef.current', searchRef.current);
+    fetchProducts(searchRef.current);
+  }, [fetchProducts]);
 
   useEffect(() => {
     onChangeNamePage('Home Page');
@@ -48,18 +51,7 @@ function Home({ onChangeNamePage }: IHomePageProps) {
 
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setIsLoading(true);
-
-    try {
-      fetch(`https://dummyjson.com/products/search?q=${searchInput}`)
-        .then((res) => res.json())
-        .then((res) => {
-          setProductsList(res.products);
-          setIsLoading(false);
-        });
-    } catch (error) {
-      setIsLoading(false);
-    }
+    fetchProducts(searchRef.current);
   };
 
   const handleShowModal = (productId: number) => {

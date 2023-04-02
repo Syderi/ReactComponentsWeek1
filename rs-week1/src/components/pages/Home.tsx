@@ -8,6 +8,7 @@ interface IHomePageProps {
   onChangeNamePage: (namePage: string) => void;
 }
 
+// React-Api
 function Home({ onChangeNamePage }: IHomePageProps) {
   const [productsList, setProductsList] = useState<IProduct[]>([]);
   const [searchInput, setSearchInput] = useState(localStorage.getItem('searchTerm') ?? '');

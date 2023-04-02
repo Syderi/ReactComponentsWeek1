@@ -8,6 +8,18 @@ interface IHomePageProps {
   onChangeNamePage: (namePage: string) => void;
 }
 
+export async function getProducts(search: string): Promise<IProduct[]> {
+  const res = await fetch(`https://dummyjson.com/products/search?q=${search}`);
+  const data = await res.json();
+  return data.products;
+}
+
+export async function getProductDetails(productId: number): Promise<IProduct> {
+  const res = await fetch(`https://dummyjson.com/products/${productId}`);
+  const data = await res.json();
+  return data;
+}
+
 function Home({ onChangeNamePage }: IHomePageProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [productsList, setProductsList] = useState<IProduct[]>([]);
@@ -19,9 +31,9 @@ function Home({ onChangeNamePage }: IHomePageProps) {
   const fetchProducts = useCallback(async (search: string): Promise<void> => {
     setIsLoading(true);
     try {
-      const res = await fetch(`https://dummyjson.com/products/search?q=${search}`);
-      const data = await res.json();
-      setProductsList(data.products);
+      // const res = await fetch(`https://dummyjson.com/products/search?q=${search}`);
+      const data = await getProducts(search);
+      setProductsList(data);
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
@@ -30,12 +42,9 @@ function Home({ onChangeNamePage }: IHomePageProps) {
 
   const fetchProductDetails = useCallback(async (productId: number): Promise<void> => {
     try {
-      fetch(`https://dummyjson.com/products/${productId}`)
-        .then((res) => res.json())
-        .then((dataProduct) => {
-          setModalProduct(dataProduct);
-          setIsModalOpen(true);
-        });
+      const dataProduct = await getProductDetails(productId);
+      setModalProduct(dataProduct);
+      setIsModalOpen(true);
     } catch (error) {
       setIsModalOpen(false);
     }

@@ -4,10 +4,10 @@ import './ModalProductCard.css';
 
 type ProductModalProps = {
   product: IProduct;
-  onClose: () => void;
+  closeModal: () => void;
 };
 
-function ModalProductCard({ product, onClose }: ProductModalProps) {
+function ModalProductCard({ product, closeModal }: ProductModalProps) {
   const {
     title,
     description,
@@ -22,10 +22,20 @@ function ModalProductCard({ product, onClose }: ProductModalProps) {
 
   const discountedPrice = price - (price * discountPercentage) / 100;
 
+  const handleOverlayClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if (event.target === event.currentTarget) {
+      closeModal();
+    }
+  };
+
+  const handleModalCloseClick = () => {
+    closeModal();
+  };
+
   return (
-    <div className="product-modal">
+    <div className="product-modal" onClick={handleOverlayClick}>
       <div className="product-modal__content">
-        <button className="product-modal__close-btn" onClick={onClose}>
+        <button className="product-modal__close-btn" onClick={handleModalCloseClick}>
           &#10006;
         </button>
         <div className="product-modal__image">

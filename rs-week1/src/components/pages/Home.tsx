@@ -75,6 +75,10 @@ function Home({ onChangeNamePage }: IHomePageProps) {
     }
   };
 
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <>
       <h3>Home page</h3>
@@ -96,7 +100,7 @@ function Home({ onChangeNamePage }: IHomePageProps) {
       ) : (
         <div className="product-cards-container">
           {isModalOpen && modalProduct && (
-            <ModalProductCard product={modalProduct} onClose={() => {}} />
+            <ModalProductCard product={modalProduct} closeModal={closeModal} />
           )}
           {productsList.length ? (
             productsList.map((product) => (

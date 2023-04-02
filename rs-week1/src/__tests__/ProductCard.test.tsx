@@ -18,6 +18,10 @@ describe('ModalProductCard', () => {
   };
   const handleShowModal = vi.fn();
 
+  test('renders without crashing', () => {
+    render(<ProductCard product={mockProduct} handleShowModal={handleShowModal} />);
+  });
+
   test('renders product details correctly', () => {
     render(<ProductCard product={mockProduct} handleShowModal={handleShowModal} />);
 

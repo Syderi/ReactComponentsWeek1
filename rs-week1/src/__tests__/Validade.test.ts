@@ -1,4 +1,4 @@
-import { validateDate } from '../components/pages/formPage/Validate';
+import { validateDate } from '../components/pages/FormPage/Validate';
 
 describe('validateDate', () => {
   test('returns true if input date is valid and not in the future', () => {

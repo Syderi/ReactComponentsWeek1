@@ -1,4 +1,3 @@
-import products from '../dataProducts/products';
 import ProductCard from '../ProductCard';
 import React, { useEffect, useRef, useState } from 'react';
 import './Home.css';
@@ -8,15 +7,29 @@ interface IHomePageProps {
   onChangeNamePage: (namePage: string) => void;
 }
 
-// React-Api
 function Home({ onChangeNamePage }: IHomePageProps) {
+  const [isLoading, setIsLoading] = useState(true);
   const [productsList, setProductsList] = useState<IProduct[]>([]);
   const [searchInput, setSearchInput] = useState(localStorage.getItem('searchTerm') ?? '');
   const searchRef = useRef<string>(searchInput);
 
   useEffect(() => {
+    setIsLoading(true);
+
+    try {
+      fetch('https://dummyjson.com/products')
+        .then((res) => res.json())
+        .then((res) => {
+          setProductsList(res.products);
+          setIsLoading(false);
+        });
+    } catch (error) {
+      setIsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
     onChangeNamePage('Home Page');
-    setProductsList(products);
     return () => {
       localStorage.setItem('searchTerm', searchRef.current || '');
     };
@@ -37,8 +50,10 @@ function Home({ onChangeNamePage }: IHomePageProps) {
   const filteredProducts = productsList.filter((product) =>
     product.title.toLowerCase().includes(searchInput.toLowerCase())
   );
+
   return (
     <>
+      <h3>Home page</h3>
       <div className="card-search">
         <form onSubmit={handleFormSubmit}>
           <input
@@ -52,14 +67,17 @@ function Home({ onChangeNamePage }: IHomePageProps) {
           </button>
         </form>
       </div>
-      <h3>Home page</h3>
-      <div className="product-cards-container">
-        {filteredProducts.length ? (
-          filteredProducts.map((product) => <ProductCard product={product} key={product.id} />)
-        ) : (
-          <p>No found product ...</p>
-        )}
-      </div>
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : (
+        <div className="product-cards-container">
+          {filteredProducts.length ? (
+            filteredProducts.map((product) => <ProductCard product={product} key={product.id} />)
+          ) : (
+            <p>No found product ...</p>
+          )}
+        </div>
+      )}
     </>
   );
 }

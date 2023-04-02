@@ -3,21 +3,10 @@ import './Home.css';
 import { IProduct } from 'components/types/interface';
 import ProductCard from './ProductCard/ProductCard';
 import ModalProductCard from './ProductCard/ModalProductCard';
+import { getProductDetails, getProducts } from './Api/Api';
 
 interface IHomePageProps {
   onChangeNamePage: (namePage: string) => void;
-}
-
-export async function getProducts(search: string): Promise<IProduct[]> {
-  const res = await fetch(`https://dummyjson.com/products/search?q=${search}`);
-  const data = await res.json();
-  return data.products;
-}
-
-export async function getProductDetails(productId: number): Promise<IProduct> {
-  const res = await fetch(`https://dummyjson.com/products/${productId}`);
-  const data = await res.json();
-  return data;
 }
 
 function Home({ onChangeNamePage }: IHomePageProps) {
@@ -31,7 +20,6 @@ function Home({ onChangeNamePage }: IHomePageProps) {
   const fetchProducts = useCallback(async (search: string): Promise<void> => {
     setIsLoading(true);
     try {
-      // const res = await fetch(`https://dummyjson.com/products/search?q=${search}`);
       const data = await getProducts(search);
       setProductsList(data);
       setIsLoading(false);

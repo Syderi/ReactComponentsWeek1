@@ -10,18 +10,7 @@ function ProductCard({ product, handleShowModal }: IProductProps) {
     seThumbnailError(true);
   };
 
-  const {
-    id,
-    title,
-    // description,
-    price,
-    discountPercentage,
-    // rating,
-    // stock,
-    brand,
-    // category,
-    thumbnail,
-  } = product;
+  const { id, title, price, discountPercentage, brand, thumbnail } = product;
 
   const discountedPrice = price - (price * discountPercentage) / 100;
 
@@ -36,12 +25,8 @@ function ProductCard({ product, handleShowModal }: IProductProps) {
       </div>
       <div className="product-card__info">
         <h2>{title}</h2>
-        {/* <p>{description}</p> */}
         <p>Price: ${discountedPrice}</p>
-        {/* <p>Rating: {rating}</p> */}
-        {/* <p>Stock: {stock}</p> */}
         <p>Brand: {brand}</p>
-        {/* <p>Category: {category}</p> */}
       </div>
       <button className="product-card__button" onClick={() => handleShowModal(id)}>
         Show more

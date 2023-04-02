@@ -11,6 +11,8 @@ interface IHomePageProps {
 function Home({ onChangeNamePage }: IHomePageProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [productsList, setProductsList] = useState<IProduct[]>([]);
+  const [modalProduct, setModalProduct] = useState<IProduct>();
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchInput, setSearchInput] = useState(localStorage.getItem('searchTerm') ?? '');
   const searchRef = useRef<string>(searchInput);
 
@@ -60,6 +62,19 @@ function Home({ onChangeNamePage }: IHomePageProps) {
     }
   };
 
+  const handleShowModal = (productId: number) => {
+    try {
+      fetch(`https://dummyjson.com/products/${productId}`)
+        .then((res) => res.json())
+        .then((dataProduct) => {
+          setModalProduct(dataProduct);
+          setIsModalOpen(true);
+        });
+    } catch (error) {
+      setIsModalOpen(false);
+    }
+  };
+
   return (
     <>
       <h3>Home page</h3>
@@ -80,9 +95,13 @@ function Home({ onChangeNamePage }: IHomePageProps) {
         <p>Loading...</p>
       ) : (
         <div className="product-cards-container">
-          <ModalProductCard product={productsList[0]} onClose={() => {}} />
+          {isModalOpen && modalProduct && (
+            <ModalProductCard product={modalProduct} onClose={() => {}} />
+          )}
           {productsList.length ? (
-            productsList.map((product) => <ProductCard product={product} key={product.id} />)
+            productsList.map((product) => (
+              <ProductCard product={product} key={product.id} handleShowModal={handleShowModal} />
+            ))
           ) : (
             <p>No found product ...</p>
           )}

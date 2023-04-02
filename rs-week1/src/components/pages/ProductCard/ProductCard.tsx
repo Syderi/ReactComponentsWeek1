@@ -3,7 +3,7 @@ import { IProductProps } from '../../types/interface';
 import './ProductCard.css';
 import defaultPic from '../../../assets/img/default.png';
 
-function ProductCard({ product }: IProductProps) {
+function ProductCard({ product, handleShowModal }: IProductProps) {
   const [thumbnailError, seThumbnailError] = useState(false);
 
   const handleThumbnailError = () => {
@@ -13,13 +13,13 @@ function ProductCard({ product }: IProductProps) {
   const {
     id,
     title,
-    description,
+    // description,
     price,
     discountPercentage,
-    rating,
-    stock,
+    // rating,
+    // stock,
     brand,
-    category,
+    // category,
     thumbnail,
   } = product;
 
@@ -43,7 +43,9 @@ function ProductCard({ product }: IProductProps) {
         <p>Brand: {brand}</p>
         {/* <p>Category: {category}</p> */}
       </div>
-      <button className="product-card__button">Show more</button>
+      <button className="product-card__button" onClick={() => handleShowModal(id)}>
+        Show more
+      </button>
     </div>
   );
 }

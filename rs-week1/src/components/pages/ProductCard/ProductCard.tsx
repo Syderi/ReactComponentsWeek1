@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { IProductProps } from './types/interface';
+import { IProductProps } from '../../types/interface';
 import './ProductCard.css';
-import defaultPic from '../assets/img/default.png';
+import defaultPic from '../../../assets/img/default.png';
 
 function ProductCard({ product }: IProductProps) {
   const [thumbnailError, seThumbnailError] = useState(false);
@@ -36,14 +36,14 @@ function ProductCard({ product }: IProductProps) {
       </div>
       <div className="product-card__info">
         <h2>{title}</h2>
-        <p>{description}</p>
+        {/* <p>{description}</p> */}
         <p>Price: ${discountedPrice}</p>
-        <p>Rating: {rating}</p>
-        <p>Stock: {stock}</p>
+        {/* <p>Rating: {rating}</p> */}
+        {/* <p>Stock: {stock}</p> */}
         <p>Brand: {brand}</p>
-        <p>Category: {category}</p>
+        {/* <p>Category: {category}</p> */}
       </div>
-      <button className="product-card__button">Add to cart</button>
+      <button className="product-card__button">Show more</button>
     </div>
   );
 }

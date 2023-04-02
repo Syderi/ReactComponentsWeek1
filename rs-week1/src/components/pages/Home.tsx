@@ -1,7 +1,8 @@
-import ProductCard from '../ProductCard';
 import React, { useEffect, useRef, useState } from 'react';
 import './Home.css';
 import { IProduct } from 'components/types/interface';
+import ProductCard from './ProductCard/ProductCard';
+import ModalProductCard from './ProductCard/ModalProductCard';
 
 interface IHomePageProps {
   onChangeNamePage: (namePage: string) => void;
@@ -45,11 +46,19 @@ function Home({ onChangeNamePage }: IHomePageProps) {
 
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-  };
+    setIsLoading(true);
 
-  const filteredProducts = productsList.filter((product) =>
-    product.title.toLowerCase().includes(searchInput.toLowerCase())
-  );
+    try {
+      fetch(`https://dummyjson.com/products/search?q=${searchInput}`)
+        .then((res) => res.json())
+        .then((res) => {
+          setProductsList(res.products);
+          setIsLoading(false);
+        });
+    } catch (error) {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <>
@@ -71,8 +80,9 @@ function Home({ onChangeNamePage }: IHomePageProps) {
         <p>Loading...</p>
       ) : (
         <div className="product-cards-container">
-          {filteredProducts.length ? (
-            filteredProducts.map((product) => <ProductCard product={product} key={product.id} />)
+          <ModalProductCard product={productsList[0]} onClose={() => {}} />
+          {productsList.length ? (
+            productsList.map((product) => <ProductCard product={product} key={product.id} />)
           ) : (
             <p>No found product ...</p>
           )}

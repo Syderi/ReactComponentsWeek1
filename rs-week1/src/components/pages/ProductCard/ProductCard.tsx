@@ -15,7 +15,12 @@ function ProductCard({ product, handleShowModal }: IProductProps) {
   const discountedPrice = price - (price * discountPercentage) / 100;
 
   return (
-    <div data-testid={`product-card${id}`} className="product-card" id={`product-card${id}`}>
+    <div
+      data-testid={`product-card${id}`}
+      className="product-card"
+      id={`product-card${id}`}
+      onClick={() => handleShowModal(id)}
+    >
       <div className="product-card__image">
         <img
           src={thumbnailError ? defaultPic : thumbnail}
@@ -28,9 +33,7 @@ function ProductCard({ product, handleShowModal }: IProductProps) {
         <p>Price: ${discountedPrice}</p>
         <p>Brand: {brand}</p>
       </div>
-      <button className="product-card__button" onClick={() => handleShowModal(id)}>
-        Show more
-      </button>
+      <button className="product-card__button">Show more</button>
     </div>
   );
 }

@@ -4,6 +4,7 @@ import { IProduct } from 'components/types/interface';
 import ProductCard from './ProductCard/ProductCard';
 import ModalProductCard from './ProductCard/ModalProductCard';
 import { getProductDetails, getProducts } from './Api/Api';
+import Loader from './ProductCard/Loading';
 
 interface IHomePageProps {
   onChangeNamePage: (namePage: string) => void;
@@ -87,7 +88,7 @@ function Home({ onChangeNamePage }: IHomePageProps) {
         </form>
       </div>
       {isLoading ? (
-        <p>Loading...</p>
+        <Loader />
       ) : (
         <div className="product-cards-container">
           {isModalOpen && modalProduct && (

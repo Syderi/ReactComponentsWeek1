@@ -45,9 +45,6 @@ function Home({ onChangeNamePage }: IHomePageProps) {
 
   useEffect(() => {
     onChangeNamePage('Home Page');
-    return () => {
-      localStorage.setItem('searchTerm', searchRef.current || '');
-    };
   }, [onChangeNamePage]);
 
   useEffect(() => {
@@ -60,6 +57,7 @@ function Home({ onChangeNamePage }: IHomePageProps) {
 
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    localStorage.setItem('searchTerm', searchRef.current || '');
     fetchProducts(searchRef.current);
   };
 

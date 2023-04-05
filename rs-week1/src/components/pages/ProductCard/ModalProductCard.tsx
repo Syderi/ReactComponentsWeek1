@@ -21,7 +21,6 @@ function ModalProductCard({ product, closeModal }: ProductModalProps) {
   } = product;
 
   const discountedPrice = price - (price * discountPercentage) / 100;
-
   const handleOverlayClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (event.target === event.currentTarget) {
       closeModal();

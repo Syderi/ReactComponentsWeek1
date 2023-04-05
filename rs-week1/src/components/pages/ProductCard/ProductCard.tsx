@@ -38,4 +38,4 @@ function ProductCard({ product, handleShowModal }: IProductProps) {
   );
 }
 
-export default ProductCard;
+export default React.memo(ProductCard);

@@ -20,8 +20,6 @@
   flex-direction: column;
   width: 80%;
   max-width: 800px;
-  /* z-index: 3; */
-
 }
 
 .product-modal__close-btn {

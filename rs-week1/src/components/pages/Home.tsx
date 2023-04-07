@@ -30,12 +30,15 @@ function Home({ onChangeNamePage }: IHomePageProps) {
   }, []);
 
   const fetchProductDetails = useCallback(async (productId: number): Promise<void> => {
+    setIsLoading(true);
     try {
       const dataProduct = await getProductDetails(productId);
       setModalProduct(dataProduct);
       setIsModalOpen(true);
+      setIsLoading(false);
     } catch (error) {
       setIsModalOpen(false);
+      setIsLoading(false);
     }
   }, []);
 
@@ -85,22 +88,20 @@ function Home({ onChangeNamePage }: IHomePageProps) {
           </button>
         </form>
       </div>
-      {isLoading ? (
-        <Loader />
-      ) : (
-        <div className="product-cards-container">
-          {isModalOpen && modalProduct && (
-            <ModalProductCard product={modalProduct} closeModal={closeModal} />
-          )}
-          {productsList.length ? (
-            productsList.map((product) => (
-              <ProductCard product={product} key={product.id} handleShowModal={handleShowModal} />
-            ))
-          ) : (
-            <p>No found product ...</p>
-          )}
-        </div>
-      )}
+      {isLoading && <Loader />}
+      <div className="product-cards-container">
+        {isModalOpen && modalProduct && (
+          <ModalProductCard product={modalProduct} closeModal={closeModal} />
+        )}
+
+        {productsList.length ? (
+          productsList.map((product) => (
+            <ProductCard product={product} key={product.id} handleShowModal={handleShowModal} />
+          ))
+        ) : (
+          <p>No found product ...</p>
+        )}
+      </div>
     </>
   );
 }

@@ -11,12 +11,15 @@ describe('getProducts and getProductDetails functions', () => {
   });
 
   test('getProducts returns an array of products', async () => {
-    const mockResponseProducts = { products: [{ id: 1, title: 'Product 1', price: 10 }] };
-    const mockJsonPromiseProducts = Promise.resolve(mockResponseProducts);
-    const mockFetchPromiseProducts = Promise.resolve({
-      json: () => mockJsonPromiseProducts,
-    });
-    global.fetch = vi.fn().mockImplementation(() => mockFetchPromiseProducts);
+    const data = {
+      products: [{ id: 1, title: 'Product 1', price: 10 }],
+    };
+
+    global.fetch = vi.fn().mockImplementation(() =>
+      Promise.resolve({
+        json: () => data,
+      })
+    );
     const products = await getProducts('search query');
     expect(Array.isArray(products)).toBe(true);
     expect(products[0]).toHaveProperty('id');

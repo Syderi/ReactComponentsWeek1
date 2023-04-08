@@ -1,8 +1,8 @@
 import './FormPage.css';
 import { IFormCard } from 'components/types/interface';
 import React, { useEffect, useState } from 'react';
-import FormCard from './FormCard';
 import FormInput from './FormInput';
+import FormCard from './FormCard';
 
 interface IFormPageProps {
   onChangeNamePage: (namePage: string) => void;

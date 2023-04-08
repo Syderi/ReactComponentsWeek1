@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, fireEvent, cleanup } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import FormInput from '../components/pages/formPage/FormInput';
 import { vi } from 'vitest';
+import FormInput from '../components/pages/FormPage/FormInput';
 
 afterEach(() => {
   cleanup();

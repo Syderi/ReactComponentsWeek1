@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import FormPage from '../components/pages/formPage/FormPage';
+import FormPage from '../components/pages/FormPage/FormPage';
 
 test('renders Form page header', () => {
   const { getByText } = render(<FormPage onChangeNamePage={() => {}} />);

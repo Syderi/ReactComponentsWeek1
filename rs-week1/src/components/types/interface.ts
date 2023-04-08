@@ -14,6 +14,7 @@ interface IProduct {
 
 interface IProductProps {
   product: IProduct;
+  handleShowModal: (productId: number) => void;
 }
 
 interface IFormCard {

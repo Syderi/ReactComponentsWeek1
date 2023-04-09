@@ -1,15 +1,16 @@
-import { createAction } from '@reduxjs/toolkit';
-import { createReducer } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IFormCard } from '../../components/types/interface';
 
-const baseFormProducts: IFormCard[] = [];
+const stateFormProducts: IFormCard[] = [];
 
-const ADD_FORM_CARD = createAction<IFormCard>('ADD_FORM_CARD');
-
-const formReducer = createReducer(baseFormProducts, (builder) => {
-  builder.addCase(ADD_FORM_CARD, (state, action) => {
-    state.push(action.payload);
-  });
+export const formSlice = createSlice({
+  name: 'form',
+  initialState: stateFormProducts,
+  reducers: {
+    addToStateFormProducts: (state, { payload }: PayloadAction<IFormCard>) => {
+      state.push(payload);
+    },
+  },
 });
 
-export { formReducer, ADD_FORM_CARD };
+export const { actions, reducer } = formSlice;

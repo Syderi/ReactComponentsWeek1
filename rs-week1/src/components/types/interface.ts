@@ -12,6 +12,13 @@ interface IProduct {
   images?: string[];
 }
 
+interface IResponseProductApi {
+  products?: IProduct[] | null;
+  total: number;
+  skip: number;
+  limit: number;
+}
+
 interface IProductProps {
   product: IProduct;
   handleShowModal: (productId: number) => void;
@@ -63,6 +70,7 @@ interface FormData {
 
 export {
   IProduct,
+  IResponseProductApi,
   IProductProps,
   IFormCard,
   IFormCardProps,

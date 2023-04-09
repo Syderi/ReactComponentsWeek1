@@ -2,8 +2,6 @@ import { IProduct } from '../../types/interface';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import type { IResponseProductApi } from '../../types/interface';
 
-const BASE_URL = 'https://dummyjson.com/products/';
-
 // async function getProducts(search: string): Promise<IProduct[]> {
 //   const res = await fetch(`https://dummyjson.com/products/search?q=${search}`);
 //   const data = await res.json();
@@ -16,6 +14,8 @@ async function getProductDetails(productId: number): Promise<IProduct> {
   return data;
 }
 
+const BASE_URL = 'https://dummyjson.com/products/';
+
 export const productApi = createApi({
   reducerPath: 'productApi',
   baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
@@ -26,7 +26,9 @@ export const productApi = createApi({
         params: { q: search },
       }),
       transformResponse: (response: IResponseProductApi) => response.products ?? [],
-      // `search?q=${search}`,
+    }),
+    getProductDetails: builder.query<IProduct, number>({
+      query: (id) => `${id}`,
     }),
   }),
 });
@@ -47,6 +49,6 @@ export const productApi = createApi({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetProductsQuery } = productApi;
+export const { useGetProductsQuery, useGetProductDetailsQuery } = productApi;
 
 export { getProductDetails };

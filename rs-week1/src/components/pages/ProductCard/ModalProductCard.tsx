@@ -1,35 +1,36 @@
-import { IProduct } from 'components/types/interface';
 import React from 'react';
+import { useGetProductDetailsQuery } from '../Api/Api';
+import Loader from './Loading';
 import './ModalProductCard.css';
 
 type ProductModalProps = {
-  product: IProduct;
+  productID: number;
   closeModal: () => void;
 };
 
-function ModalProductCard({ product, closeModal }: ProductModalProps) {
-  const {
-    title,
-    description,
-    price,
-    discountPercentage,
-    rating,
-    stock,
-    brand,
-    category,
-    thumbnail,
-  } = product;
+function ModalProductCard({ productID, closeModal }: ProductModalProps) {
+  const { data: product, isLoading } = useGetProductDetailsQuery(productID);
+  console.log('product', product);
 
-  const discountedPrice = price - (price * discountPercentage) / 100;
+  let discountedPrice = 0;
+
+  if (product) {
+    discountedPrice = product.price - (product.price * product.discountPercentage) / 100;
+  }
+
   const handleOverlayClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    event.stopPropagation();
     if (event.target === event.currentTarget) {
       closeModal();
     }
   };
 
-  const handleModalCloseClick = () => {
+  const handleModalCloseClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
     closeModal();
   };
+
+  if (isLoading) return <Loader />;
 
   return (
     <div className="product-modal" onClick={handleOverlayClick}>
@@ -38,16 +39,16 @@ function ModalProductCard({ product, closeModal }: ProductModalProps) {
           &#10006;
         </button>
         <div className="product-modal__image">
-          <img src={thumbnail} alt={title} />
+          <img src={product?.thumbnail ?? ''} alt={product?.title} />
         </div>
         <div className="product-modal__info">
-          <h2>{title}</h2>
-          <p>{description}</p>
+          <h2>{product?.title}</h2>
+          <p>{product?.description}</p>
           <p>Price: ${discountedPrice}</p>
-          <p>Rating: {rating}</p>
-          <p>Stock: {stock}</p>
-          <p>Brand: {brand}</p>
-          <p>Category: {category}</p>
+          <p>Rating: {product?.rating}</p>
+          <p>Stock: {product?.stock}</p>
+          <p>Brand: {product?.brand}</p>
+          <p>Category: {product?.category}</p>
         </div>
       </div>
     </div>

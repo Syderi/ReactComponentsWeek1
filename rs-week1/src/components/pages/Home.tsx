@@ -1,22 +1,28 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useCallback, useEffect, useState } from 'react';
 import './Home.css';
 import { IProduct } from 'components/types/interface';
 import ProductCard from './ProductCard/ProductCard';
 import ModalProductCard from './ProductCard/ModalProductCard';
 import { getProductDetails, getProducts } from './Api/Api';
 import Loader from './ProductCard/Loading';
+import { useActions } from '../../hooks/useActions';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
 
 interface IHomePageProps {
   onChangeNamePage: (namePage: string) => void;
 }
 
 function Home({ onChangeNamePage }: IHomePageProps) {
+  const { changeSearch } = useActions();
+  const stateSearch = useSelector<RootState, string>((state) => state.search.stateSearch);
+
   const [isLoading, setIsLoading] = useState(true);
   const [productsList, setProductsList] = useState<IProduct[]>([]);
   const [modalProduct, setModalProduct] = useState<IProduct>();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [searchInput, setSearchInput] = useState(localStorage.getItem('searchTerm') ?? '');
-  const searchRef = useRef<string>(searchInput);
+  const [searchInput, setSearchInput] = useState(stateSearch);
+  // const searchRef = useRef<string>(searchInput);
 
   const fetchProducts = useCallback(async (search: string): Promise<void> => {
     setIsLoading(true);
@@ -43,25 +49,23 @@ function Home({ onChangeNamePage }: IHomePageProps) {
   }, []);
 
   useEffect(() => {
-    fetchProducts(searchRef.current);
-  }, [fetchProducts]);
+    fetchProducts(stateSearch);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     onChangeNamePage('Home Page');
   }, [onChangeNamePage]);
 
-  useEffect(() => {
-    searchRef.current = searchInput;
-  }, [searchInput]);
-
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchInput(event.target.value);
   };
 
-  const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    localStorage.setItem('searchTerm', searchRef.current || '');
-    fetchProducts(searchRef.current);
+    // localStorage.setItem('searchTerm', searchRef.current || '');
+    changeSearch(searchInput);
+    fetchProducts(stateSearch);
   };
 
   const handleShowModal = (productId: number) => {

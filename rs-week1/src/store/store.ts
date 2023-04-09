@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { formSlice, reducer as formreducer } from './redusers/formReducer';
+import { formSlice, reducer as formReducer } from './redusers/formSlice';
+import { stateSlice, reducer as searchReducer } from './redusers/searchSlice';
 
 export const store = configureStore({
   reducer: {
-    [formSlice.name]: formreducer,
+    [formSlice.name]: formReducer,
+    [stateSlice.name]: searchReducer,
   },
 });
 

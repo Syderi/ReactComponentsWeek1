@@ -18,8 +18,6 @@ function FormPage({ onChangeNamePage }: IFormPageProps) {
   const { addToStateFormProducts } = useActions();
   const formCards = useSelector<RootState, IFormCard[]>((state) => state.form);
 
-  console.log('formCards', formCards);
-
   const onChangeProduct = (newProduct: IFormCard) => {
     addToStateFormProducts(newProduct);
   };

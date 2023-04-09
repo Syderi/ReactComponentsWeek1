@@ -10,10 +10,8 @@ type ProductModalProps = {
 
 function ModalProductCard({ productID, closeModal }: ProductModalProps) {
   const { data: product, isLoading } = useGetProductDetailsQuery(productID);
-  console.log('product', product);
 
   let discountedPrice = 0;
-
   if (product) {
     discountedPrice = product.price - (product.price * product.discountPercentage) / 100;
   }

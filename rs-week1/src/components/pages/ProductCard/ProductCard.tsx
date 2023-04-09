@@ -5,9 +5,7 @@ import defaultPic from '../../../assets/img/default.png';
 import ModalProductCard from './ModalProductCard';
 
 function ProductCard({ product }: IProductProps) {
-  // const [modalProduct, setModalProduct] = useState<IProduct>();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  console.log('isModalOpen===', isModalOpen);
   const [thumbnailError, seThumbnailError] = useState(false);
 
   const handleThumbnailError = () => {
@@ -15,12 +13,10 @@ function ProductCard({ product }: IProductProps) {
   };
 
   const closeModal = () => {
-    console.log('ЗАКРЫТЬ МОДАЛКУ');
     setIsModalOpen(false);
   };
 
   const handleShowModal = () => {
-    console.log('ОТКРЫТЬ МОДАЛКУ');
     setIsModalOpen(true);
   };
 

@@ -9,7 +9,7 @@ const override: CSSProperties = {
 
 function Loader() {
   return (
-    <div className="loader">
+    <div className="loader" data-testid="loader">
       <ClipLoader
         color={'#ffffff'}
         loading={true}

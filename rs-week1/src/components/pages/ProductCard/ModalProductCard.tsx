@@ -31,7 +31,7 @@ function ModalProductCard({ productID, closeModal }: ProductModalProps) {
   if (isLoading) return <Loader />;
 
   return (
-    <div className="product-modal" onClick={handleOverlayClick}>
+    <div className="product-modal" onClick={handleOverlayClick} data-testid="modal">
       <div className="product-modal__content">
         <button className="product-modal__close-btn" onClick={handleModalCloseClick}>
           &#10006;

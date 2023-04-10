@@ -17,14 +17,12 @@ function ModalProductCard({ productID, closeModal }: ProductModalProps) {
   }
 
   const handleOverlayClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    event.stopPropagation();
     if (event.target === event.currentTarget) {
       closeModal();
     }
   };
 
-  const handleModalCloseClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.stopPropagation();
+  const handleModalCloseClick = () => {
     closeModal();
   };
 

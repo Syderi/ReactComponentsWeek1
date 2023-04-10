@@ -24,27 +24,29 @@ function ProductCard({ product }: IProductProps) {
   const discountedPrice = price - (price * discountPercentage) / 100;
 
   return (
-    <div
-      data-testid={`product-card${id}`}
-      className="product-card"
-      id={`product-card${id}`}
-      onClick={() => handleShowModal()}
-    >
+    <>
       {isModalOpen && <ModalProductCard productID={product.id} closeModal={closeModal} />}
-      <div className="product-card__image">
-        <img
-          src={thumbnailError ? defaultPic : thumbnail}
-          alt={title}
-          onError={handleThumbnailError}
-        />
+      <div
+        data-testid={`product-card${id}`}
+        className="product-card"
+        id={`product-card${id}`}
+        onClick={() => handleShowModal()}
+      >
+        <div className="product-card__image">
+          <img
+            src={thumbnailError ? defaultPic : thumbnail}
+            alt={title}
+            onError={handleThumbnailError}
+          />
+        </div>
+        <div className="product-card__info">
+          <h2>{title}</h2>
+          <p>Price: ${discountedPrice}</p>
+          <p>Brand: {brand}</p>
+        </div>
+        <button className="product-card__button">Show more</button>
       </div>
-      <div className="product-card__info">
-        <h2>{title}</h2>
-        <p>Price: ${discountedPrice}</p>
-        <p>Brand: {brand}</p>
-      </div>
-      <button className="product-card__button">Show more</button>
-    </div>
+    </>
   );
 }
 

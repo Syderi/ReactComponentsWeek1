@@ -1,11 +1,12 @@
 import './FormPage.css';
 import { IFormCard } from 'components/types/interface';
 import React, { useEffect } from 'react';
-import FormInput from './FormInput';
-import FormCard from './FormCard';
+
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store/store';
 import { useActions } from '../../../hooks/useActions';
+import FormInput from './FormInput';
+import FormCard from './FormCard';
 
 interface IFormPageProps {
   onChangeNamePage: (namePage: string) => void;

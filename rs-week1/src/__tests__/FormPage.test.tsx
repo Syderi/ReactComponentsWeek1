@@ -2,7 +2,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { store } from '../store/store';
 import { render } from '@testing-library/react';
-import FormPage from '../components/pages/FormPage/FormPage';
+import FormPage from '../components/pages/formPage/FormPage';
 
 test('renders Form page header', () => {
   const { getByText } = render(

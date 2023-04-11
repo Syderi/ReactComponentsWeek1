@@ -4,7 +4,7 @@ import Home from './components/pages/Home';
 import Header from './components/pages/Header';
 import About from './components/pages/About';
 import Page404 from './components/pages/Page404';
-import FormPage from './components/pages/FormPage/FormPage';
+import FormPage from './components/pages/formPage/FormPage';
 
 function App() {
   const [namePage, setNamePage] = useState<string>('');

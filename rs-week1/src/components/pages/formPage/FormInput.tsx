@@ -1,11 +1,11 @@
 import './FormPage.css';
 import { IFormInputProps, FormData } from 'components/types/interface';
 import React, { useState } from 'react';
-import { validateDate } from './Validate';
-import InputCategory from './InputComponents/InputCategory';
-import InputProductStatus from './InputComponents/InputProductStatus';
-import InputImage from './InputComponents/InputImage';
 import { useForm } from 'react-hook-form';
+import { validateDate } from './Validate';
+import InputImage from './InputComponents/InputImage';
+import InputProductStatus from './InputComponents/InputProductStatus';
+import InputCategory from './InputComponents/InputCategory';
 
 function FormInput({ onChangeProduct }: IFormInputProps) {
   const [statusValid, setStatusValid] = useState(false);

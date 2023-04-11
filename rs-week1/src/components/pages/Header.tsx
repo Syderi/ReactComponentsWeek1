@@ -12,7 +12,9 @@ function Header({ namePageTerm }: IHeaderProps) {
       <header className="header">
         <nav className="navigation">
           <div className="navigation-links">
-            <NavLink to="/">Home Page</NavLink>
+            <NavLink to="/" data-testid="home">
+              Home Page
+            </NavLink>
             <NavLink to="/about">About US</NavLink>
             <NavLink to="/form">Form Page</NavLink>
           </div>

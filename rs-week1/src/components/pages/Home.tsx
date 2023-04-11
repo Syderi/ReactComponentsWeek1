@@ -33,6 +33,14 @@ function Home({ onChangeNamePage }: IHomePageProps) {
   return (
     <>
       <h3>Home page</h3>
+      <div>
+        <p>
+          Самое прикольное, я нашел очень похожу работу, но только про вино - Видно что есть
+          изменения, но многие вещи один к одному как у тебя. Особенно заметно на тестах, api и в
+          некоторых других местах...
+          <a href="https://github.com/DzmitrySH/React-2023Q1">go to copy</a>
+        </p>
+      </div>
       <div className="card-search">
         <form onSubmit={handleFormSubmit}>
           <input

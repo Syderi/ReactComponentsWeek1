@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import './Home.css';
 import ProductCard from './ProductCard/ProductCard';
-import { useGetProductsQuery } from './Api/Api';
+import { useGetProductsQuery } from '../../store/Api/Api';
 import Loader from './ProductCard/Loading';
 import { useActions } from '../../hooks/useActions';
 import { useSelector } from 'react-redux';

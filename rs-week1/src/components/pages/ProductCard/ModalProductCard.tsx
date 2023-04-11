@@ -1,5 +1,5 @@
 import React from 'react';
-import { useGetProductDetailsQuery } from '../Api/Api';
+import { useGetProductDetailsQuery } from '../../../store/Api/Api';
 import Loader from './Loading';
 import './ModalProductCard.css';
 

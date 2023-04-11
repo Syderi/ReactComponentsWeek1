@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { productApi } from '../components/pages/Api/Api';
+import { productApi } from './Api/Api';
 import { formSlice, reducer as formReducer } from './redusers/formSlice';
 import { stateSlice, reducer as searchReducer } from './redusers/searchSlice';
 

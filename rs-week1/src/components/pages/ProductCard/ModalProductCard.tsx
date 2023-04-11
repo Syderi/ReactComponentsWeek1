@@ -16,22 +16,18 @@ function ModalProductCard({ productID, closeModal }: ProductModalProps) {
     discountedPrice = product.price - (product.price * product.discountPercentage) / 100;
   }
 
-  const handleOverlayClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  const handlecloseModal = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
     if (event.target === event.currentTarget) {
       closeModal();
     }
   };
 
-  const handleModalCloseClick = () => {
-    closeModal();
-  };
-
   if (isLoading) return <Loader />;
 
   return (
-    <div className="product-modal" onClick={handleOverlayClick} data-testid="modal">
+    <div className="product-modal" onClick={handlecloseModal} data-testid="modal">
       <div className="product-modal__content">
-        <button className="product-modal__close-btn" onClick={handleModalCloseClick}>
+        <button className="product-modal__close-btn" onClick={handlecloseModal}>
           &#10006;
         </button>
         <div className="product-modal__image">

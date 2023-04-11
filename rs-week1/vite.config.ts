@@ -15,7 +15,7 @@ export default defineConfig({
       provider: 'c8',
       all: true,
       include: ['src/**/*'],
-      exclude: ['src/**/*d.ts', 'src/**/*.test.*'],
+      exclude: ['src/**/*d.ts', 'src/**/*.test.*', 'src/**/interface.ts'],
     },
   },
 });

@@ -9,7 +9,7 @@ type ProductModalProps = {
 };
 
 function ModalProductCard({ productID, closeModal }: ProductModalProps) {
-  const { data: product, isLoading } = useGetProductDetailsQuery(productID);
+  const { data: product, isLoading, isError } = useGetProductDetailsQuery(productID);
 
   let discountedPrice = 0;
   if (product) {
@@ -23,6 +23,19 @@ function ModalProductCard({ productID, closeModal }: ProductModalProps) {
   };
 
   if (isLoading) return <Loader />;
+
+  if (isError) {
+    return (
+      <div className="product-modal" onClick={handlecloseModal} data-testid="modal">
+        <div className="product-modal__content">
+          <button className="product-modal__close-btn" onClick={handlecloseModal}>
+            &#10006;
+          </button>
+          Product not Loading...
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="product-modal" onClick={handlecloseModal} data-testid="modal">

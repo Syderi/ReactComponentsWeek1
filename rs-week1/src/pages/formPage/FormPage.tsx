@@ -3,8 +3,8 @@ import { IFormCard } from 'components/types/interface';
 import React from 'react';
 
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../store/store';
-import { useActions } from '../../../hooks/useActions';
+import { RootState } from '../../store/store';
+import { useActions } from '../../hooks/useActions';
 import FormInput from './FormInput';
 import FormCard from './FormCard';
 

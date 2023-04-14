@@ -3,7 +3,7 @@ import { setupServer } from 'msw/node';
 import { BASE_URL } from '../store/Api/Api';
 import { cleanup } from '@testing-library/react';
 import { renderWithProviders } from '../utils/test-utils';
-import ModalProductCard from '../components/pages/ProductCard/ModalProductCard';
+import ModalProductCard from '../pages/ProductCard/ModalProductCard';
 import React from 'react';
 import { vi } from 'vitest';
 

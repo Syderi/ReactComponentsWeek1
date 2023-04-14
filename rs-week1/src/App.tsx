@@ -1,10 +1,10 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import Home from './components/pages/Home';
-import Header from './components/pages/Header';
-import About from './components/pages/About';
-import Page404 from './components/pages/Page404';
-import FormPage from './components/pages/formPage/FormPage';
+import Home from './pages/Home';
+import Header from './pages/Header';
+import About from './pages/About';
+import Page404 from './pages/Page404';
+import FormPage from './pages/formPage/FormPage';
 
 function App() {
   return (

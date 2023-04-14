@@ -1,11 +1,11 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 import './Home.css';
 import ProductCard from './ProductCard/ProductCard';
-import { useGetProductsQuery } from '../../store/Api/Api';
+import { useGetProductsQuery } from '../store/Api/Api';
 import Loader from './ProductCard/Loading';
-import { useActions } from '../../hooks/useActions';
+import { useActions } from '../hooks/useActions';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../store/store';
+import { RootState } from '../store/store';
 
 function Home() {
   const { changeSearch } = useActions();

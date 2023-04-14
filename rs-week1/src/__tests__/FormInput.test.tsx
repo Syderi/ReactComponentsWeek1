@@ -2,7 +2,7 @@ import React from 'react';
 import { render, fireEvent, cleanup } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
-import FormInput from '../components/pages/formPage/FormInput';
+import FormInput from '../pages/formPage/FormInput';
 
 afterEach(() => {
   cleanup();

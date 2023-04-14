@@ -2,7 +2,7 @@ import { describe, test, expect } from 'vitest';
 import React from 'react';
 import { Provider } from 'react-redux';
 import { store } from '../store/store';
-import Home from '../components/pages/Home';
+import Home from '../pages/Home';
 import { render, fireEvent, screen } from '@testing-library/react';
 
 describe('<Home />', () => {

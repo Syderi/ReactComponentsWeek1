@@ -1,12 +1,12 @@
 import './FormPage.css';
-import { IFormCard } from 'components/types/interface';
 import React from 'react';
+import { IFormCard } from 'types/interface';
 
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
+import FormInput from '../../components/formPage/FormInput';
+import FormCard from '../../components/formPage/FormCard';
 import { useActions } from '../../hooks/useActions';
-import FormInput from './FormInput';
-import FormCard from './FormCard';
 
 function FormPage() {
   const { addToStateFormProducts } = useActions();

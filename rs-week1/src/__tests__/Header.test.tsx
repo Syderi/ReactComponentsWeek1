@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import Header from '../pages/Header';
 import { MemoryRouter } from 'react-router';
+import Header from '../components/header/Header';
 
 test('should render the component with the correct namePageTerm prop', () => {
   render(

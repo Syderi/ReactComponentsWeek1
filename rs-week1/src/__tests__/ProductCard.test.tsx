@@ -2,8 +2,8 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { store } from '../store/store';
 import { render, screen, waitFor } from '@testing-library/react';
-import ProductCard from '../pages/ProductCard/ProductCard';
 import userEvent from '@testing-library/user-event';
+import ProductCard from '../components/ProductCard/ProductCard';
 
 describe('ModalProductCard', () => {
   const mockProduct = {

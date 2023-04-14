@@ -1,4 +1,4 @@
-import { Ecategory } from '../../../components/types/enum';
+import { Ecategory } from '../../../types/enum';
 import React from 'react';
 import { FieldError, UseFormRegisterReturn } from 'react-hook-form';
 

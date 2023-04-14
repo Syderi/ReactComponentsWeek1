@@ -1,7 +1,7 @@
 import { describe, test, expect } from 'vitest';
 import { render } from '@testing-library/react';
 import React from 'react';
-import About from '../pages/About';
+import About from '../pages/About/About';
 
 describe('<About />', () => {
   test('About mounts properly', () => {

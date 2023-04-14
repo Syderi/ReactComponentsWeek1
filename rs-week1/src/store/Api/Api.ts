@@ -1,6 +1,6 @@
-import { IProduct } from '../../components/types/interface';
+import { IProduct } from '../../types/interface';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import type { IResponseProductApi } from '../../components/types/interface';
+import type { IResponseProductApi } from '../../types/interface';
 
 export const BASE_URL = 'https://dummyjson.com/';
 

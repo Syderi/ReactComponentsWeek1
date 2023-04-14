@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './ProductCard.css';
 import defaultPic from '../../assets/img/default.png';
 import ModalProductCard from './ModalProductCard';
-import { IProductProps } from 'components/types/interface';
+import { IProductProps } from 'types/interface';
 
 function ProductCard({ product }: IProductProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IFormCard } from '../../components/types/interface';
+import { IFormCard } from '../../types/interface';
 
 const stateFormProducts: IFormCard[] = [];
 

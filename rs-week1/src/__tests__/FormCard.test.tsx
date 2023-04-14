@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import FormCard from '../pages/formPage/FormCard';
+import FormCard from '../components/formPage/FormCard';
 
 const mockProductCard = {
   id: Date.now(),

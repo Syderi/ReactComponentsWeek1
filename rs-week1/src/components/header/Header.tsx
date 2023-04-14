@@ -1,4 +1,4 @@
-import { NavLinks } from 'components/types/interface';
+import { NavLinks } from 'types/interface';
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import './Header.css';

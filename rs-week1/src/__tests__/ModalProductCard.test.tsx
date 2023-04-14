@@ -2,9 +2,9 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { store } from '../store/store';
 import { render, screen } from '@testing-library/react';
-import ModalProductCard from '../pages/ProductCard/ModalProductCard';
 import { vi } from 'vitest';
 import userEvent from '@testing-library/user-event';
+import ModalProductCard from '../components/ProductCard/ModalProductCard';
 
 describe('ModalProductCard', () => {
   const closeModal = vi.fn();

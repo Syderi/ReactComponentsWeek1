@@ -1,6 +1,6 @@
 import React from 'react';
 import { useGetProductDetailsQuery } from '../../store/Api/Api';
-import Loader from './Loading';
+import Loader from '../Loader/Loading';
 import './ModalProductCard.css';
 
 type ProductModalProps = {

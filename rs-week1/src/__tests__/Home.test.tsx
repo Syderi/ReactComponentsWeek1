@@ -2,8 +2,8 @@ import { describe, test, expect } from 'vitest';
 import React from 'react';
 import { Provider } from 'react-redux';
 import { store } from '../store/store';
-import Home from '../pages/Home';
 import { render, fireEvent, screen } from '@testing-library/react';
+import Home from '../pages/Home/Home';
 
 describe('<Home />', () => {
   test('handles search input change and form submission', () => {

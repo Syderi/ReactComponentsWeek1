@@ -1,4 +1,4 @@
-import { IFormCardProps } from 'components/types/interface';
+import { IFormCardProps } from 'types/interface';
 import React from 'react';
 import './FormCard.css';
 

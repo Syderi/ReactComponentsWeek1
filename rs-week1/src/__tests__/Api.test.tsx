@@ -3,9 +3,9 @@ import { setupServer } from 'msw/node';
 import { BASE_URL } from '../store/Api/Api';
 import { cleanup } from '@testing-library/react';
 import { renderWithProviders } from '../utils/test-utils';
-import ModalProductCard from '../pages/ProductCard/ModalProductCard';
 import React from 'react';
 import { vi } from 'vitest';
+import ModalProductCard from '../components/ProductCard/ModalProductCard';
 
 const mockserver = setupServer(
   rest.get(`${BASE_URL}products/:id`, (req, res, ctx) => {

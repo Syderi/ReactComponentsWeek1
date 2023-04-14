@@ -1,9 +1,8 @@
-import './FormPage.css';
-import { IFormInputProps, FormData } from 'components/types/interface';
+import { IFormInputProps, FormData } from 'types/interface';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import InputImage from './InputComponents/InputImage';
-import { validateDate } from './Validate';
+import { validateDate } from '../../utils/Validate';
 import InputProductStatus from './InputComponents/InputProductStatus';
 import InputCategory from './InputComponents/InputCategory';
 

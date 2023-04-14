@@ -1,6 +1,6 @@
 import './FormPage.css';
 import { IFormCard } from 'components/types/interface';
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store/store';
@@ -8,14 +8,7 @@ import { useActions } from '../../../hooks/useActions';
 import FormInput from './FormInput';
 import FormCard from './FormCard';
 
-interface IFormPageProps {
-  onChangeNamePage: (namePage: string) => void;
-}
-
-function FormPage({ onChangeNamePage }: IFormPageProps) {
-  useEffect(() => {
-    onChangeNamePage('Form Page');
-  });
+function FormPage() {
   const { addToStateFormProducts } = useActions();
   const formCards = useSelector<RootState, IFormCard[]>((state) => state.form);
 

@@ -1,8 +1,9 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { store } from '../store/store';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import ProductCard from '../components/pages/ProductCard/ProductCard';
+import userEvent from '@testing-library/user-event';
 
 describe('ModalProductCard', () => {
   const mockProduct = {
@@ -41,7 +42,7 @@ describe('ModalProductCard', () => {
       </Provider>
     );
     const showModalButton = screen.getByRole('button');
-    fireEvent.click(showModalButton);
+    await userEvent.click(showModalButton);
 
     await waitFor(() => {
       const divModal = screen.getByTestId('modal');

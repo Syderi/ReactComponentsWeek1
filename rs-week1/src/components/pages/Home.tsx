@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useState } from 'react';
 import './Home.css';
 import ProductCard from './ProductCard/ProductCard';
 import { useGetProductsQuery } from '../../store/Api/Api';
@@ -7,19 +7,11 @@ import { useActions } from '../../hooks/useActions';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 
-interface IHomePageProps {
-  onChangeNamePage: (namePage: string) => void;
-}
-
-function Home({ onChangeNamePage }: IHomePageProps) {
+function Home() {
   const { changeSearch } = useActions();
   const stateSearch = useSelector<RootState, string>((state) => state.search.stateSearch);
   const [searchInput, setSearchInput] = useState(stateSearch);
   const { data: productsList, isLoading } = useGetProductsQuery(stateSearch);
-
-  useEffect(() => {
-    onChangeNamePage('Home Page');
-  }, [onChangeNamePage]);
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchInput(event.target.value);

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Home from './components/pages/Home';
 import Header from './components/pages/Header';
@@ -7,20 +7,14 @@ import Page404 from './components/pages/Page404';
 import FormPage from './components/pages/formPage/FormPage';
 
 function App() {
-  const [namePage, setNamePage] = useState<string>('');
-
-  const handleNamePage = useCallback((namePage: string) => {
-    setNamePage(namePage);
-  }, []);
-
   return (
     <>
-      <Header namePageTerm={namePage} />
+      <Header />
       <Routes>
-        <Route path="/" element={<Home onChangeNamePage={handleNamePage} />} />
-        <Route path="/about" element={<About onChangeNamePage={handleNamePage} />} />
-        <Route path="/form" element={<FormPage onChangeNamePage={handleNamePage} />} />
-        <Route path="*" element={<Page404 onChangeNamePage={handleNamePage} />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/form" element={<FormPage />} />
+        <Route path="*" element={<Page404 />} />
       </Routes>
     </>
   );

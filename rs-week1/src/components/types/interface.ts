@@ -67,6 +67,10 @@ interface FormData {
   category: string;
 }
 
+interface NavLinks {
+  [key: string]: string | undefined;
+}
+
 export {
   IProduct,
   IResponseProductApi,
@@ -76,4 +80,5 @@ export {
   IFormInputProps,
   IFormInputState,
   FormData,
+  NavLinks,
 };

@@ -4,20 +4,19 @@ import Header from '../components/pages/Header';
 import { MemoryRouter } from 'react-router';
 
 test('should render the component with the correct namePageTerm prop', () => {
-  const namePageTerm = 'Home Page';
   render(
     <MemoryRouter>
-      <Header namePageTerm={namePageTerm} />
+      <Header />
     </MemoryRouter>
   );
 
-  expect(screen.getByText(`Current Page: ${namePageTerm}`)).toBeTruthy();
+  expect(screen.getByText(`Current Page: Home`)).toBeTruthy();
 });
 
 test('should render the correct navigation links', () => {
   render(
     <MemoryRouter>
-      <Header namePageTerm="Home Page" />
+      <Header />
     </MemoryRouter>
   );
 

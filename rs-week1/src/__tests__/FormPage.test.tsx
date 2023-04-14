@@ -7,7 +7,7 @@ import FormPage from '../components/pages/formPage/FormPage';
 test('renders Form page header', () => {
   const { getByText } = render(
     <Provider store={store}>
-      <FormPage onChangeNamePage={() => {}} />
+      <FormPage />
     </Provider>
   );
   const headerElement = getByText(/Form page/i);

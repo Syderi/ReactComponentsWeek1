@@ -1,14 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
-interface IPage404Props {
-  onChangeNamePage: (namePage: string) => void;
-}
-
-function Page404({ onChangeNamePage }: IPage404Props) {
-  useEffect(() => {
-    onChangeNamePage('Page 404');
-  }, [onChangeNamePage]);
-
+function Page404() {
   return (
     <>
       <h3>Page not found 404</h3>

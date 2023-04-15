@@ -4,7 +4,6 @@ import React from 'react';
 import { afterEach } from 'vitest';
 import { Provider } from 'react-redux';
 import { store } from '../store/store';
-import { BrowserRouter } from 'react-router-dom';
 
 afterEach(() => {
   cleanup();
@@ -15,8 +14,7 @@ describe('App component', () => {
     render(
       <Provider store={store}>
         <App />
-      </Provider>,
-      { wrapper: BrowserRouter }
+      </Provider>
     );
 
     const linkAbout = screen.getByText(/About US/);

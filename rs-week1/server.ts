@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import express from 'express';
-import renderApp from './dist/server/entry-server.js';
+import { renderApp } from './dist/server/entry-server.js';
 
 const app = express();
 const PORT = 8080;

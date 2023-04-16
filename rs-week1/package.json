@@ -12,6 +12,8 @@
     "preview": "vite preview --open",
     "build:client": "vite build --outDir dist/client",
     "build:server": "vite build --outDir dist/server --ssr src/entry-server.tsx",
+    "build:ssr": "npm run build:client && npm run build:server",
+    "server": "npx ts-node --esm server.ts",
     "lint": "eslint --ext .ts,.tsx src",
     "lint:fix": "eslint --ext .ts,.tsx src --fix",
     "clear": "rd /s /q dist",

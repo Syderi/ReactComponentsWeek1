@@ -12,7 +12,7 @@ import { stateSlice, reducer as searchReducer } from './store/redusers/searchSli
 import { Provider } from 'react-redux';
 import React from 'react';
 
-export function renderApp(url: string, options: RenderToPipeableStreamOptions): PipeableStream {
+function renderApp(url: string, options: RenderToPipeableStreamOptions): PipeableStream {
   const store = configureStore({
     reducer: {
       [productApi.reducerPath]: productApi.reducer,
@@ -28,8 +28,9 @@ export function renderApp(url: string, options: RenderToPipeableStreamOptions): 
         <App />
       </StaticRouter>
     </Provider>,
-
     options
   );
   return stream;
 }
+
+export default renderApp;

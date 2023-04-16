@@ -10,6 +10,8 @@
     "dev": "vite --open",
     "build": "tsc && vite build",
     "preview": "vite preview --open",
+    "build:client": "vite build --outDir dist/client",
+    "build:server": "vite build --outDir dist/server --ssr src/entry-server.tsx",
     "lint": "eslint --ext .ts,.tsx src",
     "lint:fix": "eslint --ext .ts,.tsx src --fix",
     "clear": "rd /s /q dist",

@@ -4,6 +4,7 @@ import React from 'react';
 import { afterEach } from 'vitest';
 import { Provider } from 'react-redux';
 import { store } from '../store/store';
+import { MemoryRouter } from 'react-router';
 
 afterEach(() => {
   cleanup();
@@ -12,9 +13,11 @@ afterEach(() => {
 describe('App component', () => {
   it('should display current page', () => {
     render(
-      <Provider store={store}>
-        <App />
-      </Provider>
+      <MemoryRouter>
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </MemoryRouter>
     );
 
     const linkAbout = screen.getByText(/About US/);

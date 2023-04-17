@@ -1,37 +1,48 @@
-import fs from 'node:fs';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import express from 'express';
-import { renderApp } from './dist/server/entry-server.js';
+import { createServer as createViteServer } from 'vite';
 
-const app = express();
-const PORT = 8080;
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const template = fs.readFileSync(path.resolve(__dirname, './dist/client/index.html')).toString();
-const inject = template.split('<!--ssr-inject-->');
+async function createServer() {
+  const app = express();
 
-app.use('/assets', express.static(path.resolve(__dirname, './dst/client/assets')));
+  const vite = await createViteServer({
+    server: { middlewareMode: true },
+    appType: 'custom',
+  });
+  app.use(vite.middlewares);
 
-app.use((request, response) => {
-  response.write(inject[0]);
-  const stream = renderApp(
-    (request.url,
-    {
-      onShellReady() {
-        stream.pipe(response);
-      },
-      onAllReady() {
-        response.write(inject[1]);
-        response.end();
-      },
-      onError(error: Error) {
-        console.error(error);
-      },
-    })
-  );
-});
+  app.use('*', async (req, res, next) => {
+    const url = req.originalUrl;
 
-app.listen(PORT, () => {
-  console.log(`Server start 'http://localhost:${PORT}'`);
-});
+    try {
+      let template = fs.readFileSync(path.resolve(__dirname, 'index.html'), 'utf-8');
+      template = await vite.transformIndexHtml(url, template);
+      const html = template.split(`<!--ssr-inject-->`);
+
+      const { render } = await vite.ssrLoadModule('/src/entry-server.tsx');
+
+      const { pipe } = await render(url, {
+        onShellReady() {
+          res.write(html[0]);
+          pipe(res);
+        },
+        onAllReady() {
+          res.write(html[0] + html[1]);
+          res.end();
+        },
+      });
+    } catch (e) {
+      const err = e as Error;
+      vite.ssrFixStacktrace(err);
+      next(err);
+    }
+  });
+
+  app.listen(3000, () => console.log('http://localhost:3000/'));
+}
+
+createServer();

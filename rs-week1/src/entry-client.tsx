@@ -17,5 +17,4 @@ function entryClient(store: Store) {
   );
 }
 
-console.log('hydrated');
 entryClient(store);

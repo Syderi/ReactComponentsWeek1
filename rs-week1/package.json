@@ -7,7 +7,7 @@
   "scripts": {
     "test": "vitest",
     "coverage": "vitest run --coverage",
-    "cypress:open": "cypress open",
+    "cypress:open": "cypress run",
     "build": "tsc && vite build",
     "preview": "vite preview --open",
     "build:client": "vite build --outDir dist/client",

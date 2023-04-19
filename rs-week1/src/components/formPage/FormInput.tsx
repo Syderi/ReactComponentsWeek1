@@ -92,6 +92,7 @@ function FormInput({ onChangeProduct }: IFormInputProps) {
             },
           })}
           id="description-input"
+          data-testid="description-input"
           placeholder="description product: Phone is very..."
         />
       </div>
@@ -114,6 +115,7 @@ function FormInput({ onChangeProduct }: IFormInputProps) {
           })}
           type="date"
           id="date-input"
+          data-testid="date-input"
         />
       </div>
       <div className="form-input">

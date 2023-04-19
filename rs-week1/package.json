@@ -7,7 +7,8 @@
   "scripts": {
     "test": "vitest",
     "coverage": "vitest run --coverage",
-    "cypress:open": "cypress run",
+    "cypress:run": "cypress run --env coverage=true",
+    "cypress:coverage": "npx nyc report --reporter=text-summary",
     "build": "tsc && vite build",
     "preview": "vite preview --open",
     "build:client": "vite build --outDir dist/client",
@@ -27,6 +28,8 @@
     "react-router-dom": "^6.8.2"
   },
   "devDependencies": {
+    "@cypress/code-coverage": "^3.10.4",
+    "@types/cypress__code-coverage": "^3.10.0",
     "@reduxjs/toolkit": "^1.9.3",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
@@ -61,6 +64,12 @@
     "react-spinners": "^0.13.8",
     "typescript": "^4.9.3",
     "vite": "^4.2.1",
+    "vite-plugin-istanbul": "^4.0.1",
     "vitest": "^0.29.2"
+  },
+  "nyc": {
+    "reporter": [
+      "html"
+    ]
   }
 }

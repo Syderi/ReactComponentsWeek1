@@ -17,5 +17,6 @@
     "resolveJsonModule": true,
     "outDir": "./dist"
   },
-  "include": ["./src/**/*", "styled.d.ts", "./jest-setup.ts", "src/__tests__/.test copy.tsx"]
+  "include": ["./src/**/*", "styled.d.ts", "./jest-setup.ts", "src/__tests__/.test copy.tsx"],
+  "exclude": ["./instrumented/**/*"]
 }

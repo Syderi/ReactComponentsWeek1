@@ -1,9 +1,9 @@
 # React_Components_Week6
 clone repository and install dependencies
 
-cd rs-week1
-code .
-git checkout React-SSR-SSG
+1 cd rs-week1
+2 code .
+3 git checkout React-SSR-SSG
 
 check task:
 1 npm i

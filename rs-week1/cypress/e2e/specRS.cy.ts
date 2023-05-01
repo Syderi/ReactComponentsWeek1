@@ -1,7 +1,4 @@
 /// <reference types="cypress" />
-// @ts-check
-// cypress/support/e2e.js
-import '@cypress/code-coverage/support';
 
 describe('My e2e Test', () => {
   it('Visits http://localhost:3000/', () => {
